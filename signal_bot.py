@@ -64,22 +64,33 @@ def drop_unclosed_candle(df, time_is_close_time):
 # Data fetchers
 # ---------------------------------------------------------------------------
 def fetch_btc_klines(limit=150):
-    """Free Binance public endpoint, no API key needed."""
-    url = "https://api.binance.com/api/v3/klines"
-    params = {"symbol": "BTCUSDT", "interval": f"{TIMEFRAME_MIN}m", "limit": limit}
+    """
+    Kraken's free public OHLC endpoint (no API key needed).
+    Note: Binance blocks requests coming from cloud/server IPs (GitHub Actions,
+    AWS, etc.) with an HTTP 451 error -- this is a Binance-side restriction,
+    not a bug in this script. Kraken does not apply that block, so it's a
+    more reliable choice when running from GitHub Actions.
+    """
+    url = "https://api.kraken.com/0/public/OHLC"
+    params = {"pair": "XBTUSD", "interval": TIMEFRAME_MIN}
     r = requests.get(url, params=params, timeout=15)
     r.raise_for_status()
     data = r.json()
-    df = pd.DataFrame(data, columns=[
-        "open_time", "open", "high", "low", "close", "volume",
-        "close_time", "qav", "trades", "tbbav", "tbqav", "ignore"
+    if data.get("error"):
+        raise RuntimeError(f"Kraken error: {data['error']}")
+
+    result_key = next(k for k in data["result"] if k != "last")
+    rows = data["result"][result_key][-limit:]
+
+    df = pd.DataFrame(rows, columns=[
+        "time", "open", "high", "low", "close", "vwap", "volume", "count"
     ])
     df["close"] = df["close"].astype(float)
     df["high"] = df["high"].astype(float)
     df["low"] = df["low"].astype(float)
-    df["time"] = pd.to_datetime(df["close_time"], unit="ms", utc=True)
+    df["time"] = pd.to_datetime(df["time"], unit="s", utc=True)  # candle OPEN time
     df = df[["time", "high", "low", "close"]]
-    return drop_unclosed_candle(df, time_is_close_time=True)
+    return drop_unclosed_candle(df, time_is_close_time=False)
 
 
 def fetch_gold_klines(limit=150):
