@@ -12,6 +12,7 @@ import time
 import requests
 import pandas as pd
 import numpy as np
+from datetime import datetime, timezone, timedelta
 
 # ===== Config (edit these to match your Pine Script inputs) =====
 FAST_LEN = 9
@@ -37,6 +38,29 @@ STATE_FILE = "state.json"
 
 
 # ---------------------------------------------------------------------------
+# Helper: drop the still-forming (not yet closed) candle
+# ---------------------------------------------------------------------------
+def drop_unclosed_candle(df, time_is_close_time):
+    """
+    Pine Script's alert(..., alert.freq_once_per_bar_close) only fires once a
+    candle is fully closed. If our fetched data's last row is still forming
+    (the live/open candle), we must drop it -- otherwise we'll generate
+    signals the indicator never actually shows, and they can flip or vanish
+    once the candle finally closes.
+    """
+    now = datetime.now(timezone.utc)
+    last_time = df.iloc[-1]["time"]
+    if last_time.tzinfo is None:
+        last_time = last_time.tz_localize("UTC")
+
+    close_time = last_time if time_is_close_time else last_time + timedelta(minutes=TIMEFRAME_MIN)
+
+    if close_time > now:
+        return df.iloc[:-1].reset_index(drop=True)
+    return df
+
+
+# ---------------------------------------------------------------------------
 # Data fetchers
 # ---------------------------------------------------------------------------
 def fetch_btc_klines(limit=150):
@@ -53,8 +77,9 @@ def fetch_btc_klines(limit=150):
     df["close"] = df["close"].astype(float)
     df["high"] = df["high"].astype(float)
     df["low"] = df["low"].astype(float)
-    df["time"] = pd.to_datetime(df["close_time"], unit="ms")
-    return df[["time", "high", "low", "close"]]
+    df["time"] = pd.to_datetime(df["close_time"], unit="ms", utc=True)
+    df = df[["time", "high", "low", "close"]]
+    return drop_unclosed_candle(df, time_is_close_time=True)
 
 
 def fetch_gold_klines(limit=150):
@@ -65,6 +90,7 @@ def fetch_gold_klines(limit=150):
         "interval": f"{TIMEFRAME_MIN}min",
         "outputsize": limit,
         "apikey": TWELVE_DATA_API_KEY,
+        "timezone": "UTC",
     }
     r = requests.get(url, params=params, timeout=15)
     r.raise_for_status()
@@ -76,9 +102,10 @@ def fetch_gold_klines(limit=150):
     df["close"] = df["close"].astype(float)
     df["high"] = df["high"].astype(float)
     df["low"] = df["low"].astype(float)
-    df["time"] = pd.to_datetime(df["time"])
+    df["time"] = pd.to_datetime(df["time"], utc=True)
     df = df.sort_values("time").reset_index(drop=True)  # Twelve Data returns newest first
-    return df[["time", "high", "low", "close"]]
+    df = df[["time", "high", "low", "close"]]
+    return drop_unclosed_candle(df, time_is_close_time=False)
 
 
 # ---------------------------------------------------------------------------
