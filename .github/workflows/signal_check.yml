@@ -2,11 +2,11 @@ name: EMA-RSI Signal Bot
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
-  workflow_dispatch: {}
+    - cron: "*/5 * * * *"   # every 5 minutes (UTC, GitHub's clock)
+  workflow_dispatch: {}       # lets you trigger it manually from the Actions tab
 
 permissions:
-  contents: write
+  contents: write            # needed so the workflow can commit state.json back
 
 jobs:
   check-signal:
