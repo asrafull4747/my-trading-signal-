@@ -276,12 +276,32 @@ def is_market_stale(candle_time):
     return age_minutes > STALE_THRESHOLD_MIN
 
 
+def is_flat_market(df, lookback=5, rel_epsilon=1e-5):
+    """
+    Some data providers keep emitting candles with fresh timestamps even
+    while a market is closed, by repeating the last known price (a 'flat'
+    candle with open == high == low == close, or near enough). Timestamp
+    freshness alone can't catch this, so instead check whether the recent
+    candles actually have any real price range. A genuinely open, liquid
+    market essentially never prints several near-zero-range bars in a row.
+    """
+    recent = df.tail(lookback)
+    price_level = recent["close"].iloc[-1]
+    avg_range = (recent["high"] - recent["low"]).mean()
+    return avg_range <= price_level * rel_epsilon
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 def process_symbol(name, fetch_fn, state):
     try:
         df = fetch_fn()
+
+        if is_flat_market(df):
+            print(f"[{name}] Market appears closed/inactive (flat candles) -- skipping")
+            return
+
         action, entry, sl, tp, candle_time = compute_signal(df)
 
         if is_market_stale(candle_time):
