@@ -182,7 +182,7 @@ def compute_signal(df):
 # ---------------------------------------------------------------------------
 # Telegram
 # ---------------------------------------------------------------------------
-def send_telegram(symbol, action, entry, sl, tp, candle_time):
+def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers):
     text = (
         f"🔔 {action} Signal\n"
         f"Symbol: {symbol}\n"
@@ -192,8 +192,59 @@ def send_telegram(symbol, action, entry, sl, tp, candle_time):
         f"Time: {candle_time}"
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    resp = requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "text": text}, timeout=15)
-    resp.raise_for_status()
+    for chat_id in subscribers:
+        try:
+            resp = requests.post(url, data={"chat_id": chat_id, "text": text}, timeout=15)
+            resp.raise_for_status()
+        except Exception as e:
+            # Don't let one bad/blocked subscriber stop delivery to everyone else
+            print(f"  -> Failed to send to {chat_id}: {e}")
+
+
+def send_welcome(chat_id):
+    text = (
+        "✅ You're subscribed!\n"
+        "You'll now receive BUY/SELL signals (with Entry/SL/TP) for "
+        "BTCUSDT and XAU/USD automatically."
+    )
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    try:
+        requests.post(url, data={"chat_id": chat_id, "text": text}, timeout=15).raise_for_status()
+    except Exception as e:
+        print(f"  -> Failed to welcome {chat_id}: {e}")
+
+
+# ---------------------------------------------------------------------------
+# Subscriber management (anyone who sends /start to the bot gets added)
+# ---------------------------------------------------------------------------
+def register_new_subscribers(state):
+    subscribers = state.setdefault("subscribers", [])
+    offset = state.get("last_update_id", 0) + 1
+
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates"
+    try:
+        resp = requests.get(url, params={"offset": offset, "timeout": 0}, timeout=15)
+        resp.raise_for_status()
+        updates = resp.json().get("result", [])
+    except Exception as e:
+        print(f"[subscribers] ERROR fetching updates: {e}")
+        return
+
+    max_update_id = state.get("last_update_id", 0)
+    for update in updates:
+        max_update_id = max(max_update_id, update["update_id"])
+        message = update.get("message")
+        if not message:
+            continue
+        text = (message.get("text") or "").strip().lower()
+        chat_id = str(message["chat"]["id"])
+        if text.startswith("/start") and chat_id not in subscribers:
+            subscribers.append(chat_id)
+            send_welcome(chat_id)
+            print(f"[subscribers] Added new subscriber: {chat_id}")
+
+    state["last_update_id"] = max_update_id
+    state["subscribers"] = subscribers
 
 
 # ---------------------------------------------------------------------------
@@ -221,9 +272,9 @@ def process_symbol(name, fetch_fn, state):
         candle_key = str(candle_time)
 
         if action and state.get(name) != candle_key:
-            send_telegram(name, action, entry, sl, tp, candle_time)
+            send_telegram(name, action, entry, sl, tp, candle_time, state.get("subscribers", []))
             state[name] = candle_key
-            print(f"[{name}] Sent {action} signal at {candle_time}")
+            print(f"[{name}] Sent {action} signal at {candle_time} to {len(state.get('subscribers', []))} subscriber(s)")
         else:
             print(f"[{name}] No new signal (last candle: {candle_time})")
     except Exception as e:
@@ -232,6 +283,14 @@ def process_symbol(name, fetch_fn, state):
 
 def main():
     state = load_state()
+
+    # Bootstrap: make sure the original/admin chat ID is always in the list
+    subscribers = state.setdefault("subscribers", [])
+    if TELEGRAM_CHAT_ID not in subscribers:
+        subscribers.append(TELEGRAM_CHAT_ID)
+
+    register_new_subscribers(state)  # picks up anyone who sent /start since last run
+
     process_symbol("BTCUSDT", fetch_btc_klines, state)
     process_symbol("XAU/USD", fetch_gold_klines, state)
     save_state(state)
