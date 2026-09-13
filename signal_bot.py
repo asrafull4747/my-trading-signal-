@@ -263,12 +263,31 @@ def save_state(state):
 
 
 # ---------------------------------------------------------------------------
+# Helper: check if data is stale (market closed / no fresh candles coming in)
+# ---------------------------------------------------------------------------
+STALE_THRESHOLD_MIN = 20  # if the latest closed candle is older than this, treat market as closed
+
+
+def is_market_stale(candle_time):
+    now = datetime.now(timezone.utc)
+    if candle_time.tzinfo is None:
+        candle_time = candle_time.tz_localize("UTC")
+    age_minutes = (now - candle_time).total_seconds() / 60
+    return age_minutes > STALE_THRESHOLD_MIN
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 def process_symbol(name, fetch_fn, state):
     try:
         df = fetch_fn()
         action, entry, sl, tp, candle_time = compute_signal(df)
+
+        if is_market_stale(candle_time):
+            print(f"[{name}] Market appears closed (last candle: {candle_time}) -- skipping")
+            return
+
         candle_key = str(candle_time)
 
         if action and state.get(name) != candle_key:
