@@ -8,19 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4342.74344,
-      "sl": 4349.07896,
-      "tp": 4330.072400000001,
-      "entry_time": "2026-09-17 20:12:00+00:00",
-      "message_ids": {
-        "6338570227": 438,
-        "7100834953": 439
-      }
-    },
-    {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
