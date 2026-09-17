@@ -1,35 +1,51 @@
 """
-EMA Crossover + RSI Signal Bot
-Replicates the Pine Script strategy logic (ema_rsi_strategy_v4) in Python.
-Checks BTC (via Binance, free) and XAU/USD (via Twelve Data, free tier).
-Sends BUY/SELL alerts with Entry/SL/TP to Telegram.
-Designed to run every 5 minutes via GitHub Actions (or any cron scheduler).
+Multi-Strategy Signal Bot
+Runs two independent signal engines side by side for each symbol:
+
+  1. Black Shadow Trader (merged) -- Range Filter trend + Scalper Pro
+     pivot breakout, confirmed by trend direction.
+  2. Consolidation Breakout -- detects a tight consolidation (>=4
+     consecutive low-range/small-body candles), then fires only when a
+     candle CLOSES outside that range (a wick poking out and closing back
+     inside does NOT count). SL = opposite side of the consolidation box,
+     TP = 1:2 risk:reward.
+
+Checks BTC (via Kraken, free) and XAU/USD (via Twelve Data, free tier).
+Sends BUY/SELL alerts with Entry/SL/TP to all Telegram subscribers.
+Designed to run every 5 minutes (via GitHub Actions + an external cron trigger).
 """
 
 import os
 import json
-import time
 import requests
 import pandas as pd
 import numpy as np
 from datetime import datetime, timezone, timedelta
 
-# ===== Config (edit these to match your Pine Script inputs) =====
-FAST_LEN = 9
-SLOW_LEN = 21
-RSI_LEN = 14
-RSI_LOW = 30
-RSI_HIGH = 70
+# ===== Shared config =====
+TIMEFRAME_MIN = 5
+FETCH_LIMIT = 500  # generous warm-up window for the Range Filter's long EMA
 
-USE_ATR = True
+# ---- Strategy 1: Black Shadow Trader (Range Filter + Scalper Pro, merged) ----
+RF_PERIOD = 100
+RF_MULT = 3.0
+TARGET_MULT = 2.0
+PIVOT_LENGTH = 3
+USE_CONSOLIDATION = True
+CONS_LENGTH = 10
+CONS_ATR_MULT = 3.0
 ATR_LEN = 14
-ATR_MULT = 1.5
-FIXED_SL = 50.0          # used only if USE_ATR = False
-RR_RATIO = 2.0
+USE_COOLDOWN = True
+COOLDOWN_BARS = 30
+USE_MERGE = True
 
-TIMEFRAME_MIN = 5         # 5-minute candles
+# ---- Strategy 2: Consolidation Breakout ----
+CANDLE_CONFIRM_BARS = 4       # min. consecutive consolidating candles
+COMPRESSION_BODY_MAX = 0.5    # body must be < 50% of the candle's range
+COMPRESSION_ATR_LEN = 4
+BREAKOUT_TARGET_MULT = 2.0    # 1:2 risk:reward, same as the other strategy
 
-# ===== Secrets (set these as environment variables / GitHub Secrets) =====
+# ===== Secrets (set as environment variables / GitHub Secrets) =====
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 TWELVE_DATA_API_KEY = os.environ["TWELVE_DATA_API_KEY"]
@@ -41,20 +57,11 @@ STATE_FILE = "state.json"
 # Helper: drop the still-forming (not yet closed) candle
 # ---------------------------------------------------------------------------
 def drop_unclosed_candle(df, time_is_close_time):
-    """
-    Pine Script's alert(..., alert.freq_once_per_bar_close) only fires once a
-    candle is fully closed. If our fetched data's last row is still forming
-    (the live/open candle), we must drop it -- otherwise we'll generate
-    signals the indicator never actually shows, and they can flip or vanish
-    once the candle finally closes.
-    """
     now = datetime.now(timezone.utc)
     last_time = df.iloc[-1]["time"]
     if last_time.tzinfo is None:
         last_time = last_time.tz_localize("UTC")
-
     close_time = last_time if time_is_close_time else last_time + timedelta(minutes=TIMEFRAME_MIN)
-
     if close_time > now:
         return df.iloc[:-1].reset_index(drop=True)
     return df
@@ -63,14 +70,8 @@ def drop_unclosed_candle(df, time_is_close_time):
 # ---------------------------------------------------------------------------
 # Data fetchers
 # ---------------------------------------------------------------------------
-def fetch_btc_klines(limit=150):
-    """
-    Kraken's free public OHLC endpoint (no API key needed).
-    Note: Binance blocks requests coming from cloud/server IPs (GitHub Actions,
-    AWS, etc.) with an HTTP 451 error -- this is a Binance-side restriction,
-    not a bug in this script. Kraken does not apply that block, so it's a
-    more reliable choice when running from GitHub Actions.
-    """
+def fetch_btc_klines(limit=FETCH_LIMIT):
+    """Kraken's free public OHLC endpoint (no API key needed, not blocked on cloud IPs)."""
     url = "https://api.kraken.com/0/public/OHLC"
     params = {"pair": "XBTUSD", "interval": TIMEFRAME_MIN}
     r = requests.get(url, params=params, timeout=15)
@@ -85,16 +86,17 @@ def fetch_btc_klines(limit=150):
     df = pd.DataFrame(rows, columns=[
         "time", "open", "high", "low", "close", "vwap", "volume", "count"
     ])
+    df["open"] = df["open"].astype(float)
     df["close"] = df["close"].astype(float)
     df["high"] = df["high"].astype(float)
     df["low"] = df["low"].astype(float)
-    df["time"] = pd.to_datetime(df["time"], unit="s", utc=True)  # candle OPEN time
-    df = df[["time", "high", "low", "close"]]
+    df["time"] = pd.to_datetime(df["time"], unit="s", utc=True)
+    df = df[["time", "open", "high", "low", "close"]]
     return drop_unclosed_candle(df, time_is_close_time=False)
 
 
-def fetch_gold_klines(limit=150):
-    """Twelve Data free tier. Needs API key. ~8 requests/min, 800/day on free plan."""
+def fetch_gold_klines(limit=FETCH_LIMIT):
+    """Twelve Data free tier. Needs API key."""
     url = "https://api.twelvedata.com/time_series"
     params = {
         "symbol": "XAU/USD",
@@ -110,31 +112,21 @@ def fetch_gold_klines(limit=150):
         raise RuntimeError(f"Twelve Data error: {data}")
     df = pd.DataFrame(data["values"])
     df = df.rename(columns={"datetime": "time"})
+    df["open"] = df["open"].astype(float)
     df["close"] = df["close"].astype(float)
     df["high"] = df["high"].astype(float)
     df["low"] = df["low"].astype(float)
     df["time"] = pd.to_datetime(df["time"], utc=True)
-    df = df.sort_values("time").reset_index(drop=True)  # Twelve Data returns newest first
-    df = df[["time", "high", "low", "close"]]
+    df = df.sort_values("time").reset_index(drop=True)
+    df = df[["time", "open", "high", "low", "close"]]
     return drop_unclosed_candle(df, time_is_close_time=False)
 
 
 # ---------------------------------------------------------------------------
-# Indicator calculations (mirrors the Pine Script)
+# Shared indicator helpers
 # ---------------------------------------------------------------------------
 def ema(series, length):
     return series.ewm(span=length, adjust=False).mean()
-
-
-def rsi(series, length):
-    delta = series.diff()
-    gain = delta.clip(lower=0)
-    loss = -delta.clip(upper=0)
-    avg_gain = gain.ewm(alpha=1 / length, adjust=False).mean()
-    avg_loss = loss.ewm(alpha=1 / length, adjust=False).mean()
-    rs = avg_gain / avg_loss.replace(0, np.nan)
-    out = 100 - (100 / (1 + rs))
-    return out.fillna(100)
 
 
 def atr(df, length):
@@ -148,43 +140,233 @@ def atr(df, length):
     return tr.ewm(alpha=1 / length, adjust=False).mean()
 
 
-def compute_signal(df):
-    df = df.copy()
-    df["fastEMA"] = ema(df["close"], FAST_LEN)
-    df["slowEMA"] = ema(df["close"], SLOW_LEN)
-    df["rsi"] = rsi(df["close"], RSI_LEN)
-    df["atr"] = atr(df, ATR_LEN)
+# ---------------------------------------------------------------------------
+# Strategy 1: Black Shadow Trader (Range Filter + Scalper Pro, merged)
+# ---------------------------------------------------------------------------
+def compute_black_shadow_signal(df):
+    n = len(df)
+    min_bars = RF_PERIOD * 2 + CONS_LENGTH + PIVOT_LENGTH * 2 + 10
+    if n < min_bars:
+        return None, None, None, None, df.iloc[-1]["time"]
 
-    prev = df.iloc[-2]
-    last = df.iloc[-1]
+    close = df["close"].to_numpy()
+    high = df["high"].to_numpy()
+    low = df["low"].to_numpy()
+    open_ = df["open"].to_numpy()
 
-    bullish_cross = prev["fastEMA"] <= prev["slowEMA"] and last["fastEMA"] > last["slowEMA"]
-    bearish_cross = prev["fastEMA"] >= prev["slowEMA"] and last["fastEMA"] < last["slowEMA"]
+    # ----- Range Filter -----
+    src = close
+    diff = np.abs(np.diff(src, prepend=src[0]))
+    avrng = pd.Series(diff).ewm(span=RF_PERIOD, adjust=False).mean().to_numpy()
+    wper = RF_PERIOD * 2 - 1
+    smrng = pd.Series(avrng).ewm(span=wper, adjust=False).mean().to_numpy() * RF_MULT
 
-    rsi_ok = RSI_LOW < last["rsi"] < RSI_HIGH
-    buy_signal = bullish_cross and rsi_ok
-    sell_signal = bearish_cross and rsi_ok
+    filt = np.zeros(n)
+    filt[0] = src[0]
+    for i in range(1, n):
+        x, r, prev = src[i], smrng[i], filt[i - 1]
+        if x > prev:
+            filt[i] = prev if (x - r) < prev else (x - r)
+        else:
+            filt[i] = prev if (x + r) > prev else (x + r)
 
-    sl_distance = last["atr"] * ATR_MULT if USE_ATR else FIXED_SL
-    entry = last["close"]
+    upward = np.zeros(n)
+    downward = np.zeros(n)
+    for i in range(1, n):
+        if filt[i] > filt[i - 1]:
+            upward[i] = upward[i - 1] + 1
+            downward[i] = 0
+        elif filt[i] < filt[i - 1]:
+            downward[i] = downward[i - 1] + 1
+            upward[i] = 0
+        else:
+            upward[i] = upward[i - 1]
+            downward[i] = downward[i - 1]
 
-    if buy_signal:
-        tp = entry + sl_distance * RR_RATIO
-        sl = entry - sl_distance
-        return "BUY", entry, sl, tp, last["time"]
-    if sell_signal:
-        tp = entry - sl_distance * RR_RATIO
-        sl = entry + sl_distance
-        return "SELL", entry, sl, tp, last["time"]
-    return None, None, None, None, last["time"]
+    atr_vals = atr(df, ATR_LEN).to_numpy()
+
+    # ----- Pivot High/Low (confirmed with a lag, like Pine's ta.pivothigh/low) -----
+    L = PIVOT_LENGTH
+    last_pivot_high = np.full(n, np.nan)
+    last_pivot_low = np.full(n, np.nan)
+    cur_ph, cur_pl = np.nan, np.nan
+    for i in range(n):
+        c = i - L
+        if c - L >= 0:
+            window_high = high[c - L:c + L + 1]
+            window_low = low[c - L:c + L + 1]
+            if high[c] == window_high.max():
+                cur_ph = high[c]
+            if low[c] == window_low.min():
+                cur_pl = low[c]
+        last_pivot_high[i] = cur_ph
+        last_pivot_low[i] = cur_pl
+
+    # ----- Consolidation filter -----
+    past_high = pd.Series(high).shift(1).rolling(CONS_LENGTH).max().to_numpy()
+    past_low = pd.Series(low).shift(1).rolling(CONS_LENGTH).min().to_numpy()
+    zone_range = past_high - past_low
+    if USE_CONSOLIDATION:
+        is_consolidating = np.where(np.isnan(zone_range), True, zone_range <= atr_vals * CONS_ATR_MULT)
+    else:
+        is_consolidating = np.ones(n, dtype=bool)
+
+    # ----- Cooldown + breakout detection (replayed bar by bar) -----
+    last_trade_bar = None
+    triggered_action, triggered_entry, triggered_sl, triggered_tp, triggered_bar = (None,) * 5
+
+    for i in range(2 * L, n):
+        if np.isnan(last_pivot_high[i]) or np.isnan(last_pivot_low[i]):
+            continue
+        if np.isnan(last_pivot_high[i - 1]) or np.isnan(last_pivot_low[i - 1]):
+            continue
+
+        is_bull_candle = close[i] > open_[i]
+        is_bear_candle = close[i] < open_[i]
+
+        crossover_high = close[i - 1] <= last_pivot_high[i - 1] and close[i] > last_pivot_high[i]
+        crossunder_low = close[i - 1] >= last_pivot_low[i - 1] and close[i] < last_pivot_low[i]
+
+        can_enter = True
+        if USE_COOLDOWN:
+            can_enter = (last_trade_bar is None) or (i - last_trade_bar >= COOLDOWN_BARS)
+
+        bullish_breakout = (
+            is_bull_candle and crossover_high and (low[i] > last_pivot_low[i])
+            and is_consolidating[i] and can_enter
+        )
+        bearish_breakout = (
+            is_bear_candle and crossunder_low and (high[i] < last_pivot_high[i])
+            and is_consolidating[i] and can_enter
+        )
+
+        merged_bull = bullish_breakout and (not USE_MERGE or upward[i] > 0)
+        merged_bear = bearish_breakout and (not USE_MERGE or downward[i] > 0)
+
+        if merged_bull:
+            entry, stop = close[i], last_pivot_low[i]
+            risk = entry - stop
+            if risk > 0:
+                last_trade_bar = i
+                triggered_action = "BUY"
+                triggered_entry, triggered_sl = entry, stop
+                triggered_tp = entry + risk * TARGET_MULT
+                triggered_bar = i
+        elif merged_bear:
+            entry, stop = close[i], last_pivot_high[i]
+            risk = stop - entry
+            if risk > 0:
+                last_trade_bar = i
+                triggered_action = "SELL"
+                triggered_entry, triggered_sl = entry, stop
+                triggered_tp = entry - risk * TARGET_MULT
+                triggered_bar = i
+
+    candle_time = df.iloc[-1]["time"]
+    if triggered_action and triggered_bar == n - 1:
+        return triggered_action, triggered_entry, triggered_sl, triggered_tp, candle_time
+    return None, None, None, None, candle_time
+
+
+# ---------------------------------------------------------------------------
+# Strategy 2: Consolidation Breakout (Consolidation DNA, simplified)
+# ---------------------------------------------------------------------------
+def compute_consolidation_break_signal(df):
+    """
+    - A candle is 'compressing' if its body is < 50% of its range AND its
+      range is smaller than ATR(4) (matches the Pine script's compressionBar).
+    - Once >= CANDLE_CONFIRM_BARS consecutive compressing candles occur, the
+      box (highest high / lowest low of those candles) freezes as the
+      consolidation zone.
+    - We then wait for a candle to CLOSE outside that zone (a wick poking
+      out and closing back inside does NOT count -- 'Close Break' only).
+    - Entry = breakout candle's close. SL = the opposite side of the zone.
+      TP = 1:2 risk:reward.
+    """
+    n = len(df)
+    min_bars = COMPRESSION_ATR_LEN + CANDLE_CONFIRM_BARS + 5
+    if n < min_bars:
+        return None, None, None, None, df.iloc[-1]["time"]
+
+    close = df["close"].to_numpy()
+    high = df["high"].to_numpy()
+    low = df["low"].to_numpy()
+    open_ = df["open"].to_numpy()
+
+    atr4 = atr(df, COMPRESSION_ATR_LEN).to_numpy()
+
+    body = np.abs(close - open_)
+    rng = np.maximum(high - low, 1e-9)
+    small_body = body < (rng * COMPRESSION_BODY_MAX)
+    atr_compress = rng < atr4
+    compression_bar = small_body & atr_compress
+
+    cons_count = 0
+    cons_high = cons_low = None
+    mature = False
+    range_high = range_low = None
+
+    triggered_action, triggered_entry, triggered_sl, triggered_tp, triggered_bar = (None,) * 5
+
+    for i in range(n):
+        if not mature:
+            if compression_bar[i]:
+                cons_count += 1
+                if cons_high is None:
+                    cons_high, cons_low = high[i], low[i]
+                else:
+                    cons_high = max(cons_high, high[i])
+                    cons_low = min(cons_low, low[i])
+                if cons_count >= CANDLE_CONFIRM_BARS:
+                    mature = True
+                    range_high, range_low = cons_high, cons_low
+            else:
+                cons_count = 0
+                cons_high = cons_low = None
+        else:
+            # Mature: wait for a close outside the frozen range (close break only)
+            if close[i] > range_high:
+                entry = close[i]
+                sl = range_low
+                risk = entry - sl
+                if risk > 0:
+                    triggered_action = "BUY"
+                    triggered_entry, triggered_sl = entry, sl
+                    triggered_tp = entry + risk * BREAKOUT_TARGET_MULT
+                    triggered_bar = i
+                mature = False
+                cons_count = 0
+                cons_high = cons_low = None
+            elif close[i] < range_low:
+                entry = close[i]
+                sl = range_high
+                risk = sl - entry
+                if risk > 0:
+                    triggered_action = "SELL"
+                    triggered_entry, triggered_sl = entry, sl
+                    triggered_tp = entry - risk * BREAKOUT_TARGET_MULT
+                    triggered_bar = i
+                mature = False
+                cons_count = 0
+                cons_high = cons_low = None
+            # if the candle wicks outside but closes back inside the range,
+            # nothing happens here -- the range simply stays active (correct:
+            # a wick-only poke must NOT count as a break)
+
+    candle_time = df.iloc[-1]["time"]
+    if triggered_action and triggered_bar == n - 1:
+        return triggered_action, triggered_entry, triggered_sl, triggered_tp, candle_time
+    return None, None, None, None, candle_time
 
 
 # ---------------------------------------------------------------------------
 # Telegram
 # ---------------------------------------------------------------------------
-def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers):
+def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strategy_label):
+    """Sends the signal and returns {chat_id: message_id} for successful sends,
+    so the eventual SL/TP outcome can be sent as a reply to this exact message."""
     text = (
-        f"🔔 {action} Signal\n"
+        f"🔔 {action} Signal ({strategy_label})\n"
         f"Symbol: {symbol}\n"
         f"Entry: {entry:.2f}\n"
         f"SL: {sl:.2f}\n"
@@ -192,20 +374,54 @@ def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers):
         f"Time: {candle_time}"
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    message_ids = {}
     for chat_id in subscribers:
         try:
             resp = requests.post(url, data={"chat_id": chat_id, "text": text}, timeout=15)
             resp.raise_for_status()
+            message_ids[str(chat_id)] = resp.json()["result"]["message_id"]
         except Exception as e:
-            # Don't let one bad/blocked subscriber stop delivery to everyone else
             print(f"  -> Failed to send to {chat_id}: {e}")
+    return message_ids
+
+
+def send_outcome_telegram(symbol, strategy_label, action, entry, sl, tp, hit, subscribers, message_ids=None):
+    """Sends the SL/TP outcome as a reply to the original signal message
+    (falls back to a normal message if we don't have that message_id, e.g.
+    for a subscriber who joined after the signal was sent)."""
+    message_ids = message_ids or {}
+    if hit == "tp":
+        header = "✅ TARGET HIT (Profit)"
+        rr_text = "Result: +2R (hit TP)"
+    else:
+        header = "❌ STOP LOSS HIT (Loss)"
+        rr_text = "Result: -1R (hit SL)"
+    text = (
+        f"{header} ({strategy_label})\n"
+        f"Symbol: {symbol}\n"
+        f"Direction: {action}\n"
+        f"Entry: {entry:.2f}  SL: {sl:.2f}  TP: {tp:.2f}\n"
+        f"{rr_text}"
+    )
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    for chat_id in subscribers:
+        payload = {"chat_id": chat_id, "text": text}
+        reply_id = message_ids.get(str(chat_id))
+        if reply_id:
+            payload["reply_to_message_id"] = reply_id
+        try:
+            resp = requests.post(url, data=payload, timeout=15)
+            resp.raise_for_status()
+        except Exception as e:
+            print(f"  -> Failed to send outcome to {chat_id}: {e}")
 
 
 def send_welcome(chat_id):
     text = (
         "✅ You're subscribed!\n"
         "You'll now receive BUY/SELL signals (with Entry/SL/TP) for "
-        "BTCUSDT and XAU/USD automatically."
+        "BTCUSDT and XAU/USD automatically, plus a follow-up once each "
+        "trade hits its Stop Loss or Take Profit."
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     try:
@@ -248,7 +464,91 @@ def register_new_subscribers(state):
 
 
 # ---------------------------------------------------------------------------
-# State (avoid sending the same candle's signal twice)
+# Market activity checks
+# ---------------------------------------------------------------------------
+STALE_THRESHOLD_MIN = 20
+
+
+def is_market_stale(candle_time):
+    now = datetime.now(timezone.utc)
+    if candle_time.tzinfo is None:
+        candle_time = candle_time.tz_localize("UTC")
+    age_minutes = (now - candle_time).total_seconds() / 60
+    return age_minutes > STALE_THRESHOLD_MIN
+
+
+def is_flat_market(df, lookback=5, rel_epsilon=1e-5):
+    recent = df.tail(lookback)
+    price_level = recent["close"].iloc[-1]
+    avg_range = (recent["high"] - recent["low"]).mean()
+    return avg_range <= price_level * rel_epsilon
+
+
+# ---------------------------------------------------------------------------
+# Pending trade outcome tracking (did the last signal hit SL or TP?)
+# ---------------------------------------------------------------------------
+def check_pending_trades(name, df, state):
+    """
+    For every open (unresolved) signal on this symbol, scan every candle
+    since entry to see whether price touched SL or TP first. If both are
+    touched within the SAME candle, we can't know the true order from
+    OHLC alone -- as a conservative approximation we assume whichever
+    level is closer to that candle's open was hit first.
+    """
+    pending = state.setdefault("pending_trades", [])
+    if not pending:
+        return
+
+    still_pending = []
+    for trade in pending:
+        if trade["symbol"] != name:
+            still_pending.append(trade)
+            continue
+
+        entry_time = pd.to_datetime(trade["entry_time"], utc=True)
+        subset = df[df["time"] > entry_time]
+
+        resolved = False
+        for _, row in subset.iterrows():
+            hi, lo, op = row["high"], row["low"], row["open"]
+            action, sl, tp = trade["action"], trade["sl"], trade["tp"]
+
+            if action == "BUY":
+                hit_tp = hi >= tp
+                hit_sl = lo <= sl
+            else:  # SELL
+                hit_tp = lo <= tp
+                hit_sl = hi >= sl
+
+            if hit_tp and hit_sl:
+                # Both touched in the same candle -- approximate by
+                # whichever level is closer to that candle's open.
+                outcome = "tp" if abs(tp - op) < abs(sl - op) else "sl"
+            elif hit_tp:
+                outcome = "tp"
+            elif hit_sl:
+                outcome = "sl"
+            else:
+                continue
+
+            send_outcome_telegram(
+                name, trade["strategy_label"], action,
+                trade["entry"], sl, tp, outcome, state.get("subscribers", []),
+                trade.get("message_ids", {})
+            )
+            print(f"[{name}][{trade['strategy_label']}] Trade opened {trade['entry_time']} "
+                  f"resolved: {outcome.upper()}")
+            resolved = True
+            break
+
+        if not resolved:
+            still_pending.append(trade)
+
+    state["pending_trades"] = still_pending
+
+
+# ---------------------------------------------------------------------------
+# State
 # ---------------------------------------------------------------------------
 def load_state():
     if os.path.exists(STATE_FILE):
@@ -263,72 +563,68 @@ def save_state(state):
 
 
 # ---------------------------------------------------------------------------
-# Helper: check if data is stale (market closed / no fresh candles coming in)
-# ---------------------------------------------------------------------------
-STALE_THRESHOLD_MIN = 20  # if the latest closed candle is older than this, treat market as closed
-
-
-def is_market_stale(candle_time):
-    now = datetime.now(timezone.utc)
-    if candle_time.tzinfo is None:
-        candle_time = candle_time.tz_localize("UTC")
-    age_minutes = (now - candle_time).total_seconds() / 60
-    return age_minutes > STALE_THRESHOLD_MIN
-
-
-def is_flat_market(df, lookback=5, rel_epsilon=1e-5):
-    """
-    Some data providers keep emitting candles with fresh timestamps even
-    while a market is closed, by repeating the last known price (a 'flat'
-    candle with open == high == low == close, or near enough). Timestamp
-    freshness alone can't catch this, so instead check whether the recent
-    candles actually have any real price range. A genuinely open, liquid
-    market essentially never prints several near-zero-range bars in a row.
-    """
-    recent = df.tail(lookback)
-    price_level = recent["close"].iloc[-1]
-    avg_range = (recent["high"] - recent["low"]).mean()
-    return avg_range <= price_level * rel_epsilon
-
-
-# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+STRATEGIES = [
+    ("rf_scalper", "Range Filter + Scalper Pro", compute_black_shadow_signal),
+    ("consol", "Consolidation Breakout", compute_consolidation_break_signal),
+]
+
+
 def process_symbol(name, fetch_fn, state):
     try:
         df = fetch_fn()
-
-        if is_flat_market(df):
-            print(f"[{name}] Market appears closed/inactive (flat candles) -- skipping")
-            return
-
-        action, entry, sl, tp, candle_time = compute_signal(df)
-
-        if is_market_stale(candle_time):
-            print(f"[{name}] Market appears closed (last candle: {candle_time}) -- skipping")
-            return
-
-        candle_key = str(candle_time)
-
-        if action and state.get(name) != candle_key:
-            send_telegram(name, action, entry, sl, tp, candle_time, state.get("subscribers", []))
-            state[name] = candle_key
-            print(f"[{name}] Sent {action} signal at {candle_time} to {len(state.get('subscribers', []))} subscriber(s)")
-        else:
-            print(f"[{name}] No new signal (last candle: {candle_time})")
     except Exception as e:
-        print(f"[{name}] ERROR: {e}")
+        print(f"[{name}] ERROR fetching data: {e}")
+        return
+
+    if is_flat_market(df):
+        print(f"[{name}] Market appears closed/inactive (flat candles) -- skipping")
+        return
+
+    # First check if any previously-sent signal has now hit SL or TP
+    check_pending_trades(name, df, state)
+
+    for key_suffix, label, strategy_fn in STRATEGIES:
+        try:
+            action, entry, sl, tp, candle_time = strategy_fn(df)
+
+            if is_market_stale(candle_time):
+                print(f"[{name}][{label}] Market appears closed (last candle: {candle_time}) -- skipping")
+                continue
+
+            state_key = f"{name}_{key_suffix}"
+            candle_key = str(candle_time)
+
+            if action and state.get(state_key) != candle_key:
+                message_ids = send_telegram(name, action, entry, sl, tp, candle_time, state.get("subscribers", []), label)
+                state[state_key] = candle_key
+                state.setdefault("pending_trades", []).append({
+                    "symbol": name,
+                    "strategy_label": label,
+                    "action": action,
+                    "entry": entry,
+                    "sl": sl,
+                    "tp": tp,
+                    "entry_time": str(candle_time),
+                    "message_ids": message_ids,
+                })
+                print(f"[{name}][{label}] Sent {action} signal at {candle_time} "
+                      f"to {len(state.get('subscribers', []))} subscriber(s)")
+            else:
+                print(f"[{name}][{label}] No new signal (last candle: {candle_time})")
+        except Exception as e:
+            print(f"[{name}][{label}] ERROR: {e}")
 
 
 def main():
     state = load_state()
 
-    # Bootstrap: make sure the original/admin chat ID is always in the list
     subscribers = state.setdefault("subscribers", [])
     if TELEGRAM_CHAT_ID not in subscribers:
         subscribers.append(TELEGRAM_CHAT_ID)
 
-    register_new_subscribers(state)  # picks up anyone who sent /start since last run
+    register_new_subscribers(state)
 
     process_symbol("BTCUSDT", fetch_btc_klines, state)
     process_symbol("XAU/USD", fetch_gold_klines, state)
