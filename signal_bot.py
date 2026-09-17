@@ -23,7 +23,7 @@ import numpy as np
 from datetime import datetime, timezone, timedelta
 
 # ===== Shared config =====
-TIMEFRAME_MIN = 5
+TIMEFRAME_MIN = 3
 FETCH_LIMIT = 500  # generous warm-up window for the Range Filter's long EMA
 
 # ---- Strategy 1: Black Shadow Trader (Range Filter + Scalper Pro, merged) ----
@@ -67,13 +67,37 @@ def drop_unclosed_candle(df, time_is_close_time):
     return df
 
 
+def resample_ohlc(df_1m, minutes):
+    """
+    Neither Kraken nor Twelve Data offers a native 3-minute interval, so we
+    fetch 1-minute candles and combine every N of them into one N-minute
+    candle ourselves (open=first, high=max, low=min, close=last).
+    """
+    df_1m = df_1m.set_index("time")
+    agg = df_1m.resample(f"{minutes}min", label="left", closed="left").agg({
+        "open": "first",
+        "high": "max",
+        "low": "min",
+        "close": "last",
+    }).dropna().reset_index()
+    return agg
+
+
 # ---------------------------------------------------------------------------
 # Data fetchers
 # ---------------------------------------------------------------------------
 def fetch_btc_klines(limit=FETCH_LIMIT):
-    """Kraken's free public OHLC endpoint (no API key needed, not blocked on cloud IPs)."""
+    """
+    Kraken's free public OHLC endpoint (no API key needed, not blocked on
+    cloud IPs). Kraken only supports fixed intervals (1, 5, 15... minutes),
+    so we pull 1-minute candles and resample to TIMEFRAME_MIN ourselves.
+    Note: Kraken's OHLC endpoint only returns roughly the most recent ~720
+    one-minute candles (~12 hours) per call -- there is no free way to pull
+    deeper 1-minute history from them, so the resampled series will be
+    shorter than FETCH_LIMIT until Kraken's window naturally covers more.
+    """
     url = "https://api.kraken.com/0/public/OHLC"
-    params = {"pair": "XBTUSD", "interval": TIMEFRAME_MIN}
+    params = {"pair": "XBTUSD", "interval": 1}
     r = requests.get(url, params=params, timeout=15)
     r.raise_for_status()
     data = r.json()
@@ -81,7 +105,7 @@ def fetch_btc_klines(limit=FETCH_LIMIT):
         raise RuntimeError(f"Kraken error: {data['error']}")
 
     result_key = next(k for k in data["result"] if k != "last")
-    rows = data["result"][result_key][-limit:]
+    rows = data["result"][result_key]
 
     df = pd.DataFrame(rows, columns=[
         "time", "open", "high", "low", "close", "vwap", "volume", "count"
@@ -92,16 +116,23 @@ def fetch_btc_klines(limit=FETCH_LIMIT):
     df["low"] = df["low"].astype(float)
     df["time"] = pd.to_datetime(df["time"], unit="s", utc=True)
     df = df[["time", "open", "high", "low", "close"]]
+
+    df = resample_ohlc(df, TIMEFRAME_MIN)
+    df = df.tail(limit).reset_index(drop=True)
     return drop_unclosed_candle(df, time_is_close_time=False)
 
 
 def fetch_gold_klines(limit=FETCH_LIMIT):
-    """Twelve Data free tier. Needs API key."""
+    """
+    Twelve Data free tier. Needs API key. Twelve Data also has no native
+    3-minute interval, so we pull 1-minute candles and resample ourselves.
+    """
+    raw_needed = min(5000, limit * TIMEFRAME_MIN + 50)
     url = "https://api.twelvedata.com/time_series"
     params = {
         "symbol": "XAU/USD",
-        "interval": f"{TIMEFRAME_MIN}min",
-        "outputsize": limit,
+        "interval": "1min",
+        "outputsize": raw_needed,
         "apikey": TWELVE_DATA_API_KEY,
         "timezone": "UTC",
     }
@@ -119,6 +150,9 @@ def fetch_gold_klines(limit=FETCH_LIMIT):
     df["time"] = pd.to_datetime(df["time"], utc=True)
     df = df.sort_values("time").reset_index(drop=True)
     df = df[["time", "open", "high", "low", "close"]]
+
+    df = resample_ohlc(df, TIMEFRAME_MIN)
+    df = df.tail(limit).reset_index(drop=True)
     return drop_unclosed_candle(df, time_is_close_time=False)
 
 
