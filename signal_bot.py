@@ -419,17 +419,19 @@ def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strat
     return message_ids
 
 
-def send_outcome_telegram(symbol, strategy_label, action, entry, sl, tp, hit, subscribers, message_ids=None):
-    """Sends the SL/TP outcome as a reply to the original signal message
-    (falls back to a normal message if we don't have that message_id, e.g.
-    for a subscriber who joined after the signal was sent)."""
+def send_outcome_telegram(symbol, strategy_label, action, entry, sl, tp, outcome, subscribers, message_ids=None):
+    """Sends the trade outcome as a reply to the original signal message.
+    outcome is one of: 'win', 'breakeven', 'loss'."""
     message_ids = message_ids or {}
-    if hit == "tp":
-        header = "✅ TARGET HIT (Profit)"
-        rr_text = "Result: +2R (hit TP)"
+    if outcome == "win":
+        header = "✅ WIN (Target Hit)"
+        rr_text = "Result: +2R"
+    elif outcome == "breakeven":
+        header = "➖ BREAKEVEN"
+        rr_text = "Result: 0R (reached 1:1, then reversed back to SL)"
     else:
-        header = "❌ STOP LOSS HIT (Loss)"
-        rr_text = "Result: -1R (hit SL)"
+        header = "❌ LOSS (Stop Loss Hit)"
+        rr_text = "Result: -1R"
     text = (
         f"{header} ({strategy_label})\n"
         f"Symbol: {symbol}\n"
@@ -454,8 +456,8 @@ def send_welcome(chat_id):
     text = (
         "✅ You're subscribed!\n"
         "You'll now receive BUY/SELL signals (with Entry/SL/TP) for "
-        "BTCUSDT and XAU/USD automatically, plus a follow-up once each "
-        "trade hits its Stop Loss or Take Profit."
+        "BTCUSDT and XAU/USD automatically, a reply once each trade hits "
+        "Win/Breakeven/Loss, and daily, weekly, monthly & yearly performance reports."
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     try:
@@ -519,15 +521,42 @@ def is_flat_market(df, lookback=5, rel_epsilon=1e-5):
 
 
 # ---------------------------------------------------------------------------
-# Pending trade outcome tracking (did the last signal hit SL or TP?)
+# Pending trade outcome tracking (win / breakeven / loss)
 # ---------------------------------------------------------------------------
+def _events_in_candle(action, half_level, sl, tp, row):
+    """
+    Returns the levels touched within one candle, ordered by distance from
+    that candle's open (an approximation of which was likely touched
+    first -- OHLC data alone can't give us the true intra-candle order).
+    """
+    o, hi, lo = row["open"], row["high"], row["low"]
+    events = []
+    if action == "BUY":
+        if hi >= tp:
+            events.append(("tp", tp))
+        if lo <= sl:
+            events.append(("sl", sl))
+        if hi >= half_level:
+            events.append(("half", half_level))
+    else:  # SELL
+        if lo <= tp:
+            events.append(("tp", tp))
+        if hi >= sl:
+            events.append(("sl", sl))
+        if lo <= half_level:
+            events.append(("half", half_level))
+    events.sort(key=lambda e: abs(e[1] - o))
+    return events
+
+
 def check_pending_trades(name, df, state):
     """
-    For every open (unresolved) signal on this symbol, scan every candle
-    since entry to see whether price touched SL or TP first. If both are
-    touched within the SAME candle, we can't know the true order from
-    OHLC alone -- as a conservative approximation we assume whichever
-    level is closer to that candle's open was hit first.
+    For every open (unresolved) signal on this symbol, walk forward through
+    every candle since entry to classify the outcome:
+      - WIN: TP is reached.
+      - BREAKEVEN: price reaches the 1:1 level (entry + risk) at some point,
+        then comes back and hits SL before ever reaching TP.
+      - LOSS: SL is hit without price ever having reached the 1:1 level first.
     """
     pending = state.setdefault("pending_trades", [])
     if not pending:
@@ -539,46 +568,148 @@ def check_pending_trades(name, df, state):
             still_pending.append(trade)
             continue
 
+        action, sl, tp, entry = trade["action"], trade["sl"], trade["tp"], trade["entry"]
+        risk = abs(entry - sl)
+        half_level = entry + risk if action == "BUY" else entry - risk
+
         entry_time = pd.to_datetime(trade["entry_time"], utc=True)
         subset = df[df["time"] > entry_time]
 
-        resolved = False
+        reached_half = trade.get("reached_half", False)
+        outcome = None
+
         for _, row in subset.iterrows():
-            hi, lo, op = row["high"], row["low"], row["open"]
-            action, sl, tp = trade["action"], trade["sl"], trade["tp"]
+            for kind, _level in _events_in_candle(action, half_level, sl, tp, row):
+                if kind == "tp":
+                    outcome = "win"
+                    break
+                elif kind == "sl":
+                    outcome = "breakeven" if reached_half else "loss"
+                    break
+                elif kind == "half":
+                    reached_half = True
+            if outcome:
+                break
 
-            if action == "BUY":
-                hit_tp = hi >= tp
-                hit_sl = lo <= sl
-            else:  # SELL
-                hit_tp = lo <= tp
-                hit_sl = hi >= sl
-
-            if hit_tp and hit_sl:
-                # Both touched in the same candle -- approximate by
-                # whichever level is closer to that candle's open.
-                outcome = "tp" if abs(tp - op) < abs(sl - op) else "sl"
-            elif hit_tp:
-                outcome = "tp"
-            elif hit_sl:
-                outcome = "sl"
-            else:
-                continue
-
+        if outcome:
             send_outcome_telegram(
                 name, trade["strategy_label"], action,
                 trade["entry"], sl, tp, outcome, state.get("subscribers", []),
                 trade.get("message_ids", {})
             )
+            state.setdefault("trade_history", []).append({
+                "symbol": name,
+                "strategy_label": trade["strategy_label"],
+                "action": action,
+                "outcome": outcome,
+                "entry_time": trade["entry_time"],
+                "resolved_time": str(df.iloc[-1]["time"]),
+            })
             print(f"[{name}][{trade['strategy_label']}] Trade opened {trade['entry_time']} "
                   f"resolved: {outcome.upper()}")
-            resolved = True
-            break
-
-        if not resolved:
+        else:
+            trade["reached_half"] = reached_half
             still_pending.append(trade)
 
     state["pending_trades"] = still_pending
+
+
+# ---------------------------------------------------------------------------
+# Periodic performance reports (daily / weekly / monthly / yearly)
+# ---------------------------------------------------------------------------
+def build_report_text(title, trades):
+    if not trades:
+        return f"📊 {title}\nNo trades in this period."
+
+    lines = [f"📊 {title}"]
+    by_strategy = {}
+    for t in trades:
+        by_strategy.setdefault(t["strategy_label"], []).append(t)
+
+    def summarize(label, group):
+        total = len(group)
+        wins = sum(1 for t in group if t["outcome"] == "win")
+        breakevens = sum(1 for t in group if t["outcome"] == "breakeven")
+        losses = sum(1 for t in group if t["outcome"] == "loss")
+        win_rate = (wins / total * 100) if total else 0.0
+        return (
+            f"\n{label}\n"
+            f"Trades: {total} | Win: {wins} | Breakeven: {breakevens} | "
+            f"Loss: {losses} | Win Rate: {win_rate:.1f}%"
+        )
+
+    for label, group in by_strategy.items():
+        lines.append(summarize(label, group))
+
+    lines.append(summarize("Overall", trades))
+    return "\n".join(lines)
+
+
+def send_report_telegram(title, trades, subscribers):
+    text = build_report_text(title, trades)
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    for chat_id in subscribers:
+        try:
+            resp = requests.post(url, data={"chat_id": chat_id, "text": text}, timeout=15)
+            resp.raise_for_status()
+        except Exception as e:
+            print(f"  -> Failed to send report to {chat_id}: {e}")
+
+
+def _trades_in_range(history, start, end):
+    out = []
+    for t in history:
+        resolved = pd.to_datetime(t["resolved_time"], utc=True)
+        if start <= resolved < end:
+            out.append(t)
+    return out
+
+
+def check_and_send_periodic_reports(state):
+    history = state.get("trade_history", [])
+    now = datetime.now(timezone.utc)
+    subscribers = state.get("subscribers", [])
+
+    today = now.date()
+    if state.get("last_daily_report") != str(today):
+        if state.get("last_daily_report") is not None:  # skip the very first run
+            yesterday_start = datetime.combine(today - timedelta(days=1), datetime.min.time(), tzinfo=timezone.utc)
+            yesterday_end = datetime.combine(today, datetime.min.time(), tzinfo=timezone.utc)
+            trades = _trades_in_range(history, yesterday_start, yesterday_end)
+            send_report_telegram(f"Daily Report -- {yesterday_start.date()}", trades, subscribers)
+        state["last_daily_report"] = str(today)
+
+    iso_year, iso_week, _ = now.isocalendar()
+    week_key = f"{iso_year}-W{iso_week:02d}"
+    if state.get("last_weekly_report") != week_key:
+        if state.get("last_weekly_report") is not None:
+            this_week_start = datetime.combine(now.date() - timedelta(days=now.weekday()), datetime.min.time(), tzinfo=timezone.utc)
+            last_week_start = this_week_start - timedelta(days=7)
+            trades = _trades_in_range(history, last_week_start, this_week_start)
+            send_report_telegram(
+                f"Weekly Report -- {last_week_start.date()} to {(this_week_start - timedelta(days=1)).date()}",
+                trades, subscribers
+            )
+        state["last_weekly_report"] = week_key
+
+    month_key = f"{now.year}-{now.month:02d}"
+    if state.get("last_monthly_report") != month_key:
+        if state.get("last_monthly_report") is not None:
+            this_month_start = datetime(now.year, now.month, 1, tzinfo=timezone.utc)
+            last_month_end = this_month_start
+            last_month_start = (this_month_start - timedelta(days=1)).replace(day=1)
+            trades = _trades_in_range(history, last_month_start, last_month_end)
+            send_report_telegram(f"Monthly Report -- {last_month_start.strftime('%B %Y')}", trades, subscribers)
+        state["last_monthly_report"] = month_key
+
+    year_key = str(now.year)
+    if state.get("last_yearly_report") != year_key:
+        if state.get("last_yearly_report") is not None:
+            this_year_start = datetime(now.year, 1, 1, tzinfo=timezone.utc)
+            last_year_start = datetime(now.year - 1, 1, 1, tzinfo=timezone.utc)
+            trades = _trades_in_range(history, last_year_start, this_year_start)
+            send_report_telegram(f"Yearly Report -- {now.year - 1}", trades, subscribers)
+        state["last_yearly_report"] = year_key
 
 
 # ---------------------------------------------------------------------------
@@ -662,6 +793,9 @@ def main():
 
     process_symbol("BTCUSDT", fetch_btc_klines, state)
     process_symbol("XAU/USD", fetch_gold_klines, state)
+
+    check_and_send_periodic_reports(state)
+
     save_state(state)
 
 
