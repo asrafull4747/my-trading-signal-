@@ -670,6 +670,9 @@ def check_and_send_periodic_reports(state):
     now = datetime.now(timezone.utc)
     subscribers = state.get("subscribers", [])
 
+    # 10 PM Bangladesh time (UTC+6) = 16:00 UTC
+    REPORT_HOUR_UTC = 16
+
     today = now.date()
     if state.get("last_daily_report") != str(today):
         if state.get("last_daily_report") is not None:  # skip the very first run
@@ -679,27 +682,22 @@ def check_and_send_periodic_reports(state):
             send_report_telegram(f"Daily Report -- {yesterday_start.date()}", trades, subscribers)
         state["last_daily_report"] = str(today)
 
+    # ----- Weekly: fires Friday night (~10 PM BD time), covering Mon-Fri of this week -----
     iso_year, iso_week, _ = now.isocalendar()
     week_key = f"{iso_year}-W{iso_week:02d}"
-    if state.get("last_weekly_report") != week_key:
-        if state.get("last_weekly_report") is not None:
-            this_week_start = datetime.combine(now.date() - timedelta(days=now.weekday()), datetime.min.time(), tzinfo=timezone.utc)
-            last_week_start = this_week_start - timedelta(days=7)
-            trades = _trades_in_range(history, last_week_start, this_week_start)
-            send_report_telegram(
-                f"Weekly Report -- {last_week_start.date()} to {(this_week_start - timedelta(days=1)).date()}",
-                trades, subscribers
-            )
+    if now.weekday() == 4 and now.hour >= REPORT_HOUR_UTC and state.get("last_weekly_report") != week_key:
+        week_start = datetime.combine(now.date() - timedelta(days=now.weekday()), datetime.min.time(), tzinfo=timezone.utc)
+        trades = _trades_in_range(history, week_start, now)
+        send_report_telegram(f"Weekly Report -- {week_start.date()} to {now.date()}", trades, subscribers)
         state["last_weekly_report"] = week_key
 
+    # ----- Monthly: fires on the last calendar day of the month (~10 PM BD time) -----
+    is_last_day_of_month = (now.date() + timedelta(days=1)).month != now.month
     month_key = f"{now.year}-{now.month:02d}"
-    if state.get("last_monthly_report") != month_key:
-        if state.get("last_monthly_report") is not None:
-            this_month_start = datetime(now.year, now.month, 1, tzinfo=timezone.utc)
-            last_month_end = this_month_start
-            last_month_start = (this_month_start - timedelta(days=1)).replace(day=1)
-            trades = _trades_in_range(history, last_month_start, last_month_end)
-            send_report_telegram(f"Monthly Report -- {last_month_start.strftime('%B %Y')}", trades, subscribers)
+    if is_last_day_of_month and now.hour >= REPORT_HOUR_UTC and state.get("last_monthly_report") != month_key:
+        month_start = datetime(now.year, now.month, 1, tzinfo=timezone.utc)
+        trades = _trades_in_range(history, month_start, now)
+        send_report_telegram(f"Monthly Report -- {month_start.strftime('%B %Y')}", trades, subscribers)
         state["last_monthly_report"] = month_key
 
     year_key = str(now.year)
