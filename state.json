@@ -19,7 +19,7 @@
         "6338570227": 612,
         "7100834953": 613
       },
-      "reached_half": false
+      "reached_half": true
     },
     {
       "symbol": "BTCUSDT",
@@ -60,7 +60,8 @@
       "message_ids": {
         "6338570227": 638,
         "7100834953": 639
-      }
+      },
+      "reached_half": true
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-21 21:45:00+00:00",
