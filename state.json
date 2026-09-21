@@ -33,39 +33,24 @@
         "6338570227": 526,
         "7100834953": 527
       },
-      "reached_half": false
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4374.56606,
-      "sl": 4378.09203,
-      "tp": 4367.514120000001,
-      "entry_time": "2026-09-20 22:45:00+00:00",
-      "message_ids": {
-        "6338570227": 558,
-        "7100834953": 559
-      },
       "reached_half": true
     },
     {
-      "symbol": "XAU/USD",
+      "symbol": "BTCUSDT",
       "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4374.39282,
-      "sl": 4378.09203,
-      "tp": 4366.9944000000005,
-      "entry_time": "2026-09-20 23:00:00+00:00",
+      "action": "BUY",
+      "entry": 81309.6,
+      "sl": 81116.2,
+      "tp": 81696.40000000002,
+      "entry_time": "2026-09-21 00:00:00+00:00",
       "message_ids": {
-        "6338570227": 560,
-        "7100834953": 561
-      },
-      "reached_half": true
+        "6338570227": 564,
+        "7100834953": 565
+      }
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-20 23:00:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-09-20 21:00:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-09-21 00:00:00+00:00",
   "XAU/USD_consol": "2026-09-20 21:36:00+00:00",
   "BTCUSDT_consol": "2026-09-17 22:33:00+00:00",
   "last_daily_report": "2026-09-21",
@@ -160,6 +145,22 @@
       "outcome": "loss",
       "entry_time": "2026-09-20 21:00:00+00:00",
       "resolved_time": "2026-09-20 22:12:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "entry_time": "2026-09-20 22:45:00+00:00",
+      "resolved_time": "2026-09-21 00:00:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "entry_time": "2026-09-20 23:00:00+00:00",
+      "resolved_time": "2026-09-21 00:00:00+00:00"
     }
   ]
 }
