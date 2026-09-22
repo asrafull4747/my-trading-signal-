@@ -6,10 +6,24 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [],
+  "pending_trades": [
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "entry": 4339.84741,
+      "sl": 4335.19747,
+      "tp": 4349.147290000001,
+      "entry_time": "2026-09-22 17:06:00+00:00",
+      "message_ids": {
+        "6338570227": 710,
+        "7100834953": 711
+      }
+    }
+  ],
   "XAU/USD_rf_scalper": "2026-09-22 14:27:00+00:00",
   "BTCUSDT_rf_scalper": "2026-09-22 15:39:00+00:00",
-  "XAU/USD_consol": "2026-09-22 06:45:00+00:00",
+  "XAU/USD_consol": "2026-09-22 17:06:00+00:00",
   "BTCUSDT_consol": "2026-09-22 15:39:00+00:00",
   "last_daily_report": "2026-09-22",
   "last_weekly_report": "2026-W38",
