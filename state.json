@@ -20,20 +20,6 @@
         "7100834953": 733
       },
       "reached_half": false
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 86214.0,
-      "sl": 86350.0,
-      "tp": 85942.0,
-      "entry_time": "2026-09-22 21:24:00+00:00",
-      "message_ids": {
-        "6338570227": 736,
-        "7100834953": 737
-      },
-      "reached_half": true
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-22 21:39:00+00:00",
@@ -492,6 +478,14 @@
       "outcome": "loss",
       "entry_time": "2026-09-22 21:39:00+00:00",
       "resolved_time": "2026-09-22 22:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "breakeven",
+      "entry_time": "2026-09-22 21:24:00+00:00",
+      "resolved_time": "2026-09-22 23:06:00+00:00"
     }
   ]
 }
