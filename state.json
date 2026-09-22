@@ -6,8 +6,22 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [],
-  "XAU/USD_rf_scalper": "2026-09-22 06:54:00+00:00",
+  "pending_trades": [
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 4294.9433,
+      "sl": 4312.3895,
+      "tp": 4260.050899999999,
+      "entry_time": "2026-09-22 08:30:00+00:00",
+      "message_ids": {
+        "6338570227": 686,
+        "7100834953": 687
+      }
+    }
+  ],
+  "XAU/USD_rf_scalper": "2026-09-22 08:30:00+00:00",
   "BTCUSDT_rf_scalper": "2026-09-22 07:21:00+00:00",
   "XAU/USD_consol": "2026-09-22 06:45:00+00:00",
   "BTCUSDT_consol": "2026-09-21 18:24:00+00:00",
