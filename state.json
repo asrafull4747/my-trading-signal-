@@ -6,11 +6,38 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [],
+  "pending_trades": [
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "entry": 86408.8,
+      "sl": 86109.5,
+      "tp": 87007.40000000001,
+      "entry_time": "2026-09-22 15:39:00+00:00",
+      "message_ids": {
+        "6338570227": 702,
+        "7100834953": 703
+      }
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "entry": 86408.8,
+      "sl": 86250.0,
+      "tp": 86726.40000000001,
+      "entry_time": "2026-09-22 15:39:00+00:00",
+      "message_ids": {
+        "6338570227": 704,
+        "7100834953": 705
+      }
+    }
+  ],
   "XAU/USD_rf_scalper": "2026-09-22 14:27:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-09-22 13:00:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-09-22 15:39:00+00:00",
   "XAU/USD_consol": "2026-09-22 06:45:00+00:00",
-  "BTCUSDT_consol": "2026-09-21 18:24:00+00:00",
+  "BTCUSDT_consol": "2026-09-22 15:39:00+00:00",
   "last_daily_report": "2026-09-22",
   "last_weekly_report": "2026-W38",
   "last_monthly_report": "2026-09",
