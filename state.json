@@ -6,9 +6,23 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [],
+  "pending_trades": [
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 85229.3,
+      "sl": 85485.9,
+      "tp": 84716.10000000002,
+      "entry_time": "2026-09-22 07:21:00+00:00",
+      "message_ids": {
+        "6338570227": 682,
+        "7100834953": 683
+      }
+    }
+  ],
   "XAU/USD_rf_scalper": "2026-09-22 06:54:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-09-22 05:15:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-09-22 07:21:00+00:00",
   "XAU/USD_consol": "2026-09-22 06:45:00+00:00",
   "BTCUSDT_consol": "2026-09-21 18:24:00+00:00",
   "last_daily_report": "2026-09-22",
