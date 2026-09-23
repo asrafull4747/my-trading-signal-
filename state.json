@@ -19,7 +19,7 @@
         "6338570227": 788,
         "7100834953": 789
       },
-      "reached_half": false
+      "reached_half": true
     },
     {
       "symbol": "BTCUSDT",
@@ -33,7 +33,7 @@
         "6338570227": 790,
         "7100834953": 791
       },
-      "reached_half": false
+      "reached_half": true
     },
     {
       "symbol": "XAU/USD",
