@@ -9,20 +9,6 @@
   "pending_trades": [
     {
       "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 86588.7,
-      "sl": 86419.2,
-      "tp": 86927.7,
-      "entry_time": "2026-09-23 01:00:00+00:00",
-      "message_ids": {
-        "6338570227": 750,
-        "7100834953": 751
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "BTCUSDT",
       "strategy_label": "Consolidation Breakout",
       "action": "SELL",
       "entry": 86584.4,
@@ -33,7 +19,7 @@
         "6338570227": 756,
         "7100834953": 757
       },
-      "reached_half": false
+      "reached_half": true
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-23 01:00:00+00:00",
@@ -524,6 +510,14 @@
       "outcome": "win",
       "entry_time": "2026-09-23 01:00:00+00:00",
       "resolved_time": "2026-09-23 01:33:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "breakeven",
+      "entry_time": "2026-09-23 01:00:00+00:00",
+      "resolved_time": "2026-09-23 01:36:00+00:00"
     }
   ]
 }
