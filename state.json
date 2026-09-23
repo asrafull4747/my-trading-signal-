@@ -20,20 +20,6 @@
         "7100834953": 817
       },
       "reached_half": false
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4278.41926,
-      "sl": 4286.1429,
-      "tp": 4262.971979999999,
-      "entry_time": "2026-09-23 17:12:00+00:00",
-      "message_ids": {
-        "6338570227": 818,
-        "7100834953": 819
-      },
-      "reached_half": false
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-23 17:12:00+00:00",
@@ -644,6 +630,14 @@
       "outcome": "win",
       "entry_time": "2026-09-23 05:48:00+00:00",
       "resolved_time": "2026-09-23 14:09:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "entry_time": "2026-09-23 17:12:00+00:00",
+      "resolved_time": "2026-09-23 17:42:00+00:00"
     }
   ]
 }
