@@ -62,12 +62,25 @@
         "7100834953": 881
       },
       "reached_half": false
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "entry": 84112.2,
+      "sl": 84208.8,
+      "tp": 83918.99999999999,
+      "entry_time": "2026-09-24 06:45:00+00:00",
+      "message_ids": {
+        "6338570227": 882,
+        "7100834953": 883
+      }
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-24 06:36:00+00:00",
   "BTCUSDT_rf_scalper": "2026-09-24 04:54:00+00:00",
   "XAU/USD_consol": "2026-09-23 10:48:00+00:00",
-  "BTCUSDT_consol": "2026-09-24 05:54:00+00:00",
+  "BTCUSDT_consol": "2026-09-24 06:45:00+00:00",
   "last_daily_report": "2026-09-24",
   "last_weekly_report": "2026-W38",
   "last_monthly_report": "2026-09",
