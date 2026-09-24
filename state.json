@@ -19,20 +19,7 @@
         "6338570227": 958,
         "7100834953": 959
       },
-      "reached_half": false
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 4278.81633,
-      "sl": 4278.41096,
-      "tp": 4279.627069999999,
-      "entry_time": "2026-09-24 21:57:00+00:00",
-      "message_ids": {
-        "6338570227": 960,
-        "7100834953": 961
-      }
+      "reached_half": true
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-24 15:51:00+00:00",
@@ -923,6 +910,14 @@
       "outcome": "loss",
       "entry_time": "2026-09-24 21:45:00+00:00",
       "resolved_time": "2026-09-24 21:51:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "loss",
+      "entry_time": "2026-09-24 21:57:00+00:00",
+      "resolved_time": "2026-09-24 22:00:00+00:00"
     }
   ]
 }
