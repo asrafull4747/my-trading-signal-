@@ -25,20 +25,6 @@
       "symbol": "XAU/USD",
       "strategy_label": "Consolidation Breakout",
       "action": "SELL",
-      "entry": 4276.27041,
-      "sl": 4279.3947,
-      "tp": 4270.021830000001,
-      "entry_time": "2026-09-24 13:30:00+00:00",
-      "message_ids": {
-        "6338570227": 916,
-        "7100834953": 917
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
       "entry": 4272.69346,
       "sl": 4279.3947,
       "tp": 4259.290980000002,
@@ -850,6 +836,14 @@
       "outcome": "win",
       "entry_time": "2026-09-24 10:39:00+00:00",
       "resolved_time": "2026-09-24 13:18:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "win",
+      "entry_time": "2026-09-24 13:30:00+00:00",
+      "resolved_time": "2026-09-24 13:39:00+00:00"
     }
   ]
 }
