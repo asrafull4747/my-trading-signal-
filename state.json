@@ -34,48 +34,6 @@
         "7100834953": 875
       },
       "reached_half": true
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 84091.2,
-      "sl": 84230.3,
-      "tp": 83812.99999999999,
-      "entry_time": "2026-09-24 05:54:00+00:00",
-      "message_ids": {
-        "6338570227": 878,
-        "7100834953": 879
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 84112.2,
-      "sl": 84208.8,
-      "tp": 83918.99999999999,
-      "entry_time": "2026-09-24 06:45:00+00:00",
-      "message_ids": {
-        "6338570227": 882,
-        "7100834953": 883
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 83958.3,
-      "sl": 84211.2,
-      "tp": 83452.50000000001,
-      "entry_time": "2026-09-24 07:00:00+00:00",
-      "message_ids": {
-        "6338570227": 884,
-        "7100834953": 885
-      },
-      "reached_half": false
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-24 06:36:00+00:00",
@@ -806,6 +764,30 @@
       "outcome": "loss",
       "entry_time": "2026-09-24 06:36:00+00:00",
       "resolved_time": "2026-09-24 07:15:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "breakeven",
+      "entry_time": "2026-09-24 05:54:00+00:00",
+      "resolved_time": "2026-09-24 07:24:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "breakeven",
+      "entry_time": "2026-09-24 06:45:00+00:00",
+      "resolved_time": "2026-09-24 07:24:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "entry_time": "2026-09-24 07:00:00+00:00",
+      "resolved_time": "2026-09-24 07:24:00+00:00"
     }
   ]
 }
