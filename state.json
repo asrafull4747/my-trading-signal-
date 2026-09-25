@@ -8,34 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 4277.40025,
-      "sl": 4265.66566,
-      "tp": 4300.86943,
-      "entry_time": "2026-09-25 06:15:00+00:00",
-      "message_ids": {
-        "6338570227": 992,
-        "7100834953": 993
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 4283.50614,
-      "sl": 4275.33134,
-      "tp": 4299.855740000002,
-      "entry_time": "2026-09-25 08:15:00+00:00",
-      "message_ids": {
-        "6338570227": 1002,
-        "7100834953": 1003
-      },
-      "reached_half": true
-    },
-    {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "BUY",
@@ -60,7 +32,8 @@
       "message_ids": {
         "6338570227": 1006,
         "7100834953": 1007
-      }
+      },
+      "reached_half": false
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-25 10:06:00+00:00",
@@ -1031,6 +1004,22 @@
       "outcome": "loss",
       "entry_time": "2026-09-25 08:03:00+00:00",
       "resolved_time": "2026-09-25 08:12:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "win",
+      "entry_time": "2026-09-25 06:15:00+00:00",
+      "resolved_time": "2026-09-25 10:09:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "win",
+      "entry_time": "2026-09-25 08:15:00+00:00",
+      "resolved_time": "2026-09-25 10:09:00+00:00"
     }
   ]
 }
