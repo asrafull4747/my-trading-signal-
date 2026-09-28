@@ -45,6 +45,12 @@ COMPRESSION_BODY_MAX = 0.5    # body must be < 50% of the candle's range
 COMPRESSION_ATR_LEN = 4
 BREAKOUT_TARGET_MULT = 2.0    # 1:2 risk:reward, same as the other strategy
 
+# ---- Exit rule & reporting ----
+EMA_FAST = 9                  # exit when EMA(fast) crosses EMA(slow) against the trade
+EMA_SLOW = 21
+PIP_SIZE = {"XAU/USD": 0.1, "BTCUSDT": 1.0}  # price move counted as 1 pip (adjust if yours differs)
+RISK_PER_TRADE_USD = 10.0     # $ risked per trade (= 1R); only used to show $ in reports
+
 # ===== Secrets (set as environment variables / GitHub Secrets) =====
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
@@ -398,13 +404,15 @@ def compute_consolidation_break_signal(df):
 # ---------------------------------------------------------------------------
 def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strategy_label):
     """Sends the signal and returns {chat_id: message_id} for successful sends,
-    so the eventual SL/TP outcome can be sent as a reply to this exact message."""
+    so the close message can later be sent as a reply to this exact message.
+    There is no fixed TP any more: the exit comes from an EMA cross (see
+    check_pending_trades), so only Entry and SL are shown."""
     text = (
         f"🔔 {action} Signal ({strategy_label})\n"
         f"Symbol: {symbol}\n"
         f"Entry: {entry:.2f}\n"
         f"SL: {sl:.2f}\n"
-        f"TP: {tp:.2f}\n"
+        f"Exit: EMA {EMA_FAST}/{EMA_SLOW} cross (I'll reply here when to close)\n"
         f"Time: {candle_time}"
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -419,26 +427,38 @@ def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strat
     return message_ids
 
 
-def send_outcome_telegram(symbol, strategy_label, action, entry, sl, tp, outcome, subscribers, message_ids=None):
-    """Sends the trade outcome as a reply to the original signal message.
-    outcome is one of: 'win', 'breakeven', 'loss'."""
+def send_outcome_telegram(symbol, strategy_label, action, entry, exit_price, sl,
+                          outcome, reason, r, pips, subscribers, message_ids=None):
+    """Replies to the original signal message.
+    reason='ema'  -> 'CLOSE NOW' message with the result in R and pips.
+    reason='sl'   -> stop loss hit (or breakeven if price had reached 1:1 first)."""
     message_ids = message_ids or {}
-    if outcome == "win":
-        header = "✅ WIN (Target Hit)"
-        rr_text = "Result: +2R"
+    result_line = f"Result: {r:+.2f}R | {pips:+.1f} pips"
+    if reason == "ema":
+        tag = {"win": "✅ WIN", "loss": "❌ LOSS"}.get(outcome, "➖ BREAKEVEN")
+        text = (
+            f"🔔 CLOSE NOW - EMA {EMA_FAST}/{EMA_SLOW} crossed ({strategy_label})\n"
+            f"Symbol: {symbol}\n"
+            f"Direction: {action}\n"
+            f"Entry: {entry:.2f} -> Exit: {exit_price:.2f}\n"
+            f"{result_line} ({tag})"
+        )
     elif outcome == "breakeven":
-        header = "➖ BREAKEVEN"
-        rr_text = "Result: 0R (reached 1:1, then reversed back to SL)"
+        text = (
+            f"➖ BREAKEVEN - stopped out after reaching 1:1 ({strategy_label})\n"
+            f"Symbol: {symbol}\n"
+            f"Direction: {action}\n"
+            f"Entry: {entry:.2f}  SL: {sl:.2f}\n"
+            f"{result_line}"
+        )
     else:
-        header = "❌ LOSS (Stop Loss Hit)"
-        rr_text = "Result: -1R"
-    text = (
-        f"{header} ({strategy_label})\n"
-        f"Symbol: {symbol}\n"
-        f"Direction: {action}\n"
-        f"Entry: {entry:.2f}  SL: {sl:.2f}  TP: {tp:.2f}\n"
-        f"{rr_text}"
-    )
+        text = (
+            f"❌ STOP LOSS HIT ({strategy_label})\n"
+            f"Symbol: {symbol}\n"
+            f"Direction: {action}\n"
+            f"Entry: {entry:.2f}  SL: {sl:.2f}\n"
+            f"{result_line}"
+        )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     for chat_id in subscribers:
         payload = {"chat_id": chat_id, "text": text}
@@ -455,9 +475,10 @@ def send_outcome_telegram(symbol, strategy_label, action, entry, sl, tp, outcome
 def send_welcome(chat_id):
     text = (
         "✅ You're subscribed!\n"
-        "You'll now receive BUY/SELL signals (with Entry/SL/TP) for "
-        "BTCUSDT and XAU/USD automatically, a reply once each trade hits "
-        "Win/Breakeven/Loss, and daily, weekly, monthly & yearly performance reports."
+        "You'll receive BUY/SELL signals (Entry + SL) for BTCUSDT and XAU/USD. "
+        f"When the EMA {EMA_FAST}/{EMA_SLOW} crosses against a trade, I'll reply to that "
+        "signal telling you to close it, with the result in R and pips. "
+        "You'll also get daily, weekly, monthly & yearly performance reports."
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     try:
@@ -523,24 +544,20 @@ def is_flat_market(df, lookback=5, rel_epsilon=1e-5):
 # ---------------------------------------------------------------------------
 # Pending trade outcome tracking (win / breakeven / loss)
 # ---------------------------------------------------------------------------
-def _events_in_candle(action, half_level, sl, tp, row):
+def _events_in_candle(action, half_level, sl, row):
     """
-    Returns the levels touched within one candle, ordered by distance from
-    that candle's open (an approximation of which was likely touched
-    first -- OHLC data alone can't give us the true intra-candle order).
+    Levels touched inside one candle (the stop, and the 1:1 level used for the
+    breakeven rule), ordered by distance from the candle's open -- an
+    approximation of which came first, since OHLC alone can't tell us.
     """
     o, hi, lo = row["open"], row["high"], row["low"]
     events = []
     if action == "BUY":
-        if hi >= tp:
-            events.append(("tp", tp))
         if lo <= sl:
             events.append(("sl", sl))
         if hi >= half_level:
             events.append(("half", half_level))
     else:  # SELL
-        if lo <= tp:
-            events.append(("tp", tp))
         if hi >= sl:
             events.append(("sl", sl))
         if lo <= half_level:
@@ -551,16 +568,20 @@ def _events_in_candle(action, half_level, sl, tp, row):
 
 def check_pending_trades(name, df, state):
     """
-    For every open (unresolved) signal on this symbol, walk forward through
-    every candle since entry to classify the outcome:
-      - WIN: TP is reached.
-      - BREAKEVEN: price reaches the 1:1 level (entry + risk) at some point,
-        then comes back and hits SL before ever reaching TP.
-      - LOSS: SL is hit without price ever having reached the 1:1 level first.
+    Walk forward through every candle after each open signal:
+      - Stop hit: LOSS (-1R), or BREAKEVEN (0R) if price had already reached
+        the 1:1 level (entry +/- risk) before coming back to the stop.
+      - Otherwise, when EMA(fast) crosses EMA(slow) AGAINST the trade at a
+        candle close, tell the subscribers to close now. Result is measured
+        in R (profit / risk) and pips from entry to that candle's close.
     """
     pending = state.setdefault("pending_trades", [])
     if not pending:
         return
+
+    ema_fast = ema(df["close"], EMA_FAST).to_numpy()
+    ema_slow = ema(df["close"], EMA_SLOW).to_numpy()
+    times = df["time"].tolist()
 
     still_pending = []
     for trade in pending:
@@ -568,48 +589,76 @@ def check_pending_trades(name, df, state):
             still_pending.append(trade)
             continue
 
-        action, sl, tp, entry = trade["action"], trade["sl"], trade["tp"], trade["entry"]
+        action, sl, entry = trade["action"], trade["sl"], trade["entry"]
         risk = abs(entry - sl)
+        if risk <= 0:
+            continue  # invalid record, drop it
         half_level = entry + risk if action == "BUY" else entry - risk
-
         entry_time = pd.to_datetime(trade["entry_time"], utc=True)
-        subset = df[df["time"] > entry_time]
 
         reached_half = trade.get("reached_half", False)
-        outcome = None
+        reason = outcome = exit_price = exit_time = None
 
-        for _, row in subset.iterrows():
-            for kind, _level in _events_in_candle(action, half_level, sl, tp, row):
-                if kind == "tp":
-                    outcome = "win"
-                    break
+        for i in range(1, len(df)):
+            if times[i] <= entry_time:
+                continue
+            row = df.iloc[i]
+
+            for kind, _level in _events_in_candle(action, half_level, sl, row):
+                if kind == "half":
+                    reached_half = True
                 elif kind == "sl":
+                    reason = "sl"
+                    exit_price = sl
                     outcome = "breakeven" if reached_half else "loss"
                     break
-                elif kind == "half":
-                    reached_half = True
-            if outcome:
+            if reason:
+                exit_time = times[i]
                 break
 
-        if outcome:
-            send_outcome_telegram(
-                name, trade["strategy_label"], action,
-                trade["entry"], sl, tp, outcome, state.get("subscribers", []),
-                trade.get("message_ids", {})
-            )
-            state.setdefault("trade_history", []).append({
-                "symbol": name,
-                "strategy_label": trade["strategy_label"],
-                "action": action,
-                "outcome": outcome,
-                "entry_time": trade["entry_time"],
-                "resolved_time": str(df.iloc[-1]["time"]),
-            })
-            print(f"[{name}][{trade['strategy_label']}] Trade opened {trade['entry_time']} "
-                  f"resolved: {outcome.upper()}")
-        else:
+            if action == "BUY":
+                crossed = ema_fast[i - 1] >= ema_slow[i - 1] and ema_fast[i] < ema_slow[i]
+            else:
+                crossed = ema_fast[i - 1] <= ema_slow[i - 1] and ema_fast[i] > ema_slow[i]
+            if crossed:
+                reason = "ema"
+                exit_price = float(row["close"])
+                exit_time = times[i]
+                break
+
+        if reason is None:
             trade["reached_half"] = reached_half
             still_pending.append(trade)
+            continue
+
+        if reason == "sl":
+            r = 0.0 if outcome == "breakeven" else -1.0
+        else:
+            move = (exit_price - entry) if action == "BUY" else (entry - exit_price)
+            r = move / risk
+            outcome = "win" if r > 0 else "loss" if r < 0 else "breakeven"
+        pips = r * risk / _pip_size(name)
+
+        send_outcome_telegram(
+            name, trade["strategy_label"], action, entry, exit_price, sl,
+            outcome, reason, r, pips, state.get("subscribers", []),
+            trade.get("message_ids", {})
+        )
+        state.setdefault("trade_history", []).append({
+            "symbol": name,
+            "strategy_label": trade["strategy_label"],
+            "action": action,
+            "outcome": outcome,
+            "reason": reason,
+            "entry": entry,
+            "exit": exit_price,
+            "r": round(r, 4),
+            "pips": round(pips, 2),
+            "entry_time": trade["entry_time"],
+            "resolved_time": str(exit_time),
+        })
+        print(f"[{name}][{trade['strategy_label']}] Trade opened {trade['entry_time']} "
+              f"closed via {reason.upper()}: {outcome.upper()} ({r:+.2f}R, {pips:+.1f} pips)")
 
     state["pending_trades"] = still_pending
 
@@ -621,28 +670,88 @@ def build_report_text(title, trades):
     if not trades:
         return f"📊 {title}\nNo trades in this period."
 
-    lines = [f"📊 {title}"]
-    by_strategy = {}
-    for t in trades:
-        by_strategy.setdefault(t["strategy_label"], []).append(t)
+    sep = "━━━━━━━━━━━━━━━━"
+    symbols = sorted({t["symbol"] for t in trades})
+    strategies = sorted({t["strategy_label"] for t in trades})
+    count_line = " | ".join(
+        f"{sym}: {sum(1 for t in trades if t['symbol'] == sym)}" for sym in symbols
+    )
 
-    def summarize(label, group):
-        total = len(group)
-        wins = sum(1 for t in group if t["outcome"] == "win")
-        breakevens = sum(1 for t in group if t["outcome"] == "breakeven")
-        losses = sum(1 for t in group if t["outcome"] == "loss")
-        win_rate = (wins / total * 100) if total else 0.0
-        return (
-            f"\n{label}\n"
-            f"Trades: {total} | Win: {wins} | Breakeven: {breakevens} | "
-            f"Loss: {losses} | Win Rate: {win_rate:.1f}%"
-        )
+    parts = [
+        f"📊 {title}",
+        sep,
+        f"Trades by symbol: {count_line} | Total: {len(trades)}",
+        "",
+        _format_block("📌 Overall", trades),
+    ]
+    for sym in symbols:
+        icon = "🥇" if "XAU" in sym else "🪙"
+        parts += ["", sep, _format_block(f"{icon} {sym}", [t for t in trades if t["symbol"] == sym])]
+    for label in strategies:
+        parts += ["", sep, _format_block(f"🎯 {label}", [t for t in trades if t["strategy_label"] == label])]
+    parts += ["", f"ℹ️ $ values assume ${RISK_PER_TRADE_USD:.0f} risked per trade (1R)."]
+    return "\n".join(parts)
 
-    for label, group in by_strategy.items():
-        lines.append(summarize(label, group))
 
-    lines.append(summarize("Overall", trades))
-    return "\n".join(lines)
+def _pip_size(symbol):
+    return PIP_SIZE.get(symbol, 1.0)
+
+
+def _usd(r):
+    v = r * RISK_PER_TRADE_USD
+    return f"{'+' if v >= 0 else '-'}${abs(v):.2f}"
+
+
+def _stats(group):
+    total = len(group)
+    wins = sum(1 for t in group if t["outcome"] == "win")
+    breakevens = sum(1 for t in group if t["outcome"] == "breakeven")
+    losses = sum(1 for t in group if t["outcome"] == "loss")
+
+    rated = [t for t in group if t.get("r") is not None]
+    rs = [t["r"] for t in rated]
+    pips = [(t.get("pips") or 0.0) for t in rated]
+    pos = [x for x in rs if x > 0]
+    neg = [x for x in rs if x < 0]
+
+    gross_profit = sum(pos)
+    gross_loss = -sum(neg)
+    avg_win = (sum(pos) / len(pos)) if pos else None
+    avg_loss = (sum(neg) / len(neg)) if neg else None
+    if gross_loss > 0:
+        profit_factor = gross_profit / gross_loss
+    elif gross_profit > 0:
+        profit_factor = float("inf")
+    else:
+        profit_factor = None
+    avg_rr = (avg_win / abs(avg_loss)) if (avg_win is not None and avg_loss is not None) else None
+
+    return {
+        "total": total, "wins": wins, "breakevens": breakevens, "losses": losses,
+        "win_rate": (wins / total * 100) if total else 0.0,
+        "avg_win": avg_win, "avg_loss": avg_loss, "avg_rr": avg_rr,
+        "profit_factor": profit_factor,
+        "net_r": sum(rs), "net_pips": sum(pips),
+    }
+
+
+def _format_block(title, group):
+    s = _stats(group)
+    pf = s["profit_factor"]
+    pf_text = "N/A" if pf is None else ("∞" if pf == float("inf") else f"{pf:.2f}")
+    rr_text = f"1 : {s['avg_rr']:.2f}" if s["avg_rr"] is not None else "N/A"
+    win_text = f"{s['avg_win']:+.2f}R ({_usd(s['avg_win'])})" if s["avg_win"] is not None else "N/A"
+    loss_text = f"{s['avg_loss']:+.2f}R ({_usd(s['avg_loss'])})" if s["avg_loss"] is not None else "N/A"
+    return "\n".join([
+        title,
+        f"Trades: {s['total']}  (✅ {s['wins']} | ➖ {s['breakevens']} | ❌ {s['losses']})",
+        f"Win Rate: {s['win_rate']:.1f}%",
+        f"Avg R:R: {rr_text}",
+        f"Profit Factor: {pf_text}",
+        f"Avg Win: {win_text}",
+        f"Avg Loss: {loss_text}",
+        f"Net: {s['net_r']:+.2f}R ({_usd(s['net_r'])}) | {s['net_pips']:+.1f} pips",
+    ])
 
 
 def send_report_telegram(title, trades, subscribers):
@@ -768,7 +877,6 @@ def process_symbol(name, fetch_fn, state):
                     "action": action,
                     "entry": entry,
                     "sl": sl,
-                    "tp": tp,
                     "entry_time": str(candle_time),
                     "message_ids": message_ids,
                 })
