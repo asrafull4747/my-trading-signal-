@@ -19,7 +19,7 @@
         "6338570227": 1140,
         "7100834953": 1141
       },
-      "reached_half": false
+      "reached_half": true
     },
     {
       "symbol": "BTCUSDT",
@@ -47,7 +47,7 @@
         "6338570227": 1144,
         "7100834953": 1145
       },
-      "reached_half": false
+      "reached_half": true
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-28 03:21:00+00:00",
