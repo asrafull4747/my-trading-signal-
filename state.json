@@ -8,19 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 83705.5,
-      "sl": 84021.1,
-      "entry_time": "2026-09-28 19:06:00+00:00",
-      "message_ids": {
-        "6338570227": 1208,
-        "7100834953": 1209
-      },
-      "reached_half": true
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
@@ -32,10 +19,22 @@
         "7100834953": 1211
       },
       "reached_half": false
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "entry": 83582.6,
+      "sl": 83400.1,
+      "entry_time": "2026-09-28 21:00:00+00:00",
+      "message_ids": {
+        "6338570227": 1214,
+        "7100834953": 1215
+      }
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-28 20:27:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-09-28 19:06:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-09-28 21:00:00+00:00",
   "XAU/USD_consol": "2026-09-27 21:48:00+00:00",
   "BTCUSDT_consol": "2026-09-28 18:30:00+00:00",
   "last_daily_report": "2026-09-28",
@@ -1437,6 +1436,19 @@
       "pips": -50.08,
       "entry_time": "2026-09-28 18:42:00+00:00",
       "resolved_time": "2026-09-28 19:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 83705.5,
+      "exit": 83582.6,
+      "r": 0.3894,
+      "pips": 122.9,
+      "entry_time": "2026-09-28 19:06:00+00:00",
+      "resolved_time": "2026-09-28 21:00:00+00:00"
     }
   ]
 }
