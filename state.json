@@ -10,20 +10,6 @@
     {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 83339.1,
-      "sl": 82949.4,
-      "tp": 84118.50000000003,
-      "entry_time": "2026-09-28 12:03:00+00:00",
-      "message_ids": {
-        "6338570227": 1176,
-        "7100834953": 1177
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
       "entry": 83347.8,
       "sl": 83795.5,
@@ -1347,6 +1333,19 @@
       "outcome": "win",
       "entry_time": "2026-09-28 10:33:00+00:00",
       "resolved_time": "2026-09-28 12:09:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 83339.1,
+      "exit": 83381.2,
+      "r": 0.108,
+      "pips": 42.1,
+      "entry_time": "2026-09-28 12:03:00+00:00",
+      "resolved_time": "2026-09-28 14:12:00+00:00"
     }
   ]
 }
