@@ -19,30 +19,6 @@
         "7100834953": 1211
       },
       "reached_half": false
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4114.51775,
-      "sl": 4115.44532,
-      "entry_time": "2026-09-28 21:57:00+00:00",
-      "message_ids": {
-        "6338570227": 1218,
-        "7100834953": 1219
-      }
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 4114.51775,
-      "sl": 4115.53499,
-      "entry_time": "2026-09-28 21:57:00+00:00",
-      "message_ids": {
-        "6338570227": 1220,
-        "7100834953": 1221
-      }
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-28 21:57:00+00:00",
@@ -1474,6 +1450,32 @@
       "pips": -162.8,
       "entry_time": "2026-09-28 21:00:00+00:00",
       "resolved_time": "2026-09-28 21:21:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4114.51775,
+      "exit": 4115.44532,
+      "r": -1.0,
+      "pips": -9.28,
+      "entry_time": "2026-09-28 21:57:00+00:00",
+      "resolved_time": "2026-09-28 22:00:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4114.51775,
+      "exit": 4115.53499,
+      "r": -1.0,
+      "pips": -10.17,
+      "entry_time": "2026-09-28 21:57:00+00:00",
+      "resolved_time": "2026-09-28 22:00:00+00:00"
     }
   ]
 }
