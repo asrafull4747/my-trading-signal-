@@ -8,19 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 83565.4,
-      "sl": 83663.0,
-      "entry_time": "2026-09-29 19:12:00+00:00",
-      "message_ids": {
-        "6338570227": 1302,
-        "7100834953": 1303
-      },
-      "reached_half": true
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "BUY",
@@ -1736,6 +1723,19 @@
       "pips": -39.07,
       "entry_time": "2026-09-29 17:39:00+00:00",
       "resolved_time": "2026-09-29 18:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "ema",
+      "entry": 83565.4,
+      "exit": 83574.8,
+      "r": -0.0963,
+      "pips": -9.4,
+      "entry_time": "2026-09-29 19:12:00+00:00",
+      "resolved_time": "2026-09-29 19:45:00+00:00"
     }
   ]
 }
