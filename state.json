@@ -8,32 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 4164.21724,
-      "sl": 4154.20405,
-      "entry_time": "2026-09-29 14:00:00+00:00",
-      "message_ids": {
-        "6338570227": 1278,
-        "7100834953": 1279
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 4171.85022,
-      "sl": 4161.60845,
-      "entry_time": "2026-09-29 14:18:00+00:00",
-      "message_ids": {
-        "6338570227": 1280,
-        "7100834953": 1281
-      },
-      "reached_half": false
-    },
-    {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
@@ -44,7 +18,7 @@
         "6338570227": 1282,
         "7100834953": 1283
       },
-      "reached_half": false
+      "reached_half": true
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-29 14:00:00+00:00",
@@ -1671,6 +1645,32 @@
       "pips": -170.1,
       "entry_time": "2026-09-29 13:09:00+00:00",
       "resolved_time": "2026-09-29 13:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "ema",
+      "entry": 4164.21724,
+      "exit": 4161.84904,
+      "r": -0.2365,
+      "pips": -23.68,
+      "entry_time": "2026-09-29 14:00:00+00:00",
+      "resolved_time": "2026-09-29 15:12:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "ema",
+      "entry": 4171.85022,
+      "exit": 4161.84904,
+      "r": -0.9765,
+      "pips": -100.01,
+      "entry_time": "2026-09-29 14:18:00+00:00",
+      "resolved_time": "2026-09-29 15:12:00+00:00"
     }
   ]
 }
