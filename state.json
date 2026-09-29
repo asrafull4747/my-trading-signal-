@@ -19,9 +19,21 @@
         "7100834953": 1239
       },
       "reached_half": false
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 4127.09175,
+      "sl": 4132.58409,
+      "entry_time": "2026-09-29 04:33:00+00:00",
+      "message_ids": {
+        "6338570227": 1240,
+        "7100834953": 1241
+      }
     }
   ],
-  "XAU/USD_rf_scalper": "2026-09-29 02:57:00+00:00",
+  "XAU/USD_rf_scalper": "2026-09-29 04:33:00+00:00",
   "BTCUSDT_rf_scalper": "2026-09-29 04:15:00+00:00",
   "XAU/USD_consol": "2026-09-28 21:57:00+00:00",
   "BTCUSDT_consol": "2026-09-28 18:30:00+00:00",
