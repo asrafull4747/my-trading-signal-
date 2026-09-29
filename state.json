@@ -18,7 +18,7 @@
         "6338570227": 1278,
         "7100834953": 1279
       },
-      "reached_half": false
+      "reached_half": true
     },
     {
       "symbol": "XAU/USD",
@@ -30,7 +30,8 @@
       "message_ids": {
         "6338570227": 1280,
         "7100834953": 1281
-      }
+      },
+      "reached_half": false
     }
   ],
   "XAU/USD_rf_scalper": "2026-09-29 14:00:00+00:00",
