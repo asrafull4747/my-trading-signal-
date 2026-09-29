@@ -6,11 +6,24 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [],
+  "pending_trades": [
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "entry": 83565.4,
+      "sl": 83663.0,
+      "entry_time": "2026-09-29 19:12:00+00:00",
+      "message_ids": {
+        "6338570227": 1302,
+        "7100834953": 1303
+      }
+    }
+  ],
   "XAU/USD_rf_scalper": "2026-09-29 17:39:00+00:00",
   "BTCUSDT_rf_scalper": "2026-09-29 17:30:00+00:00",
   "XAU/USD_consol": "2026-09-29 14:18:00+00:00",
-  "BTCUSDT_consol": "2026-09-29 15:45:00+00:00",
+  "BTCUSDT_consol": "2026-09-29 19:12:00+00:00",
   "last_daily_report": "2026-09-29",
   "last_weekly_report": "2026-W39",
   "last_monthly_report": "2026-09",
