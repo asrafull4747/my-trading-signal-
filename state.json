@@ -6,47 +6,7 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 84044.4,
-      "sl": 83958.0,
-      "entry_time": "2026-09-29 11:24:00+00:00",
-      "message_ids": {
-        "6338570227": 1264,
-        "7100834953": 1265
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 84198.9,
-      "sl": 83897.3,
-      "entry_time": "2026-09-29 11:30:00+00:00",
-      "message_ids": {
-        "6338570227": 1266,
-        "7100834953": 1267
-      },
-      "reached_half": true
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 84400.3,
-      "sl": 84230.2,
-      "entry_time": "2026-09-29 13:09:00+00:00",
-      "message_ids": {
-        "6338570227": 1270,
-        "7100834953": 1271
-      },
-      "reached_half": false
-    }
-  ],
+  "pending_trades": [],
   "XAU/USD_rf_scalper": "2026-09-29 09:54:00+00:00",
   "BTCUSDT_rf_scalper": "2026-09-29 13:09:00+00:00",
   "XAU/USD_consol": "2026-09-29 08:48:00+00:00",
@@ -1632,6 +1592,45 @@
       "pips": 50.75,
       "entry_time": "2026-09-29 09:54:00+00:00",
       "resolved_time": "2026-09-29 12:12:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 84044.4,
+      "exit": 84111.7,
+      "r": 0.7789,
+      "pips": 67.3,
+      "entry_time": "2026-09-29 11:24:00+00:00",
+      "resolved_time": "2026-09-29 13:30:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "ema",
+      "entry": 84198.9,
+      "exit": 84111.7,
+      "r": -0.2891,
+      "pips": -87.2,
+      "entry_time": "2026-09-29 11:30:00+00:00",
+      "resolved_time": "2026-09-29 13:30:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 84400.3,
+      "exit": 84230.2,
+      "r": -1.0,
+      "pips": -170.1,
+      "entry_time": "2026-09-29 13:09:00+00:00",
+      "resolved_time": "2026-09-29 13:30:00+00:00"
     }
   ]
 }
