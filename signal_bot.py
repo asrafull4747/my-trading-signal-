@@ -409,17 +409,11 @@ def compute_consolidation_break_signal(df):
 def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strategy_label):
     """Sends the signal and returns {chat_id: message_id} so later messages
     (risk free / partial close / close) can reply to this exact message."""
-    risk = abs(entry - sl)
-    risk_usd = risk * CONTRACT_SIZE.get(symbol, 1.0) * LOT_SIZE
-    keep = int(round((1 - PARTIAL_FRACTION) * 100))
     text = (
         f"🔔 {action} Signal ({strategy_label})\n"
         f"Symbol: {symbol}\n"
         f"Entry: {entry:.2f}\n"
         f"SL: {sl:.2f}\n"
-        f"Demo: {LOT_SIZE} lot | Risk: ${risk_usd:.2f}\n"
-        f"Plan: 1:1 -> risk free | 1:2 -> close {int(PARTIAL_FRACTION * 100)}% | "
-        f"then EMA {EMA_EXIT_LEN} cross -> close the last {keep}%\n"
         f"Time: {candle_time}"
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -446,7 +440,7 @@ def send_outcome_telegram(symbol, strategy_label, action, entry, exit_price, sl,
     if reason == "ema":
         tag = {"win": "✅ WIN", "loss": "❌ LOSS"}.get(outcome, "➖ BREAKEVEN")
         text = (
-            f"🔔 CLOSE THE LAST {keep}% NOW - EMA {EMA_EXIT_LEN} crossed ({strategy_label})\n"
+            f"🔔 EXIT NOW - EMA {EMA_EXIT_LEN} crossed, close the last {keep}% ({strategy_label})\n"
             f"Symbol: {symbol} | {action}\n"
             f"Entry: {entry:.2f} -> Exit: {exit_price:.2f}\n"
             f"{tail}\n{tag}"
@@ -864,26 +858,18 @@ def _send_reply(text, subscribers, message_ids=None):
 
 def send_stage_telegram(kind, symbol, strategy_label, action, entry, risk, balance,
                         subscribers, message_ids=None):
-    """kind='r1' -> 1:1 reached (risk free). kind='r2' -> 1:2 reached (partial close)."""
-    unit_usd = risk * CONTRACT_SIZE.get(symbol, 1.0) * LOT_SIZE  # $ value of 1R
+    """kind='r1' -> 1:1 reached. kind='r2' -> 1:2 reached."""
     if kind == "r1":
         text = (
-            f"🛡 1:1 REACHED - RISK FREE ({strategy_label})\n"
+            f"🛡 BREAKEVEN NOW ({strategy_label})\n"
             f"Symbol: {symbol} | {action}\n"
-            f"Move your SL to entry: {entry:.2f}\n"
-            f"This trade can no longer lose. If price comes back to entry it closes at breakeven."
+            f"Move SL to entry: {entry:.2f}"
         )
     else:
-        locked_r = PARTIAL_FRACTION * TARGET_R
-        locked = locked_r * unit_usd
-        pct = (locked / balance * 100) if balance else 0.0
-        keep = int(round((1 - PARTIAL_FRACTION) * 100))
         text = (
-            f"🎯 1:2 REACHED - CLOSE {int(PARTIAL_FRACTION * 100)}% NOW ({strategy_label})\n"
+            f"🎯 PARTIAL CLOSE NOW ({strategy_label})\n"
             f"Symbol: {symbol} | {action}\n"
-            f"Locked profit: {locked_r:+.2f}R = {_money(locked)} ({pct:+.2f}%)\n"
-            f"Keep the last {keep}% open with SL at entry ({entry:.2f}). "
-            f"I'll tell you when EMA {EMA_EXIT_LEN} crosses so you can close the rest."
+            f"Close {int(PARTIAL_FRACTION * 100)}%, keep SL at entry: {entry:.2f}"
         )
     _send_reply(text, subscribers, message_ids)
 
