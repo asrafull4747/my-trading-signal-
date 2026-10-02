@@ -19,7 +19,7 @@
         "7100834953": 1473
       },
       "stage": 0,
-      "last_time": "2026-10-01 23:54:00+00:00"
+      "last_time": "2026-10-01 23:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -33,14 +33,14 @@
         "7100834953": 1499
       },
       "stage": 0,
-      "last_time": "2026-10-01 23:54:00+00:00"
+      "last_time": "2026-10-01 23:57:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-01 15:45:00+00:00",
   "BTCUSDT_rf_scalper": "2026-10-01 23:33:00+00:00",
   "XAU/USD_consol": "2026-09-30 21:36:00+00:00",
   "BTCUSDT_consol": "2026-10-01 16:33:00+00:00",
-  "last_daily_report": "2026-10-01",
+  "last_daily_report": "2026-10-02",
   "last_weekly_report": "2026-W39",
   "last_monthly_report": "2026-09",
   "last_yearly_report": "2026",
