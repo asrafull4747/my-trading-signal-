@@ -11,34 +11,6 @@
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
-      "entry": 4180.82578,
-      "sl": 4200.85301,
-      "entry_time": "2026-10-02 13:54:00+00:00",
-      "message_ids": {
-        "6338570227": 1558,
-        "7100834953": 1559
-      },
-      "stage": 2,
-      "last_time": "2026-10-02 18:48:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 4170.5819,
-      "sl": 4181.1264,
-      "entry_time": "2026-10-02 14:48:00+00:00",
-      "message_ids": {
-        "6338570227": 1564,
-        "7100834953": 1565
-      },
-      "stage": 2,
-      "last_time": "2026-10-02 18:48:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
       "entry": 4133.02335,
       "sl": 4147.74592,
       "entry_time": "2026-10-02 15:45:00+00:00",
@@ -47,7 +19,7 @@
         "7100834953": 1575
       },
       "stage": 0,
-      "last_time": "2026-10-02 18:48:00+00:00"
+      "last_time": "2026-10-02 18:51:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -61,7 +33,7 @@
         "7100834953": 1577
       },
       "stage": 2,
-      "last_time": "2026-10-02 18:48:00+00:00"
+      "last_time": "2026-10-02 18:51:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-02 17:21:00+00:00",
@@ -2551,7 +2523,37 @@
       "balance_after": -6.1888,
       "entry_time": "2026-10-02 17:21:00+00:00",
       "resolved_time": "2026-10-02 17:33:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 4180.82578,
+      "exit": 4143.65885,
+      "r": 1.964,
+      "pips": 393.33,
+      "pnl_usd": 39.3326,
+      "balance_after": 33.1438,
+      "entry_time": "2026-10-02 13:54:00+00:00",
+      "resolved_time": "2026-10-02 18:51:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 4170.5819,
+      "exit": 4143.65885,
+      "r": 2.1383,
+      "pips": 225.48,
+      "pnl_usd": 22.5475,
+      "balance_after": 55.6913,
+      "entry_time": "2026-10-02 14:48:00+00:00",
+      "resolved_time": "2026-10-02 18:51:00+00:00"
     }
   ],
-  "balance": -6.188814999997625
+  "balance": 55.69127500000203
 }
