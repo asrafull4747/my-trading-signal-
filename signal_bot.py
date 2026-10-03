@@ -1,16 +1,18 @@
 """
-Order Block Signal Bot
-Based on the user's supplied LuxAlgo "Order Block Detector" Pine Script.
-Strategy:
-  - Volume pivot length = 5
-  - Bullish/Bearish OB detected from the confirmed volume pivot candle
-  - Entry = 50% (midpoint) of the OB
-  - SL = OB boundary (bullish low / bearish high), optional buffer
-  - TP = 1:3 fixed risk/reward
-  - Old Range Filter / Scalper and Consolidation Breakout strategies removed.
+Multi-Strategy Signal Bot
+Runs two independent signal engines side by side for each symbol:
 
-Note: XAU/USD free FX feeds may not provide exchange volume. When volume is
-missing, OB_USE_VOLUME_PROXY=True uses candle range as a proxy.
+  1. Black Shadow Trader (merged) -- Range Filter trend + Scalper Pro
+     pivot breakout, confirmed by trend direction.
+  2. Consolidation Breakout -- detects a tight consolidation (>=4
+     consecutive low-range/small-body candles), then fires only when a
+     candle CLOSES outside that range (a wick poking out and closing back
+     inside does NOT count). SL = opposite side of the consolidation box,
+     TP = 1:2 risk:reward.
+
+Checks BTC (via Kraken, free) and XAU/USD (via Twelve Data, free tier).
+Sends BUY/SELL alerts with Entry/SL/TP to all Telegram subscribers.
+Designed to run every 5 minutes (via GitHub Actions + an external cron trigger).
 """
 
 import os
@@ -22,21 +24,44 @@ from datetime import datetime, timezone, timedelta
 
 # ===== Shared config =====
 TIMEFRAME_MIN = 3
-FETCH_LIMIT = 500
+FETCH_LIMIT = 500  # generous warm-up window for the Range Filter's long EMA
 
-# ---- Strategy: LuxAlgo-style Volume Pivot Order Block ----
-OB_VOLUME_PIVOT_LENGTH = 5
-OB_TARGET_R = 3.0
-OB_ENTRY_PERCENT = 0.50       # 50% of the OB
-OB_SL_BUFFER = 0.0            # 0 = exactly OB boundary
-OB_USE_VOLUME_PROXY = True    # XAU/USD often has no exchange volume from free FX feeds
-OB_MAX_ACTIVE = 20
+# ---- Strategy 1: Black Shadow Trader (Range Filter + Scalper Pro, merged) ----
+RF_PERIOD = 100
+RF_MULT = 3.0
+TARGET_MULT = 2.0
+PIVOT_LENGTH = 3
+USE_CONSOLIDATION = True
+CONS_LENGTH = 10
+CONS_ATR_MULT = 3.0
+ATR_LEN = 14
+USE_COOLDOWN = True
+COOLDOWN_BARS = 30
+USE_MERGE = True
 
-# ---- Trade accounting ----
-PIP_SIZE = {"XAU/USD": 0.1, "BTCUSDT": 1.0}
-INITIAL_BALANCE = 100.0
-LOT_SIZE = 0.01
-CONTRACT_SIZE = {"XAU/USD": 100, "BTCUSDT": 1}
+# ---- Strategy 2: Consolidation Breakout ----
+CANDLE_CONFIRM_BARS = 4       # min. consecutive consolidating candles
+COMPRESSION_BODY_MAX = 0.5    # body must be < 50% of the candle's range
+COMPRESSION_ATR_LEN = 4
+BREAKOUT_TARGET_MULT = 2.0    # 1:2 risk:reward, same as the other strategy
+
+# ---- Exit rule & reporting ----
+EMA_EXIT_LEN = 70             # for the last 25%: exit when price closes back across this EMA
+PIP_SIZE = {"XAU/USD": 0.1, "BTCUSDT": 1.0}  # price move counted as 1 pip (adjust if yours differs)
+INITIAL_BALANCE = 100.0       # demo account balance (accounting only, no real orders)
+LOT_SIZE = 0.01               # every entry uses this lot size
+CONTRACT_SIZE = {"XAU/USD": 100, "BTCUSDT": 1}  # units per 1.00 lot (gold 100 oz, BTC 1 coin)
+BREAKEVEN_R = 1.0             # at 1:1 -> tell users to move SL to entry (risk free)
+TARGET_R = 2.0                # at 1:2 -> partial close
+PARTIAL_FRACTION = 0.75       # share of the position closed at TARGET_R
+
+# ===== Secrets (set as environment variables / GitHub Secrets) =====
+TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+TWELVE_DATA_API_KEY = os.environ["TWELVE_DATA_API_KEY"]
+
+STATE_FILE = "state.json"
+
 
 # ---------------------------------------------------------------------------
 # Helper: drop the still-forming (not yet closed) candle
@@ -52,12 +77,34 @@ def drop_unclosed_candle(df, time_is_close_time):
     return df
 
 
-# ---------------------------------------------------------------------------
+def resample_ohlc(df_1m, minutes):
+    """
+    Neither Kraken nor Twelve Data offers a native 3-minute interval, so we
+    fetch 1-minute candles and combine every N of them into one N-minute
+    candle ourselves (open=first, high=max, low=min, close=last).
+    """
+    df_1m = df_1m.set_index("time")
+    agg = df_1m.resample(f"{minutes}min", label="left", closed="left").agg({
+        "open": "first",
+        "high": "max",
+        "low": "min",
+        "close": "last",
+    }).dropna().reset_index()
+    return agg
 
+
+# ---------------------------------------------------------------------------
+# Data fetchers
+# ---------------------------------------------------------------------------
 def fetch_btc_klines(limit=FETCH_LIMIT):
     """
-    Kraken 1-minute OHLCV -> resampled 3-minute OHLCV.
-    The Order Block detector uses real BTC volume, matching Pine's volume pivot.
+    Kraken's free public OHLC endpoint (no API key needed, not blocked on
+    cloud IPs). Kraken only supports fixed intervals (1, 5, 15... minutes),
+    so we pull 1-minute candles and resample to TIMEFRAME_MIN ourselves.
+    Note: Kraken's OHLC endpoint only returns roughly the most recent ~720
+    one-minute candles (~12 hours) per call -- there is no free way to pull
+    deeper 1-minute history from them, so the resampled series will be
+    shorter than FETCH_LIMIT until Kraken's window naturally covers more.
     """
     url = "https://api.kraken.com/0/public/OHLC"
     params = {"pair": "XBTUSD", "interval": 1}
@@ -73,21 +120,22 @@ def fetch_btc_klines(limit=FETCH_LIMIT):
     df = pd.DataFrame(rows, columns=[
         "time", "open", "high", "low", "close", "vwap", "volume", "count"
     ])
-    for col in ["open", "high", "low", "close", "volume"]:
-        df[col] = df[col].astype(float)
+    df["open"] = df["open"].astype(float)
+    df["close"] = df["close"].astype(float)
+    df["high"] = df["high"].astype(float)
+    df["low"] = df["low"].astype(float)
     df["time"] = pd.to_datetime(df["time"], unit="s", utc=True)
-    df = df[["time", "open", "high", "low", "close", "volume"]]
+    df = df[["time", "open", "high", "low", "close"]]
 
-    df = resample_ohlcv(df, TIMEFRAME_MIN)
+    df = resample_ohlc(df, TIMEFRAME_MIN)
     df = df.tail(limit).reset_index(drop=True)
     return drop_unclosed_candle(df, time_is_close_time=False)
 
 
 def fetch_gold_klines(limit=FETCH_LIMIT):
     """
-    Twelve Data 1-minute -> resampled 3-minute OHLCV.
-    If the provider does not return volume for XAU/USD, a candle-range proxy
-    is used when OB_USE_VOLUME_PROXY=True.
+    Twelve Data free tier. Needs API key. Twelve Data also has no native
+    3-minute interval, so we pull 1-minute candles and resample ourselves.
     """
     raw_needed = min(5000, limit * TIMEFRAME_MIN + 50)
     url = "https://api.twelvedata.com/time_series"
@@ -103,232 +151,269 @@ def fetch_gold_klines(limit=FETCH_LIMIT):
     data = r.json()
     if "values" not in data:
         raise RuntimeError(f"Twelve Data error: {data}")
-
-    df = pd.DataFrame(data["values"]).rename(columns={"datetime": "time"})
-    for col in ["open", "high", "low", "close"]:
-        df[col] = df[col].astype(float)
-
-    if "volume" in df.columns:
-        df["volume"] = pd.to_numeric(df["volume"], errors="coerce")
-    else:
-        df["volume"] = np.nan
-
+    df = pd.DataFrame(data["values"])
+    df = df.rename(columns={"datetime": "time"})
+    df["open"] = df["open"].astype(float)
+    df["close"] = df["close"].astype(float)
+    df["high"] = df["high"].astype(float)
+    df["low"] = df["low"].astype(float)
     df["time"] = pd.to_datetime(df["time"], utc=True)
     df = df.sort_values("time").reset_index(drop=True)
-    df = df[["time", "open", "high", "low", "close", "volume"]]
+    df = df[["time", "open", "high", "low", "close"]]
 
-    if df["volume"].isna().all():
-        if not OB_USE_VOLUME_PROXY:
-            raise RuntimeError(
-                "Twelve Data returned no XAU/USD volume. "
-                "Set OB_USE_VOLUME_PROXY=True or use a feed with volume."
-            )
-        # Proxy only for XAU/USD feeds without volume.
-        df["volume"] = (df["high"] - df["low"]).abs()
-
-    df = resample_ohlcv(df, TIMEFRAME_MIN)
+    df = resample_ohlc(df, TIMEFRAME_MIN)
     df = df.tail(limit).reset_index(drop=True)
     return drop_unclosed_candle(df, time_is_close_time=False)
 
 
-def resample_ohlcv(df_1m, minutes):
-    """Resample OHLCV into N-minute candles."""
-    df_1m = df_1m.set_index("time")
-    agg = df_1m.resample(f"{minutes}min", label="left", closed="left").agg({
-        "open": "first",
-        "high": "max",
-        "low": "min",
-        "close": "last",
-        "volume": "sum",
-    }).dropna(subset=["open", "high", "low", "close"]).reset_index()
-    return agg
+# ---------------------------------------------------------------------------
+# Shared indicator helpers
+# ---------------------------------------------------------------------------
+def ema(series, length):
+    return series.ewm(span=length, adjust=False).mean()
+
+
+def atr(df, length):
+    high, low, close = df["high"], df["low"], df["close"]
+    prev_close = close.shift(1)
+    tr = pd.concat([
+        (high - low),
+        (high - prev_close).abs(),
+        (low - prev_close).abs(),
+    ], axis=1).max(axis=1)
+    return tr.ewm(alpha=1 / length, adjust=False).mean()
+
 
 # ---------------------------------------------------------------------------
-# Strategy: LuxAlgo-style Volume Pivot Order Block
+# Strategy 1: Black Shadow Trader (Range Filter + Scalper Pro, merged)
 # ---------------------------------------------------------------------------
-def _volume_pivot_high(volume, length):
+def compute_black_shadow_signal(df):
+    n = len(df)
+    min_bars = RF_PERIOD * 2 + CONS_LENGTH + PIVOT_LENGTH * 2 + 10
+    if n < min_bars:
+        return None, None, None, None, df.iloc[-1]["time"]
+
+    close = df["close"].to_numpy()
+    high = df["high"].to_numpy()
+    low = df["low"].to_numpy()
+    open_ = df["open"].to_numpy()
+
+    # ----- Range Filter -----
+    src = close
+    diff = np.abs(np.diff(src, prepend=src[0]))
+    avrng = pd.Series(diff).ewm(span=RF_PERIOD, adjust=False).mean().to_numpy()
+    wper = RF_PERIOD * 2 - 1
+    smrng = pd.Series(avrng).ewm(span=wper, adjust=False).mean().to_numpy() * RF_MULT
+
+    filt = np.zeros(n)
+    filt[0] = src[0]
+    for i in range(1, n):
+        x, r, prev = src[i], smrng[i], filt[i - 1]
+        if x > prev:
+            filt[i] = prev if (x - r) < prev else (x - r)
+        else:
+            filt[i] = prev if (x + r) > prev else (x + r)
+
+    upward = np.zeros(n)
+    downward = np.zeros(n)
+    for i in range(1, n):
+        if filt[i] > filt[i - 1]:
+            upward[i] = upward[i - 1] + 1
+            downward[i] = 0
+        elif filt[i] < filt[i - 1]:
+            downward[i] = downward[i - 1] + 1
+            upward[i] = 0
+        else:
+            upward[i] = upward[i - 1]
+            downward[i] = downward[i - 1]
+
+    atr_vals = atr(df, ATR_LEN).to_numpy()
+
+    # ----- Pivot High/Low (confirmed with a lag, like Pine's ta.pivothigh/low) -----
+    L = PIVOT_LENGTH
+    last_pivot_high = np.full(n, np.nan)
+    last_pivot_low = np.full(n, np.nan)
+    cur_ph, cur_pl = np.nan, np.nan
+    for i in range(n):
+        c = i - L
+        if c - L >= 0:
+            window_high = high[c - L:c + L + 1]
+            window_low = low[c - L:c + L + 1]
+            if high[c] == window_high.max():
+                cur_ph = high[c]
+            if low[c] == window_low.min():
+                cur_pl = low[c]
+        last_pivot_high[i] = cur_ph
+        last_pivot_low[i] = cur_pl
+
+    # ----- Consolidation filter -----
+    past_high = pd.Series(high).shift(1).rolling(CONS_LENGTH).max().to_numpy()
+    past_low = pd.Series(low).shift(1).rolling(CONS_LENGTH).min().to_numpy()
+    zone_range = past_high - past_low
+    if USE_CONSOLIDATION:
+        is_consolidating = np.where(np.isnan(zone_range), True, zone_range <= atr_vals * CONS_ATR_MULT)
+    else:
+        is_consolidating = np.ones(n, dtype=bool)
+
+    # ----- Cooldown + breakout detection (replayed bar by bar) -----
+    last_trade_bar = None
+    triggered_action, triggered_entry, triggered_sl, triggered_tp, triggered_bar = (None,) * 5
+
+    for i in range(2 * L, n):
+        if np.isnan(last_pivot_high[i]) or np.isnan(last_pivot_low[i]):
+            continue
+        if np.isnan(last_pivot_high[i - 1]) or np.isnan(last_pivot_low[i - 1]):
+            continue
+
+        is_bull_candle = close[i] > open_[i]
+        is_bear_candle = close[i] < open_[i]
+
+        crossover_high = close[i - 1] <= last_pivot_high[i - 1] and close[i] > last_pivot_high[i]
+        crossunder_low = close[i - 1] >= last_pivot_low[i - 1] and close[i] < last_pivot_low[i]
+
+        can_enter = True
+        if USE_COOLDOWN:
+            can_enter = (last_trade_bar is None) or (i - last_trade_bar >= COOLDOWN_BARS)
+
+        bullish_breakout = (
+            is_bull_candle and crossover_high and (low[i] > last_pivot_low[i])
+            and is_consolidating[i] and can_enter
+        )
+        bearish_breakout = (
+            is_bear_candle and crossunder_low and (high[i] < last_pivot_high[i])
+            and is_consolidating[i] and can_enter
+        )
+
+        merged_bull = bullish_breakout and (not USE_MERGE or upward[i] > 0)
+        merged_bear = bearish_breakout and (not USE_MERGE or downward[i] > 0)
+
+        if merged_bull:
+            entry, stop = close[i], last_pivot_low[i]
+            risk = entry - stop
+            if risk > 0:
+                last_trade_bar = i
+                triggered_action = "BUY"
+                triggered_entry, triggered_sl = entry, stop
+                triggered_tp = entry + risk * TARGET_MULT
+                triggered_bar = i
+        elif merged_bear:
+            entry, stop = close[i], last_pivot_high[i]
+            risk = stop - entry
+            if risk > 0:
+                last_trade_bar = i
+                triggered_action = "SELL"
+                triggered_entry, triggered_sl = entry, stop
+                triggered_tp = entry - risk * TARGET_MULT
+                triggered_bar = i
+
+    candle_time = df.iloc[-1]["time"]
+    if triggered_action and triggered_bar == n - 1:
+        return triggered_action, triggered_entry, triggered_sl, triggered_tp, candle_time
+    return None, None, None, None, candle_time
+
+
+# ---------------------------------------------------------------------------
+# Strategy 2: Consolidation Breakout (Consolidation DNA, simplified)
+# ---------------------------------------------------------------------------
+def compute_consolidation_break_signal(df):
     """
-    Pine equivalent of ta.pivothigh(volume, length, length).
-    A pivot is confirmed only after `length` bars have closed to its right.
-    """
-    n = len(volume)
-    phv = np.full(n, np.nan)
-    for i in range(2 * length, n):
-        c = i - length
-        window = volume[c - length:c + length + 1]
-        if np.isfinite(volume[c]) and volume[c] == np.nanmax(window):
-            phv[i] = volume[c]
-    return phv
-
-
-def _calculate_ob_state(df, length=OB_VOLUME_PIVOT_LENGTH):
-    """
-    Replays the relevant LuxAlgo logic bar-by-bar.
-
-    Pine:
-      upper = ta.highest(length)
-      lower = ta.lowest(length)
-      os := high[length] > upper ? 0 : low[length] < lower ? 1 : os[1]
-
-    Bullish OB:
-      phv and os == 1
-      top = hl2[length], bottom = low[length]
-
-    Bearish OB:
-      phv and os == 0
-      top = high[length], bottom = hl2[length]
+    - A candle is 'compressing' if its body is < 50% of its range AND its
+      range is smaller than ATR(4) (matches the Pine script's compressionBar).
+    - Once >= CANDLE_CONFIRM_BARS consecutive compressing candles occur, the
+      box (highest high / lowest low of those candles) freezes as the
+      consolidation zone.
+    - We then wait for a candle to CLOSE outside that zone (a wick poking
+      out and closing back inside does NOT count -- 'Close Break' only).
+    - Entry = breakout candle's close. SL = the opposite side of the zone.
+      TP = 1:2 risk:reward.
     """
     n = len(df)
-    if n < max(2 * length + 5, 30):
-        return []
+    min_bars = COMPRESSION_ATR_LEN + CANDLE_CONFIRM_BARS + 5
+    if n < min_bars:
+        return None, None, None, None, df.iloc[-1]["time"]
 
-    high = df["high"].to_numpy(float)
-    low = df["low"].to_numpy(float)
-    volume = df["volume"].to_numpy(float)
+    close = df["close"].to_numpy()
+    high = df["high"].to_numpy()
+    low = df["low"].to_numpy()
+    open_ = df["open"].to_numpy()
 
-    # If volume is unavailable, make the fallback explicit.
-    if not np.isfinite(volume).any():
-        if OB_USE_VOLUME_PROXY:
-            volume = np.maximum(high - low, 1e-12)
-        else:
-            return []
+    atr4 = atr(df, COMPRESSION_ATR_LEN).to_numpy()
 
-    # Pine ta.highest/lowest(length): current bar + previous length-1 bars.
-    upper = pd.Series(high).rolling(length, min_periods=length).max().to_numpy()
-    lower = pd.Series(low).rolling(length, min_periods=length).min().to_numpy()
-    phv = _volume_pivot_high(volume, length)
+    body = np.abs(close - open_)
+    rng = np.maximum(high - low, 1e-9)
+    small_body = body < (rng * COMPRESSION_BODY_MAX)
+    atr_compress = rng < atr4
+    compression_bar = small_body & atr_compress
 
-    # os[1] starts as na in Pine; we model it as 0 until the first state change.
-    os = np.zeros(n, dtype=int)
+    cons_count = 0
+    cons_high = cons_low = None
+    mature = False
+    range_high = range_low = None
+
+    triggered_action, triggered_entry, triggered_sl, triggered_tp, triggered_bar = (None,) * 5
+
     for i in range(n):
-        if i < length or not np.isfinite(upper[i]) or not np.isfinite(lower[i]):
-            os[i] = os[i - 1] if i > 0 else 0
-            continue
-        if high[i - length] > upper[i]:
-            os[i] = 0
-        elif low[i - length] < lower[i]:
-            os[i] = 1
+        if not mature:
+            if compression_bar[i]:
+                cons_count += 1
+                if cons_high is None:
+                    cons_high, cons_low = high[i], low[i]
+                else:
+                    cons_high = max(cons_high, high[i])
+                    cons_low = min(cons_low, low[i])
+                if cons_count >= CANDLE_CONFIRM_BARS:
+                    mature = True
+                    range_high, range_low = cons_high, cons_low
+            else:
+                cons_count = 0
+                cons_high = cons_low = None
         else:
-            os[i] = os[i - 1] if i > 0 else 0
+            # Mature: wait for a close outside the frozen range (close break only)
+            if close[i] > range_high:
+                entry = close[i]
+                sl = range_low
+                risk = entry - sl
+                if risk > 0:
+                    triggered_action = "BUY"
+                    triggered_entry, triggered_sl = entry, sl
+                    triggered_tp = entry + risk * BREAKOUT_TARGET_MULT
+                    triggered_bar = i
+                mature = False
+                cons_count = 0
+                cons_high = cons_low = None
+            elif close[i] < range_low:
+                entry = close[i]
+                sl = range_high
+                risk = sl - entry
+                if risk > 0:
+                    triggered_action = "SELL"
+                    triggered_entry, triggered_sl = entry, sl
+                    triggered_tp = entry - risk * BREAKOUT_TARGET_MULT
+                    triggered_bar = i
+                mature = False
+                cons_count = 0
+                cons_high = cons_low = None
+            # if the candle wicks outside but closes back inside the range,
+            # nothing happens here -- the range simply stays active (correct:
+            # a wick-only poke must NOT count as a break)
 
-    obs = []
-
-    # Replay confirmed pivots and apply the same mitigation test.
-    for i in range(n):
-        if not np.isfinite(phv[i]):
-            continue
-
-        c = i - length
-        if c < 0:
-            continue
-
-        if os[i] == 1:
-            top = (high[c] + low[c]) / 2.0
-            btm = low[c]
-            side = "bull"
-        else:
-            top = high[c]
-            btm = (high[c] + low[c]) / 2.0
-            side = "bear"
-
-        # The Pine script stores time[length] as the OB's left edge.
-        obs.insert(0, {
-            "side": side,
-            "top": float(top),
-            "bottom": float(btm),
-            "avg": float((top + btm) / 2.0),
-            "left_time": str(df.iloc[c]["time"]),
-            "confirm_time": str(df.iloc[i]["time"]),
-            "pivot_index": c,
-            "confirm_index": i,
-        })
-
-        # Keep a manageable list, equivalent to displaying the newest OBs.
-        if len(obs) > OB_MAX_ACTIVE:
-            obs.pop()
-
-    # Apply mitigation using the same current target concept:
-    # bullish removed when target_bull < ob_btm
-    # bearish removed when target_bear > ob_top
-    active = []
-    for ob in obs:
-        start = ob["confirm_index"] + 1
-        if start >= n:
-            active.append(ob)
-            continue
-
-        post = df.iloc[start:]
-        if ob["side"] == "bull":
-            # Wick mitigation: lowest low after confirmation.
-            target = float(post["low"].min())
-            mitigated = target < ob["bottom"]
-        else:
-            target = float(post["high"].max())
-            mitigated = target > ob["top"]
-
-        if not mitigated:
-            active.append(ob)
-
-    return active
-
-
-def compute_order_block_signal(df):
-    """
-    Returns a signal only when the latest closed candle reaches the 50% level
-    of the newest active bullish/bearish Order Block.
-
-    BUY:
-      entry = OB midpoint
-      SL    = OB bottom - optional buffer
-      TP    = entry + 3R
-
-    SELL:
-      entry = OB midpoint
-      SL    = OB top + optional buffer
-      TP    = entry - 3R
-
-    A touch of the midpoint is enough; the signal is emitted once for the
-    candle that first touches the level.
-    """
     candle_time = df.iloc[-1]["time"]
-    obs = _calculate_ob_state(df, OB_VOLUME_PIVOT_LENGTH)
-    if not obs:
-        return None, None, None, None, candle_time
-
-    row = df.iloc[-1]
-    # Newest active OB first because _calculate_ob_state inserts at front.
-    for ob in obs:
-        entry = ob["avg"]
-
-        if ob["side"] == "bull":
-            sl = ob["bottom"] - OB_SL_BUFFER
-            touched = row["low"] <= entry <= row["high"]
-            risk = entry - sl
-            if touched and risk > 0:
-                tp = entry + risk * OB_TARGET_R
-                return "BUY", float(entry), float(sl), float(tp), candle_time
-
-        else:
-            sl = ob["top"] + OB_SL_BUFFER
-            touched = row["low"] <= entry <= row["high"]
-            risk = sl - entry
-            if touched and risk > 0:
-                tp = entry - risk * OB_TARGET_R
-                return "SELL", float(entry), float(sl), float(tp), candle_time
-
+    if triggered_action and triggered_bar == n - 1:
+        return triggered_action, triggered_entry, triggered_sl, triggered_tp, candle_time
     return None, None, None, None, candle_time
+
 
 # ---------------------------------------------------------------------------
 # Telegram
 # ---------------------------------------------------------------------------
 def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strategy_label):
-    """Send a new 50% Order Block entry signal."""
+    """Sends the signal and returns {chat_id: message_id} so later messages
+    (risk free / partial close / close) can reply to this exact message."""
     text = (
         f"🔔 {action} Signal ({strategy_label})\n"
         f"Symbol: {symbol}\n"
-        f"Entry (50% OB): {entry:.2f}\n"
-        f"SL (OB boundary): {sl:.2f}\n"
-        f"TP (1:{OB_TARGET_R:.0f}): {tp:.2f}\n"
+        f"Entry: {entry:.2f}\n"
+        f"SL: {sl:.2f}\n"
         f"Time: {candle_time}"
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -345,34 +430,54 @@ def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strat
 
 def send_outcome_telegram(symbol, strategy_label, action, entry, exit_price, sl, outcome, reason,
                           r, pips, pnl, pct, balance, subscribers, message_ids=None):
-    """Final message for a fixed 1:3 Order Block trade."""
-    if outcome == "win":
-        tag = "✅ TAKE PROFIT HIT"
-    elif outcome == "loss":
-        tag = "❌ STOP LOSS HIT"
-    else:
-        tag = "➖ CLOSED"
-
-    text = (
-        f"{tag} ({strategy_label})\n"
-        f"Symbol: {symbol} | {action}\n"
-        f"Entry: {entry:.2f} -> Exit: {exit_price:.2f}\n"
-        f"SL: {sl:.2f} | Target: 1:{OB_TARGET_R:.0f}\n"
+    """Final message for a trade. reason: 'sl' | 'breakeven' | 'be_remainder' | 'ema'."""
+    keep = int(round((1 - PARTIAL_FRACTION) * 100))
+    tail = (
         f"Result: {r:+.2f}R | {pips:+.1f} pips\n"
         f"P&L: {_money(pnl)} ({pct:+.2f}%) on {LOT_SIZE} lot\n"
         f"Demo balance: ${balance:.2f}"
     )
+    if reason == "ema":
+        tag = {"win": "✅ WIN", "loss": "❌ LOSS"}.get(outcome, "➖ BREAKEVEN")
+        text = (
+            f"🔔 EXIT NOW - EMA {EMA_EXIT_LEN} crossed, close the last {keep}% ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"Entry: {entry:.2f} -> Exit: {exit_price:.2f}\n"
+            f"{tail}\n{tag}"
+        )
+    elif reason == "be_remainder":
+        text = (
+            f"✅ WIN - the last {keep}% was stopped at entry ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"{int(PARTIAL_FRACTION * 100)}% was already banked at 1:2.\n"
+            f"{tail}"
+        )
+    elif reason == "breakeven":
+        text = (
+            f"➖ BREAKEVEN - price came back to entry after 1:1 ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"Entry: {entry:.2f}\n"
+            f"{tail}"
+        )
+    else:
+        text = (
+            f"❌ STOP LOSS HIT ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"Entry: {entry:.2f}  SL: {sl:.2f}\n"
+            f"{tail}"
+        )
     _send_reply(text, subscribers, message_ids)
 
 
 def send_welcome(chat_id):
+    keep = int(round((1 - PARTIAL_FRACTION) * 100))
     text = (
         "✅ You're subscribed!\n"
-        "You'll receive BTCUSDT and XAU/USD Order Block signals.\n"
-        f"Entry = 50% of the Order Block | SL = OB boundary | TP = 1:{OB_TARGET_R:.0f}.\n"
-        f"Signals use the confirmed volume-pivot Order Block logic. "
-        f"Results are tracked on a ${INITIAL_BALANCE:.0f} demo balance ({LOT_SIZE} lot per trade). "
-        "You'll also get daily, weekly, monthly & yearly reports."
+        "You'll receive BUY/SELL signals (Entry + SL) for BTCUSDT and XAU/USD. "
+        "I'll reply to each signal: at 1:1 -> move SL to entry (risk free), "
+        f"at 1:2 -> close {int(PARTIAL_FRACTION * 100)}%, then when EMA {EMA_EXIT_LEN} "
+        f"crosses -> close the last {keep}%. Results are tracked on a ${INITIAL_BALANCE:.0f} demo "
+        f"balance ({LOT_SIZE} lot per trade). You'll also get daily, weekly, monthly & yearly reports."
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     try:
@@ -436,86 +541,134 @@ def is_flat_market(df, lookback=5, rel_epsilon=1e-5):
 
 
 # ---------------------------------------------------------------------------
-# Pending trade outcome tracking: fixed SL / fixed 1:3 TP
+# Pending trade outcome tracking (win / breakeven / loss)
 # ---------------------------------------------------------------------------
+def _events_in_candle(action, half_level, sl, row):
+    """
+    Levels touched inside one candle (the stop, and the 1:1 level used for the
+    breakeven rule), ordered by distance from the candle's open -- an
+    approximation of which came first, since OHLC alone can't tell us.
+    """
+    o, hi, lo = row["open"], row["high"], row["low"]
+    events = []
+    if action == "BUY":
+        if lo <= sl:
+            events.append(("sl", sl))
+        if hi >= half_level:
+            events.append(("half", half_level))
+    else:  # SELL
+        if hi >= sl:
+            events.append(("sl", sl))
+        if lo <= half_level:
+            events.append(("half", half_level))
+    events.sort(key=lambda e: abs(e[1] - o))
+    return events
+
+
 def check_pending_trades(name, df, state):
     """
-    Walk forward through new candles for existing Order Block trades.
+    Trade management, walking forward through candles that are new since the
+    last check (progress is stored on each trade so messages are never repeated):
 
-    No old 1:1 breakeven, 1:2 partial-close, or EMA exit logic is used.
-    Each trade stays open until:
-      BUY  -> SL or 1:3 TP
-      SELL -> SL or 1:3 TP
+      stage 0: SL at the original stop.
+               stop hit          -> LOSS (-1R)
+               price reaches 1:1 -> message "risk free", stage 1
+      stage 1: stop is now the entry price.
+               price back to entry -> BREAKEVEN (0R)
+               price reaches 1:2   -> message "close 75%", stage 2
+      stage 2: 75% banked at 1:2 (= +1.5R). The last 25% keeps running.
+               price back to entry -> last 25% stopped at 0 (total +1.5R, WIN)
+               EMA fast/slow crosses against the trade at a candle close
+                                   -> message "close the rest" (total = 1.5R + 25% of its R)
 
-    If both SL and TP are inside the same OHLC candle, OHLC data cannot reveal
-    the exact intrabar order. We use distance from the candle open as a
-    deterministic approximation.
+    EMA crosses are ignored until 1:2 has been reached. Demo accounting: every
+    trade uses LOT_SIZE lots on a balance that starts at INITIAL_BALANCE.
     """
     pending = state.setdefault("pending_trades", [])
     if not pending:
         return
 
+    ema_exit = ema(df["close"], EMA_EXIT_LEN).to_numpy()
+    closes = df["close"].to_numpy()
     times = df["time"].tolist()
     subscribers = state.get("subscribers", [])
-    still_pending = []
 
+    still_pending = []
     for trade in pending:
         if trade["symbol"] != name:
             still_pending.append(trade)
             continue
 
-        action = trade["action"]
-        sl = float(trade["sl"])
-        entry = float(trade["entry"])
-        tp = float(trade["tp"])
+        action, sl, entry = trade["action"], trade["sl"], trade["entry"]
         risk = abs(entry - sl)
-
         if risk <= 0:
-            continue
-
-        last_time = pd.to_datetime(
-            trade.get("last_time") or trade["entry_time"], utc=True
-        )
+            continue  # invalid record, drop it
+        sign = 1 if action == "BUY" else -1
+        r1_level = entry + sign * risk * BREAKEVEN_R
+        r2_level = entry + sign * risk * TARGET_R
         message_ids = trade.get("message_ids", {})
-        result = None
+
+        stage = trade.get("stage", 0)
+        last_time = pd.to_datetime(trade.get("last_time") or trade["entry_time"], utc=True)
+        result = None  # (reason, outcome, r_total, exit_price, exit_time)
 
         for i in range(1, len(df)):
             if times[i] <= last_time:
                 continue
-
             row = df.iloc[i]
-            hi, lo, op = float(row["high"]), float(row["low"]), float(row["open"])
+            hi, lo, op = row["high"], row["low"], row["open"]
 
-            if action == "BUY":
-                sl_hit = lo <= sl
-                tp_hit = hi >= tp
-            else:
-                sl_hit = hi >= sl
-                tp_hit = lo <= tp
+            def touched(level):
+                return hi >= level if action == "BUY" else lo <= level
+
+            stop_level = sl if stage == 0 else entry
+            stop_hit = lo <= stop_level if action == "BUY" else hi >= stop_level
 
             events = []
-            if sl_hit:
-                events.append(("sl", sl))
-            if tp_hit:
-                events.append(("tp", tp))
-
+            if stop_hit:
+                events.append(("stop", stop_level))
+            if stage < 1 and touched(r1_level):
+                events.append(("r1", r1_level))
+            if stage < 2 and touched(r2_level):
+                events.append(("r2", r2_level))
+            # order by distance from the candle's open (best guess at what came first)
             events.sort(key=lambda e: abs(e[1] - op))
 
-            if events:
-                kind, exit_price = events[0]
-                if kind == "tp":
-                    r_total = OB_TARGET_R
-                    outcome = "win"
-                    reason = "tp"
-                else:
-                    r_total = -1.0
-                    outcome = "loss"
-                    reason = "sl"
-
-                result = (reason, outcome, r_total, float(exit_price), times[i])
+            for kind, _level in events:
+                if kind in ("r1", "r2") and stage < 1:
+                    stage = 1
+                    send_stage_telegram("r1", name, trade["strategy_label"], action, entry, risk,
+                                        state.get("balance", INITIAL_BALANCE), subscribers, message_ids)
+                if kind == "r2" and stage < 2:
+                    stage = 2
+                    send_stage_telegram("r2", name, trade["strategy_label"], action, entry, risk,
+                                        state.get("balance", INITIAL_BALANCE), subscribers, message_ids)
+                if kind == "stop":
+                    if stage == 0:
+                        result = ("sl", "loss", -1.0, sl, times[i])
+                    elif stage == 1:
+                        result = ("breakeven", "breakeven", 0.0, entry, times[i])
+                    else:
+                        result = ("be_remainder", "win", PARTIAL_FRACTION * TARGET_R, entry, times[i])
+                    break
+            if result:
                 break
 
+            if stage == 2:
+                if action == "BUY":
+                    crossed = closes[i - 1] >= ema_exit[i - 1] and closes[i] < ema_exit[i]
+                else:
+                    crossed = closes[i - 1] <= ema_exit[i - 1] and closes[i] > ema_exit[i]
+                if crossed:
+                    exit_price = float(row["close"])
+                    r_rest = sign * (exit_price - entry) / risk
+                    r_total = PARTIAL_FRACTION * TARGET_R + (1 - PARTIAL_FRACTION) * r_rest
+                    outcome = "win" if r_total > 0 else "loss" if r_total < 0 else "breakeven"
+                    result = ("ema", outcome, r_total, exit_price, times[i])
+                    break
+
         if result is None:
+            trade["stage"] = stage
             trade["last_time"] = str(times[-1])
             still_pending.append(trade)
             continue
@@ -529,10 +682,9 @@ def check_pending_trades(name, df, state):
         pips = r_total * risk / _pip_size(name)
 
         send_outcome_telegram(
-            name, trade["strategy_label"], action, entry, exit_price, sl, outcome,
-            reason, r_total, pips, pnl, pct, balance_after, subscribers, message_ids
+            name, trade["strategy_label"], action, entry, exit_price, sl, outcome, reason,
+            r_total, pips, pnl, pct, balance_after, subscribers, message_ids
         )
-
         state.setdefault("trade_history", []).append({
             "symbol": name,
             "strategy_label": trade["strategy_label"],
@@ -541,8 +693,6 @@ def check_pending_trades(name, df, state):
             "reason": reason,
             "entry": entry,
             "exit": exit_price,
-            "sl": sl,
-            "tp": tp,
             "r": round(r_total, 4),
             "pips": round(pips, 2),
             "pnl_usd": round(pnl, 4),
@@ -550,16 +700,13 @@ def check_pending_trades(name, df, state):
             "entry_time": trade["entry_time"],
             "resolved_time": str(exit_time),
         })
-
-        print(
-            f"[{name}][{trade['strategy_label']}] Trade opened "
-            f"{trade['entry_time']} closed ({reason}): "
-            f"{outcome.upper()} {r_total:+.2f}R, {_money(pnl)}, "
-            f"balance ${balance_after:.2f}"
-        )
+        print(f"[{name}][{trade['strategy_label']}] Trade opened {trade['entry_time']} "
+              f"closed ({reason}): {outcome.upper()} {r_total:+.2f}R, {_money(pnl)}, balance ${balance_after:.2f}")
 
     state["pending_trades"] = still_pending
 
+
+# ---------------------------------------------------------------------------
 # Periodic performance reports (daily / weekly / monthly / yearly)
 # ---------------------------------------------------------------------------
 def build_report_text(title, trades, start_balance=None):
@@ -709,6 +856,24 @@ def _send_reply(text, subscribers, message_ids=None):
             print(f"  -> Failed to send to {chat_id}: {e}")
 
 
+def send_stage_telegram(kind, symbol, strategy_label, action, entry, risk, balance,
+                        subscribers, message_ids=None):
+    """kind='r1' -> 1:1 reached. kind='r2' -> 1:2 reached."""
+    if kind == "r1":
+        text = (
+            f"🛡 BREAKEVEN NOW ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"Move SL to entry: {entry:.2f}"
+        )
+    else:
+        text = (
+            f"🎯 PARTIAL CLOSE NOW ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"Close {int(PARTIAL_FRACTION * 100)}%, keep SL at entry: {entry:.2f}"
+        )
+    _send_reply(text, subscribers, message_ids)
+
+
 def _pair_text(r, usd):
     if r is None:
         return "N/A"
@@ -812,12 +977,11 @@ def save_state(state):
 
 
 # ---------------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 STRATEGIES = [
-    ("order_block", "LuxAlgo Order Block 50% Entry", compute_order_block_signal),
+    ("rf_scalper", "Range Filter + Scalper Pro", compute_black_shadow_signal),
+    ("consol", "Consolidation Breakout", compute_consolidation_break_signal),
 ]
 
 
@@ -832,31 +996,37 @@ def process_symbol(name, fetch_fn, state):
         print(f"[{name}] Market appears closed/inactive (flat candles) -- skipping")
         return
 
-    # First resolve previously-sent Order Block signals.
+    # First check if any previously-sent signal has now hit SL or TP
     try:
         check_pending_trades(name, df, state)
     except Exception as e:
         print(f"[{name}] ERROR while tracking open trades: {e}")
 
+    # Trend filter: above EMA(70) -> BUY entries only, below it -> SELL entries only
+    trend_ema = ema(df["close"], EMA_EXIT_LEN)
+    current_close = df["close"].iloc[-1]
+    current_trend_ema = trend_ema.iloc[-1]
+
     for key_suffix, label, strategy_fn in STRATEGIES:
         try:
             action, entry, sl, tp, candle_time = strategy_fn(df)
 
+            if action == "BUY" and current_close < current_trend_ema:
+                print(f"[{name}][{label}] BUY signal rejected -- price below EMA({EMA_EXIT_LEN}) trend filter")
+                action = None
+            elif action == "SELL" and current_close > current_trend_ema:
+                print(f"[{name}][{label}] SELL signal rejected -- price above EMA({EMA_EXIT_LEN}) trend filter")
+                action = None
+
             if is_market_stale(candle_time):
-                print(
-                    f"[{name}][{label}] Market appears closed "
-                    f"(last candle: {candle_time}) -- skipping"
-                )
+                print(f"[{name}][{label}] Market appears closed (last candle: {candle_time}) -- skipping")
                 continue
 
             state_key = f"{name}_{key_suffix}"
             candle_key = str(candle_time)
 
             if action and state.get(state_key) != candle_key:
-                message_ids = send_telegram(
-                    name, action, entry, sl, tp, candle_time,
-                    state.get("subscribers", []), label
-                )
+                message_ids = send_telegram(name, action, entry, sl, tp, candle_time, state.get("subscribers", []), label)
                 state[state_key] = candle_key
                 state.setdefault("pending_trades", []).append({
                     "symbol": name,
@@ -864,16 +1034,11 @@ def process_symbol(name, fetch_fn, state):
                     "action": action,
                     "entry": entry,
                     "sl": sl,
-                    "tp": tp,
                     "entry_time": str(candle_time),
-                    "last_time": str(candle_time),
                     "message_ids": message_ids,
                 })
-                print(
-                    f"[{name}][{label}] Sent {action} signal at "
-                    f"{candle_time}: entry={entry:.2f}, SL={sl:.2f}, TP={tp:.2f} "
-                    f"to {len(state.get('subscribers', []))} subscriber(s)"
-                )
+                print(f"[{name}][{label}] Sent {action} signal at {candle_time} "
+                      f"to {len(state.get('subscribers', []))} subscriber(s)")
             else:
                 print(f"[{name}][{label}] No new signal (last candle: {candle_time})")
         except Exception as e:
