@@ -69,10 +69,11 @@ PO3_RANGE_WIN = 20            # Donchian window for compression & range anchorin
 PO3_PIVOT_LR = 3              # pivot left/right strength
 PO3_PIVOT_CAP = 60            # max stored confirmed pivots per side
 PO3_COOLDOWN_BARS = 10        # debounce between a cycle end and the next range
-PO3_USE_TREND_FILTER = False  # the original indicator has no EMA70 filter, so none is applied
+PO3_USE_TREND_FILTER = False  # the original indicator has no EMA30 filter, so none is applied
 
 # ---- Exit rule & reporting ----
-EMA_EXIT_LEN = 70             # for the last 25%: exit when price closes back across this EMA
+TREND_EMA_LEN = 70            # entry trend filter: above -> BUY only, below -> SELL only
+EMA_EXIT_LEN = 30             # for the last 25%: exit when price closes back across this EMA
 PIP_SIZE = {"XAU/USD": 0.1, "BTCUSDT": 1.0}  # price move counted as 1 pip (adjust if yours differs)
 INITIAL_BALANCE = 100.0       # demo account balance (accounting only, no real orders)
 LOT_SIZE = 0.01               # every entry uses this lot size
@@ -1261,7 +1262,7 @@ def process_symbol(name, fetch_fn, state):
         print(f"[{name}] ERROR while tracking open trades: {e}")
 
     # Trend filter: above EMA(70) -> BUY entries only, below it -> SELL entries only
-    trend_ema = ema(df["close"], EMA_EXIT_LEN)
+    trend_ema = ema(df["close"], TREND_EMA_LEN)
     current_close = df["close"].iloc[-1]
     current_trend_ema = trend_ema.iloc[-1]
 
@@ -1271,10 +1272,10 @@ def process_symbol(name, fetch_fn, state):
 
             if use_trend_filter:
                 if action == "BUY" and current_close < current_trend_ema:
-                    print(f"[{name}][{label}] BUY signal rejected -- price below EMA({EMA_EXIT_LEN}) trend filter")
+                    print(f"[{name}][{label}] BUY signal rejected -- price below EMA({TREND_EMA_LEN}) trend filter")
                     action = None
                 elif action == "SELL" and current_close > current_trend_ema:
-                    print(f"[{name}][{label}] SELL signal rejected -- price above EMA({EMA_EXIT_LEN}) trend filter")
+                    print(f"[{name}][{label}] SELL signal rejected -- price above EMA({TREND_EMA_LEN}) trend filter")
                     action = None
 
             if is_market_stale(candle_time):
