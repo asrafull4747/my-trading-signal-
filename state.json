@@ -19,7 +19,7 @@
         "7100834953": 1775
       },
       "stage": 1,
-      "last_time": "2026-10-05 22:42:00+00:00"
+      "last_time": "2026-10-05 22:45:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -33,21 +33,7 @@
         "7100834953": 1785
       },
       "stage": 1,
-      "last_time": "2026-10-05 22:42:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 4142.58334,
-      "sl": 4139.58687,
-      "entry_time": "2026-10-05 22:00:00+00:00",
-      "message_ids": {
-        "6338570227": 1794,
-        "7100834953": 1795
-      },
-      "stage": 1,
-      "last_time": "2026-10-05 22:42:00+00:00"
+      "last_time": "2026-10-05 22:45:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-05 22:00:00+00:00",
@@ -3122,6 +3108,21 @@
       "balance_after": -12.1788,
       "entry_time": "2026-10-05 19:06:00+00:00",
       "resolved_time": "2026-10-05 22:00:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 4142.58334,
+      "exit": 4142.58334,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": -12.1788,
+      "entry_time": "2026-10-05 22:00:00+00:00",
+      "resolved_time": "2026-10-05 22:45:00+00:00"
     }
   ],
   "balance": -12.178802721331916,
