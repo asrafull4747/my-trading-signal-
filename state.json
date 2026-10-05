@@ -6,36 +6,7 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 85326.2,
-      "sl": 85200.1,
-      "entry_time": "2026-10-04 16:39:00+00:00",
-      "message_ids": {
-        "6338570227": 1660,
-        "7100834953": 1661
-      },
-      "stage": 2,
-      "last_time": "2026-10-05 00:27:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 85585.0,
-      "sl": 85378.0,
-      "entry_time": "2026-10-04 20:33:00+00:00",
-      "message_ids": {
-        "6338570227": 1670,
-        "7100834953": 1671
-      },
-      "stage": 2,
-      "last_time": "2026-10-05 00:27:00+00:00"
-    }
-  ],
+  "pending_trades": [],
   "XAU/USD_rf_scalper": "2026-10-02 19:30:00+00:00",
   "BTCUSDT_rf_scalper": "2026-10-04 23:03:00+00:00",
   "XAU/USD_consol": "2026-10-02 14:48:00+00:00",
@@ -2778,7 +2749,37 @@
       "balance_after": 28.0441,
       "entry_time": "2026-10-04 23:03:00+00:00",
       "resolved_time": "2026-10-04 23:36:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 85326.2,
+      "exit": 86224.5,
+      "r": 3.2809,
+      "pips": 413.72,
+      "pnl_usd": 4.1372,
+      "balance_after": 32.1813,
+      "entry_time": "2026-10-04 16:39:00+00:00",
+      "resolved_time": "2026-10-05 00:30:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 85585.0,
+      "exit": 86224.5,
+      "r": 2.2723,
+      "pips": 470.38,
+      "pnl_usd": 4.7038,
+      "balance_after": 36.8851,
+      "entry_time": "2026-10-04 20:33:00+00:00",
+      "resolved_time": "2026-10-05 00:30:00+00:00"
     }
   ],
-  "balance": 28.044065000002234
+  "balance": 36.88506500000211
 }
