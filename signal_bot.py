@@ -1,6 +1,6 @@
 """
 Multi-Strategy Signal Bot
-Runs two independent signal engines side by side for each symbol:
+Runs three independent signal engines side by side for each symbol:
 
   1. Black Shadow Trader (merged) -- Range Filter trend + Scalper Pro
      pivot breakout, confirmed by trend direction.
@@ -9,6 +9,11 @@ Runs two independent signal engines side by side for each symbol:
      candle CLOSES outside that range (a wick poking out and closing back
      inside does NOT count). SL = opposite side of the consolidation box,
      TP = 1:2 risk:reward.
+  3. AMD Po3 (Accumulation -> Manipulation -> Distribution) -- python port
+     of the "AMD Po3 with Live Edge Stats" Pine indicator. Detects a
+     compressed range, waits for one side to be swept (liquidity grab) and
+     for price to RETURN inside the range, then enters in the opposite
+     direction. SL = beyond the sweep extreme + ATR buffer.
 
 Checks BTC (via Kraken, free) and XAU/USD (via Twelve Data, free tier).
 Sends BUY/SELL alerts with Entry/SL/TP to all Telegram subscribers.
@@ -17,6 +22,7 @@ Designed to run every 5 minutes (via GitHub Actions + an external cron trigger).
 
 import os
 import json
+import math
 import requests
 import pandas as pd
 import numpy as np
@@ -44,6 +50,26 @@ CANDLE_CONFIRM_BARS = 4       # min. consecutive consolidating candles
 COMPRESSION_BODY_MAX = 0.5    # body must be < 50% of the candle's range
 COMPRESSION_ATR_LEN = 4
 BREAKOUT_TARGET_MULT = 2.0    # 1:2 risk:reward, same as the other strategy
+
+# ---- Strategy 3: AMD Po3 (port of "AMD Po3 with Live Edge Stats") ----
+# All values below are the ORIGINAL indicator defaults -- do not change.
+PO3_MIN_RANGE_BARS = 12       # min range maturity; a breach before this age = reset, not a sweep
+PO3_MAX_RANGE_BARS = 96       # range expires after this many bars without a sweep
+PO3_COMPRESSION_PCT = 25      # Donchian(20) width must be in the bottom N% of its distribution
+PO3_STAT_WINDOW = 200         # distribution window for the width percentile
+PO3_RANGE_TOLERANCE = 0.10    # boundaries may "breathe" by this fraction of range width
+PO3_MIN_RANGE_WIDTH_PCT = 0.15  # min range width, % of price
+PO3_TRIM_TAIL_PCT = 15        # impulse-tail trim, % of width
+PO3_SWEEP_RETURN_BARS = 6     # close must return inside the range within N bars, else BREAKOUT
+PO3_SWEEP_DEPTH_PCT = 100     # soft depth cap (True Range percentile); 100 = off
+PO3_STOP_BUF_ATR = 0.4        # stop buffer beyond the sweep extreme, x ATR(14) before the range
+PO3_FIB_EXT = 1.5             # fib extension target of the manipulation leg (informational)
+PO3_DIST_TIMEOUT_BARS = 64    # distribution closes as TIMEOUT after N bars (only matters for FSM replay)
+PO3_RANGE_WIN = 20            # Donchian window for compression & range anchoring
+PO3_PIVOT_LR = 3              # pivot left/right strength
+PO3_PIVOT_CAP = 60            # max stored confirmed pivots per side
+PO3_COOLDOWN_BARS = 10        # debounce between a cycle end and the next range
+PO3_USE_TREND_FILTER = False  # the original indicator has no EMA70 filter, so none is applied
 
 # ---- Exit rule & reporting ----
 EMA_EXIT_LEN = 70             # for the last 25%: exit when price closes back across this EMA
@@ -400,6 +426,236 @@ def compute_consolidation_break_signal(df):
     candle_time = df.iloc[-1]["time"]
     if triggered_action and triggered_bar == n - 1:
         return triggered_action, triggered_entry, triggered_sl, triggered_tp, candle_time
+    return None, None, None, None, candle_time
+
+
+# ---------------------------------------------------------------------------
+# Strategy 3: AMD Po3 (Accumulation -> Manipulation -> Distribution)
+# ---------------------------------------------------------------------------
+def compute_po3_signal(df):
+    """
+    Python port of the "AMD Po3 with Live Edge Stats" Pine indicator (default
+    settings: pivot boundaries, HTF-bias / killzone / EQH-EQL filters OFF, so the
+    re-arm logic is inert and omitted). The full state machine is replayed over
+    the candle history; a signal is returned only if the distribution opened on
+    the LAST closed candle.
+
+      idle  -> accum   : Donchian(20) width in the bottom N% of its distribution
+                         -> a range is anchored (impulse tail trimmed, pivot bounds)
+      accum -> sweep   : price breaches a boundary (beyond tolerance) after the
+                         range is mature
+      sweep -> manip   : a close returns INSIDE the range within N bars (the sweep
+                         was a liquidity grab, not a breakout)
+      manip -> dist    : signal opens in the OPPOSITE direction
+                         (low swept -> BUY, high swept -> SELL)
+      dist  -> idle    : target / stop / timeout (only needed to keep the replay
+                         faithful, so a new cycle cannot start while one is live)
+
+    Entry  = close of the return bar
+    SL     = beyond the full sweep excursion +/- PO3_STOP_BUF_ATR x ATR(14)
+    Target = fib extension of the manipulation leg (0 = sweep tip, 1 = opposite
+             boundary, target = PO3_FIB_EXT). The bot's own 1:1 / 1:2 / EMA exit
+             rules manage the trade, same as the other strategies.
+    """
+    n = len(df)
+    W = PO3_RANGE_WIN
+    N = PO3_STAT_WINDOW
+    L = PO3_PIVOT_LR
+    warm = N + W  # full Donchian formation inside the stats window
+    if n < warm + 20:
+        return None, None, None, None, df.iloc[-1]["time"]
+
+    close = df["close"].to_numpy()
+    high = df["high"].to_numpy()
+    low = df["low"].to_numpy()
+
+    atr14 = np.maximum(atr(df, 14).to_numpy(), 1e-9)
+
+    prev_close = np.concatenate(([close[0]], close[:-1]))
+    tr = np.maximum.reduce([high - low, np.abs(high - prev_close), np.abs(low - prev_close)])
+
+    hi20 = pd.Series(high).rolling(W).max().to_numpy()
+    lo20 = pd.Series(low).rolling(W).min().to_numpy()
+    ch_w = hi20 - lo20
+
+    # Percentile rank of the current width among the PREVIOUS N widths (like ta.percentrank)
+    pct_rank = np.full(n, np.nan)
+    for i in range(warm, n):
+        window = ch_w[i - N:i]
+        pct_rank[i] = 100.0 * np.sum(window <= ch_w[i]) / N
+
+    # True Range percentile (nearest rank) for the optional soft depth cap
+    tr_thr = np.full(n, np.nan)
+    if PO3_SWEEP_DEPTH_PCT < 100:
+        k = max(1, int(math.ceil(PO3_SWEEP_DEPTH_PCT / 100.0 * N)))
+        for i in range(N - 1, n):
+            tr_thr[i] = np.sort(tr[i - N + 1:i + 1])[k - 1]
+
+    # Confirmed pivots (value appears at bar i, belongs to bar i-L)
+    ph_val = np.full(n, np.nan)
+    pl_val = np.full(n, np.nan)
+    for i in range(2 * L, n):
+        c = i - L
+        if high[c] == high[c - L:c + L + 1].max():
+            ph_val[i] = high[c]
+        if low[c] == low[c - L:c + L + 1].min():
+            pl_val[i] = low[c]
+
+    piv_hi, piv_lo = [], []          # (value, bar)
+
+    state = "idle"
+    last_end = -100
+    range_high = range_low = tol = None
+    range_start = expiry_anchor = 0
+    atr_anchor = 0.0
+    sweep_side = 0
+    sweep_bar = 0
+    sweep_extreme = 0.0
+    depth_cap = None
+    dist_dir = 0
+    dist_start = 0
+    entry_px = stop_px = tgt_px = 0.0
+
+    signal = None
+
+    for i in range(n):
+        # ----- pivot registry -----
+        if not np.isnan(ph_val[i]):
+            piv_hi.append((ph_val[i], i - L))
+            if len(piv_hi) > PO3_PIVOT_CAP:
+                piv_hi.pop(0)
+        if not np.isnan(pl_val[i]):
+            piv_lo.append((pl_val[i], i - L))
+            if len(piv_lo) > PO3_PIVOT_CAP:
+                piv_lo.pop(0)
+
+        have_range = range_high is not None
+        tol_band = tol if have_range else 0.0
+        inside = have_range and range_low <= close[i] <= range_high
+        breach_hi = have_range and high[i] > range_high + tol_band
+        breach_lo = have_range and low[i] < range_low - tol_band
+
+        # ================= IDLE -> ACCUMULATION =================
+        if state == "idle":
+            if (i >= warm and close[i] > 0 and not np.isnan(pct_rank[i])
+                    and pct_rank[i] <= PO3_COMPRESSION_PCT
+                    and ch_w[i] >= PO3_MIN_RANGE_WIDTH_PCT / 100.0 * close[i]
+                    and i - last_end >= PO3_COOLDOWN_BARS):
+                # impulse-tail trim: drop the oldest window bars while each one dominates the width
+                win_last = W - 1
+                t_hi, t_lo = hi20[i], lo20[i]
+                if PO3_TRIM_TAIL_PCT > 0:
+                    keep = True
+                    while keep and win_last > PO3_MIN_RANGE_BARS:
+                        hi2 = high[i - win_last + 1:i + 1].max()
+                        lo2 = low[i - win_last + 1:i + 1].min()
+                        if (t_hi - t_lo) - (hi2 - lo2) > PO3_TRIM_TAIL_PCT / 100.0 * (t_hi - t_lo):
+                            win_last -= 1
+                            t_hi, t_lo = hi2, lo2
+                        else:
+                            keep = False
+                cand_start = i - win_last
+                cand_high, cand_low = t_hi, t_lo
+                # pivot boundaries (fallback to absolute when no pivots inside the window)
+                hi_piv = [v for v, b in piv_hi if b >= cand_start]
+                lo_piv = [v for v, b in piv_lo if b >= cand_start]
+                if hi_piv:
+                    cand_high = max(hi_piv)
+                if lo_piv:
+                    cand_low = min(lo_piv)
+                cand_w = cand_high - cand_low
+                if (cand_w >= PO3_MIN_RANGE_WIDTH_PCT / 100.0 * close[i]
+                        and cand_low <= close[i] <= cand_high):
+                    range_start = cand_start
+                    expiry_anchor = cand_start
+                    range_high, range_low = cand_high, cand_low
+                    tol = cand_w * PO3_RANGE_TOLERANCE
+                    atr_anchor = atr14[max(i - win_last - 1, 0)]
+                    state = "accum"
+
+        # ================= ACCUMULATION =================
+        elif state == "accum":
+            age = i - range_start
+            if i - expiry_anchor > PO3_MAX_RANGE_BARS:
+                state, last_end = "idle", i                      # expired
+            elif breach_hi and breach_lo:
+                state, last_end = "idle", i                      # news bar
+            elif breach_hi or breach_lo:
+                side = 1 if breach_hi else -1
+                if age < PO3_MIN_RANGE_BARS:
+                    state, last_end = "idle", i                  # too young = early break, not a sweep
+                else:
+                    cap_px = None
+                    if PO3_SWEEP_DEPTH_PCT < 100:
+                        cap_px = tr_thr[i - 1] if i > 0 and not np.isnan(tr_thr[i - 1]) else tr_thr[i]
+                        if np.isnan(cap_px):
+                            cap_px = None
+                    excurs = (high[i] - range_high) if side == 1 else (range_low - low[i])
+                    if cap_px is None or excurs <= cap_px:
+                        sweep_side = side
+                        sweep_bar = i
+                        sweep_extreme = high[i] if side == 1 else low[i]
+                        depth_cap = cap_px
+                        state = "manip" if inside else "sweep"   # wick sweep: same-bar return
+                    elif not inside:
+                        state, last_end = "idle", i              # filtered breach closing outside
+            else:
+                # boundary expansion within tolerance (pivot mode)
+                if (not np.isnan(ph_val[i]) and i - L >= range_start
+                        and range_high < ph_val[i] <= range_high + tol):
+                    range_high = ph_val[i]
+                if (not np.isnan(pl_val[i]) and i - L >= range_start
+                        and range_low - tol <= pl_val[i] < range_low):
+                    range_low = pl_val[i]
+
+        # ================= SWEEP PENDING =================
+        elif state == "sweep":
+            sweep_extreme = max(sweep_extreme, high[i]) if sweep_side == 1 else min(sweep_extreme, low[i])
+            opp_breach = (low[i] < range_low - tol) if sweep_side == 1 else (high[i] > range_high + tol)
+            cur_exc = (sweep_extreme - range_high) if sweep_side == 1 else (range_low - sweep_extreme)
+            depth_bust = depth_cap is not None and cur_exc > depth_cap
+
+            if opp_breach or depth_bust:
+                state, last_end = "idle", i                      # 2-side / too deep
+            elif i - sweep_bar > PO3_SWEEP_RETURN_BARS:
+                state, last_end = "idle", i                      # breakout: no return in time
+            elif inside:
+                state = "manip"                                  # manipulation confirmed
+
+        # ================= DISTRIBUTION (outcome tracking) =================
+        elif state == "dist":
+            if i - dist_start >= 1:
+                hit_t = high[i] >= tgt_px if dist_dir == 1 else low[i] <= tgt_px
+                hit_s = low[i] <= stop_px if dist_dir == 1 else high[i] >= stop_px
+                if hit_t or hit_s or (i - dist_start >= PO3_DIST_TIMEOUT_BARS):
+                    state, last_end = "idle", i
+
+        # ================= MANIPULATION -> DISTRIBUTION OPENS =================
+        if state == "manip":
+            d = 1 if sweep_side == -1 else -1                    # low swept -> long, high swept -> short
+            e_px = close[i]
+            fib_leg = (range_high - sweep_extreme) if d == 1 else (sweep_extreme - range_low)
+            if d == 1:
+                t_px = range_high + (PO3_FIB_EXT - 1.0) * fib_leg
+                s_px = sweep_extreme - PO3_STOP_BUF_ATR * atr_anchor
+            else:
+                t_px = range_low - (PO3_FIB_EXT - 1.0) * fib_leg
+                s_px = sweep_extreme + PO3_STOP_BUF_ATR * atr_anchor
+            risk_ok = abs(e_px - s_px) > 1e-9 and ((d == 1 and s_px < e_px) or (d == -1 and s_px > e_px))
+            reward_ok = (t_px - e_px > 1e-9) if d == 1 else (e_px - t_px > 1e-9)
+            if not (risk_ok and reward_ok):
+                state, last_end = "idle", i                      # degenerate geometry, no trade
+            else:
+                dist_dir, dist_start = d, i
+                entry_px, stop_px, tgt_px = e_px, s_px, t_px
+                state = "dist"
+                if i == n - 1:
+                    signal = ("BUY" if d == 1 else "SELL", entry_px, stop_px, tgt_px)
+
+    candle_time = df.iloc[-1]["time"]
+    if signal:
+        action, entry, sl, tp = signal
+        return action, entry, sl, tp, candle_time
     return None, None, None, None, candle_time
 
 
@@ -979,9 +1235,11 @@ def save_state(state):
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+# (state key suffix, label, signal function, apply the EMA trend filter?)
 STRATEGIES = [
-    ("rf_scalper", "Range Filter + Scalper Pro", compute_black_shadow_signal),
-    ("consol", "Consolidation Breakout", compute_consolidation_break_signal),
+    ("rf_scalper", "Range Filter + Scalper Pro", compute_black_shadow_signal, True),
+    ("consol", "Consolidation Breakout", compute_consolidation_break_signal, True),
+    ("po3", "AMD Po3", compute_po3_signal, PO3_USE_TREND_FILTER),
 ]
 
 
@@ -1007,16 +1265,17 @@ def process_symbol(name, fetch_fn, state):
     current_close = df["close"].iloc[-1]
     current_trend_ema = trend_ema.iloc[-1]
 
-    for key_suffix, label, strategy_fn in STRATEGIES:
+    for key_suffix, label, strategy_fn, use_trend_filter in STRATEGIES:
         try:
             action, entry, sl, tp, candle_time = strategy_fn(df)
 
-            if action == "BUY" and current_close < current_trend_ema:
-                print(f"[{name}][{label}] BUY signal rejected -- price below EMA({EMA_EXIT_LEN}) trend filter")
-                action = None
-            elif action == "SELL" and current_close > current_trend_ema:
-                print(f"[{name}][{label}] SELL signal rejected -- price above EMA({EMA_EXIT_LEN}) trend filter")
-                action = None
+            if use_trend_filter:
+                if action == "BUY" and current_close < current_trend_ema:
+                    print(f"[{name}][{label}] BUY signal rejected -- price below EMA({EMA_EXIT_LEN}) trend filter")
+                    action = None
+                elif action == "SELL" and current_close > current_trend_ema:
+                    print(f"[{name}][{label}] SELL signal rejected -- price above EMA({EMA_EXIT_LEN}) trend filter")
+                    action = None
 
             if is_market_stale(candle_time):
                 print(f"[{name}][{label}] Market appears closed (last candle: {candle_time}) -- skipping")
