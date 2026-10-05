@@ -19,21 +19,7 @@
         "7100834953": 1775
       },
       "stage": 1,
-      "last_time": "2026-10-05 22:45:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 4141.77681,
-      "sl": 4138.53938,
-      "entry_time": "2026-10-05 20:21:00+00:00",
-      "message_ids": {
-        "6338570227": 1784,
-        "7100834953": 1785
-      },
-      "stage": 1,
-      "last_time": "2026-10-05 22:45:00+00:00"
+      "last_time": "2026-10-05 22:48:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-05 22:00:00+00:00",
@@ -3123,6 +3109,21 @@
       "balance_after": -12.1788,
       "entry_time": "2026-10-05 22:00:00+00:00",
       "resolved_time": "2026-10-05 22:45:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 4141.77681,
+      "exit": 4141.77681,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": -12.1788,
+      "entry_time": "2026-10-05 20:21:00+00:00",
+      "resolved_time": "2026-10-05 22:48:00+00:00"
     }
   ],
   "balance": -12.178802721331916,
