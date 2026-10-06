@@ -6,22 +6,7 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "AMD Po3",
-      "action": "SELL",
-      "entry": 85921.2,
-      "sl": 86147.01126126069,
-      "entry_time": "2026-10-06 01:15:00+00:00",
-      "message_ids": {
-        "6338570227": 1830,
-        "7100834953": 1831
-      },
-      "stage": 2,
-      "last_time": "2026-10-06 02:18:00+00:00"
-    }
-  ],
+  "pending_trades": [],
   "XAU/USD_rf_scalper": "2026-10-06 00:48:00+00:00",
   "BTCUSDT_rf_scalper": "2026-10-06 01:00:00+00:00",
   "XAU/USD_consol": "2026-10-05 23:06:00+00:00",
@@ -3214,9 +3199,24 @@
       "balance_after": -22.5191,
       "entry_time": "2026-10-05 18:54:00+00:00",
       "resolved_time": "2026-10-06 01:45:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 85921.2,
+      "exit": 85723.6,
+      "r": 1.7188,
+      "pips": 388.12,
+      "pnl_usd": 3.8812,
+      "balance_after": -18.638,
+      "entry_time": "2026-10-06 01:15:00+00:00",
+      "resolved_time": "2026-10-06 02:21:00+00:00"
     }
   ],
-  "balance": -22.519130806639435,
+  "balance": -18.637961887729062,
   "XAU/USD_po3": "2026-10-05 19:06:00+00:00",
   "BTCUSDT_po3": "2026-10-06 01:15:00+00:00"
 }
