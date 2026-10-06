@@ -19,35 +19,7 @@
         "7100834953": 1873
       },
       "stage": 1,
-      "last_time": "2026-10-06 13:30:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "AMD Po3",
-      "action": "SELL",
-      "entry": 86239.9,
-      "sl": 86412.23353060373,
-      "entry_time": "2026-10-06 12:15:00+00:00",
-      "message_ids": {
-        "6338570227": 1900,
-        "7100834953": 1901
-      },
-      "stage": 1,
-      "last_time": "2026-10-06 13:30:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 86102.5,
-      "sl": 86311.9,
-      "entry_time": "2026-10-06 13:06:00+00:00",
-      "message_ids": {
-        "6338570227": 1904,
-        "7100834953": 1905
-      },
-      "stage": 0,
-      "last_time": "2026-10-06 13:30:00+00:00"
+      "last_time": "2026-10-06 13:33:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -61,7 +33,7 @@
         "7100834953": 1911
       },
       "stage": 0,
-      "last_time": "2026-10-06 13:30:00+00:00"
+      "last_time": "2026-10-06 13:33:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-06 13:18:00+00:00",
@@ -3421,9 +3393,39 @@
       "balance_after": -13.4868,
       "entry_time": "2026-10-06 11:15:00+00:00",
       "resolved_time": "2026-10-06 13:27:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 86239.9,
+      "exit": 86239.9,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": -13.4868,
+      "entry_time": "2026-10-06 12:15:00+00:00",
+      "resolved_time": "2026-10-06 13:33:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 86102.5,
+      "exit": 86311.9,
+      "r": -1.0,
+      "pips": -209.4,
+      "pnl_usd": -2.094,
+      "balance_after": -15.5808,
+      "entry_time": "2026-10-06 13:06:00+00:00",
+      "resolved_time": "2026-10-06 13:33:00+00:00"
     }
   ],
-  "balance": -13.48676892084509,
+  "balance": -15.580768920845031,
   "XAU/USD_po3": "2026-10-06 10:18:00+00:00",
   "BTCUSDT_po3": "2026-10-06 12:15:00+00:00"
 }
