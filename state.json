@@ -19,21 +19,7 @@
         "7100834953": 2023
       },
       "stage": 1,
-      "last_time": "2026-10-07 10:51:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 4123.22723,
-      "sl": 4127.45584,
-      "entry_time": "2026-10-07 08:57:00+00:00",
-      "message_ids": {
-        "6338570227": 2024,
-        "7100834953": 2025
-      },
-      "stage": 2,
-      "last_time": "2026-10-07 10:51:00+00:00"
+      "last_time": "2026-10-07 10:54:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -47,7 +33,7 @@
         "7100834953": 2029
       },
       "stage": 0,
-      "last_time": "2026-10-07 10:51:00+00:00"
+      "last_time": "2026-10-07 10:54:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-07 10:06:00+00:00",
@@ -3752,9 +3738,24 @@
       "balance_after": -24.2415,
       "entry_time": "2026-10-07 10:15:00+00:00",
       "resolved_time": "2026-10-07 10:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 4123.22723,
+      "exit": 4117.8814,
+      "r": 1.8161,
+      "pips": 76.79,
+      "pnl_usd": 7.6794,
+      "balance_after": -16.5621,
+      "entry_time": "2026-10-07 08:57:00+00:00",
+      "resolved_time": "2026-10-07 10:54:00+00:00"
     }
   ],
-  "balance": -24.241470466486724,
+  "balance": -16.562097966487862,
   "XAU/USD_po3": "2026-10-07 10:15:00+00:00",
   "BTCUSDT_po3": "2026-10-07 05:15:00+00:00"
 }
