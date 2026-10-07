@@ -11,20 +11,6 @@
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
-      "entry": 4153.98097,
-      "sl": 4162.33091,
-      "entry_time": "2026-10-07 01:00:00+00:00",
-      "message_ids": {
-        "6338570227": 1982,
-        "7100834953": 1983
-      },
-      "stage": 2,
-      "last_time": "2026-10-07 06:39:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
       "entry": 4127.95041,
       "sl": 4137.36036,
       "entry_time": "2026-10-07 06:00:00+00:00",
@@ -33,7 +19,7 @@
         "7100834953": 2007
       },
       "stage": 0,
-      "last_time": "2026-10-07 06:39:00+00:00"
+      "last_time": "2026-10-07 06:42:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -47,7 +33,7 @@
         "7100834953": 2009
       },
       "stage": 0,
-      "last_time": "2026-10-07 06:39:00+00:00"
+      "last_time": "2026-10-07 06:42:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-07 06:00:00+00:00",
@@ -3677,9 +3663,24 @@
       "balance_after": -28.2013,
       "entry_time": "2026-10-07 05:15:00+00:00",
       "resolved_time": "2026-10-07 05:21:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 4153.98097,
+      "exit": 4134.10313,
+      "r": 2.0951,
+      "pips": 174.94,
+      "pnl_usd": 17.4944,
+      "balance_after": -10.7069,
+      "entry_time": "2026-10-07 01:00:00+00:00",
+      "resolved_time": "2026-10-07 06:42:00+00:00"
     }
   ],
-  "balance": -28.201274211787016,
+  "balance": -10.706904211787123,
   "XAU/USD_po3": "2026-10-07 06:06:00+00:00",
   "BTCUSDT_po3": "2026-10-07 05:15:00+00:00"
 }
