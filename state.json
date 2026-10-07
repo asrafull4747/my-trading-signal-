@@ -8,20 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 4116.76276,
-      "sl": 4107.28221,
-      "entry_time": "2026-10-07 17:06:00+00:00",
-      "message_ids": {
-        "6338570227": 2080,
-        "7100834953": 2081
-      },
-      "stage": 0,
-      "last_time": "2026-10-07 19:00:00+00:00"
-    },
-    {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
@@ -33,10 +19,22 @@
         "7100834953": 2085
       },
       "stage": 0,
-      "last_time": "2026-10-07 19:00:00+00:00"
+      "last_time": "2026-10-07 19:03:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 4105.59441,
+      "sl": 4112.51851,
+      "entry_time": "2026-10-07 19:03:00+00:00",
+      "message_ids": {
+        "6338570227": 2090,
+        "7100834953": 2091
+      }
     }
   ],
-  "XAU/USD_rf_scalper": "2026-10-07 17:06:00+00:00",
+  "XAU/USD_rf_scalper": "2026-10-07 19:03:00+00:00",
   "BTCUSDT_rf_scalper": "2026-10-07 17:24:00+00:00",
   "XAU/USD_consol": "2026-10-07 08:57:00+00:00",
   "BTCUSDT_consol": "2026-10-06 16:15:00+00:00",
@@ -3888,9 +3886,24 @@
       "balance_after": 21.1509,
       "entry_time": "2026-10-07 15:30:00+00:00",
       "resolved_time": "2026-10-07 18:39:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4116.76276,
+      "exit": 4107.28221,
+      "r": -1.0,
+      "pips": -94.81,
+      "pnl_usd": -9.4805,
+      "balance_after": 11.6704,
+      "entry_time": "2026-10-07 17:06:00+00:00",
+      "resolved_time": "2026-10-07 19:03:00+00:00"
     }
   ],
-  "balance": 21.15091955306799,
+  "balance": 11.670369553068678,
   "XAU/USD_po3": "2026-10-07 10:15:00+00:00",
   "BTCUSDT_po3": "2026-10-07 12:21:00+00:00"
 }
