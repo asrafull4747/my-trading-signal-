@@ -19,21 +19,7 @@
         "7100834953": 2157
       },
       "stage": 0,
-      "last_time": "2026-10-08 10:03:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4119.92005,
-      "sl": 4125.58369,
-      "entry_time": "2026-10-08 09:42:00+00:00",
-      "message_ids": {
-        "6338570227": 2168,
-        "7100834953": 2169
-      },
-      "stage": 0,
-      "last_time": "2026-10-08 10:03:00+00:00"
+      "last_time": "2026-10-08 10:06:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -47,7 +33,7 @@
         "7100834953": 2171
       },
       "stage": 0,
-      "last_time": "2026-10-08 10:03:00+00:00"
+      "last_time": "2026-10-08 10:06:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-08 09:42:00+00:00",
@@ -4157,9 +4143,24 @@
       "balance_after": -32.0645,
       "entry_time": "2026-10-08 08:30:00+00:00",
       "resolved_time": "2026-10-08 09:12:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4119.92005,
+      "exit": 4125.58369,
+      "r": -1.0,
+      "pips": -56.64,
+      "pnl_usd": -5.6636,
+      "balance_after": -37.7281,
+      "entry_time": "2026-10-08 09:42:00+00:00",
+      "resolved_time": "2026-10-08 10:06:00+00:00"
     }
   ],
-  "balance": -32.06447406766978,
+  "balance": -37.72811406767045,
   "XAU/USD_po3": "2026-10-08 09:51:00+00:00",
   "BTCUSDT_po3": "2026-10-07 19:27:00+00:00"
 }
