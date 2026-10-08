@@ -19,7 +19,7 @@
         "7100834953": 2183
       },
       "stage": 1,
-      "last_time": "2026-10-08 12:42:00+00:00"
+      "last_time": "2026-10-08 12:45:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -33,7 +33,7 @@
         "7100834953": 2185
       },
       "stage": 0,
-      "last_time": "2026-10-08 12:42:00+00:00"
+      "last_time": "2026-10-08 12:45:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -47,13 +47,37 @@
         "7100834953": 2189
       },
       "stage": 0,
-      "last_time": "2026-10-08 12:42:00+00:00"
+      "last_time": "2026-10-08 12:45:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 82193.0,
+      "sl": 82438.3,
+      "entry_time": "2026-10-08 12:45:00+00:00",
+      "message_ids": {
+        "6338570227": 2190,
+        "7100834953": 2191
+      }
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "entry": 82193.0,
+      "sl": 82352.2,
+      "entry_time": "2026-10-08 12:45:00+00:00",
+      "message_ids": {
+        "6338570227": 2192,
+        "7100834953": 2193
+      }
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-08 11:39:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-10-08 11:06:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-10-08 12:45:00+00:00",
   "XAU/USD_consol": "2026-10-07 08:57:00+00:00",
-  "BTCUSDT_consol": "2026-10-08 02:42:00+00:00",
+  "BTCUSDT_consol": "2026-10-08 12:45:00+00:00",
   "last_daily_report": "2026-10-08",
   "last_weekly_report": "2026-W40",
   "last_monthly_report": "2026-09",
