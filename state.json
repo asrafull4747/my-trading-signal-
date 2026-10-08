@@ -19,11 +19,23 @@
         "7100834953": 2157
       },
       "stage": 0,
-      "last_time": "2026-10-08 08:27:00+00:00"
+      "last_time": "2026-10-08 08:30:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 82802.7,
+      "sl": 83000.1,
+      "entry_time": "2026-10-08 08:30:00+00:00",
+      "message_ids": {
+        "6338570227": 2164,
+        "7100834953": 2165
+      }
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-08 07:21:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-10-08 03:03:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-10-08 08:30:00+00:00",
   "XAU/USD_consol": "2026-10-07 08:57:00+00:00",
   "BTCUSDT_consol": "2026-10-08 02:42:00+00:00",
   "last_daily_report": "2026-10-08",
