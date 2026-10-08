@@ -6,36 +6,7 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4126.09655,
-      "sl": 4133.98392,
-      "entry_time": "2026-10-08 18:18:00+00:00",
-      "message_ids": {
-        "6338570227": 2234,
-        "7100834953": 2235
-      },
-      "stage": 0,
-      "last_time": "2026-10-08 19:36:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "AMD Po3",
-      "action": "SELL",
-      "entry": 4130.65267,
-      "sl": 4133.754691365263,
-      "entry_time": "2026-10-08 19:30:00+00:00",
-      "message_ids": {
-        "6338570227": 2244,
-        "7100834953": 2245
-      },
-      "stage": 0,
-      "last_time": "2026-10-08 19:36:00+00:00"
-    }
-  ],
+  "pending_trades": [],
   "XAU/USD_rf_scalper": "2026-10-08 18:18:00+00:00",
   "BTCUSDT_rf_scalper": "2026-10-08 19:00:00+00:00",
   "XAU/USD_consol": "2026-10-07 08:57:00+00:00",
@@ -4368,9 +4339,39 @@
       "balance_after": -65.0189,
       "entry_time": "2026-10-08 19:00:00+00:00",
       "resolved_time": "2026-10-08 19:06:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4126.09655,
+      "exit": 4133.98392,
+      "r": -1.0,
+      "pips": -78.87,
+      "pnl_usd": -7.8874,
+      "balance_after": -72.9063,
+      "entry_time": "2026-10-08 18:18:00+00:00",
+      "resolved_time": "2026-10-08 19:39:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4130.65267,
+      "exit": 4133.754691365263,
+      "r": -1.0,
+      "pips": -31.02,
+      "pnl_usd": -3.102,
+      "balance_after": -76.0083,
+      "entry_time": "2026-10-08 19:30:00+00:00",
+      "resolved_time": "2026-10-08 19:39:00+00:00"
     }
   ],
-  "balance": -65.01889043125497,
+  "balance": -76.00828179651721,
   "XAU/USD_po3": "2026-10-08 19:30:00+00:00",
   "BTCUSDT_po3": "2026-10-08 12:06:00+00:00"
 }
