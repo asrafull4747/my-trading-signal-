@@ -11,20 +11,6 @@
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
-      "entry": 82373.6,
-      "sl": 82713.4,
-      "entry_time": "2026-10-08 15:03:00+00:00",
-      "message_ids": {
-        "6338570227": 2210,
-        "7100834953": 2211
-      },
-      "stage": 2,
-      "last_time": "2026-10-08 18:12:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
       "entry": 80927.0,
       "sl": 81390.0,
       "entry_time": "2026-10-08 16:48:00+00:00",
@@ -33,21 +19,7 @@
         "7100834953": 2223
       },
       "stage": 1,
-      "last_time": "2026-10-08 18:12:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 80516.8,
-      "sl": 80870.9,
-      "entry_time": "2026-10-08 17:48:00+00:00",
-      "message_ids": {
-        "6338570227": 2226,
-        "7100834953": 2227
-      },
-      "stage": 0,
-      "last_time": "2026-10-08 18:12:00+00:00"
+      "last_time": "2026-10-08 18:15:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-08 15:48:00+00:00",
@@ -4307,9 +4279,39 @@
       "balance_after": -67.5309,
       "entry_time": "2026-10-08 15:48:00+00:00",
       "resolved_time": "2026-10-08 16:15:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "ema",
+      "entry": 82373.6,
+      "exit": 80911.2,
+      "r": 2.5759,
+      "pips": 875.3,
+      "pnl_usd": 8.753,
+      "balance_after": -58.7779,
+      "entry_time": "2026-10-08 15:03:00+00:00",
+      "resolved_time": "2026-10-08 18:15:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 80516.8,
+      "exit": 80870.9,
+      "r": -1.0,
+      "pips": -354.1,
+      "pnl_usd": -3.541,
+      "balance_after": -62.3189,
+      "entry_time": "2026-10-08 17:48:00+00:00",
+      "resolved_time": "2026-10-08 18:15:00+00:00"
     }
   ],
-  "balance": -67.5308904312549,
+  "balance": -62.31889043125497,
   "XAU/USD_po3": "2026-10-08 09:51:00+00:00",
   "BTCUSDT_po3": "2026-10-08 12:06:00+00:00"
 }
