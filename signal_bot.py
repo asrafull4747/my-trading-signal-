@@ -1,6 +1,6 @@
 """
 Multi-Strategy Signal Bot
-Runs three independent signal engines side by side for each symbol:
+Runs five independent signal engines side by side for each symbol:
 
   1. Black Shadow Trader (merged) -- Range Filter trend + Scalper Pro
      pivot breakout, confirmed by trend direction.
@@ -14,10 +14,19 @@ Runs three independent signal engines side by side for each symbol:
      compressed range, waits for one side to be swept (liquidity grab) and
      for price to RETURN inside the range, then enters in the opposite
      direction. SL = beyond the sweep extreme + ATR buffer.
+  4. Order Block -- a strong impulse candle that breaks structure creates an
+     order block (the last opposite candle before it). Entry = the candle that
+     creates the block, SL = the order-block candle's low (BUY) / high (SELL),
+     TP = 1:2 risk:reward.
+  5. Range Filter Flip -- the Range Filter's Buy/Sell flip signals. SL = the
+     previous swing low (BUY) / swing high (SELL). No target: the trade is
+     closed when the OPPOSITE signal appears, and the new trade opens in the
+     new direction.
 
 Checks BTC (via Kraken, free) and XAU/USD (via Twelve Data, free tier).
 Sends BUY/SELL alerts with Entry/SL/TP to all Telegram subscribers.
-Designed to run every 5 minutes (via GitHub Actions + an external cron trigger).
+Designed to run every 3 minutes, matching the 3-minute candles (via GitHub Actions + an
+external cron-job.org trigger).
 """
 
 import os
@@ -71,6 +80,19 @@ PO3_PIVOT_CAP = 60            # max stored confirmed pivots per side
 PO3_COOLDOWN_BARS = 10        # debounce between a cycle end and the next range
 PO3_USE_TREND_FILTER = False  # the original indicator has no EMA30 filter, so none is applied
 
+# ---- Strategy 4: Order Block ----
+OB_IMPULSE_ATR = 1.0          # impulse candle body must be >= this x ATR(14) (measured before the impulse)
+OB_BOS_LOOKBACK = 10          # impulse must close beyond the high/low of the N candles before the OB candle
+OB_COOLDOWN_BARS = 5          # no new OB signal if one already fired in the last N candles
+OB_TARGET_MULT = 2.0          # 1:2 risk:reward
+OB_USE_TREND_FILTER = True    # same EMA trend filter as strategies 1 and 2
+
+# ---- Strategy 5: Range Filter Flip (Buy/Sell signals of the Pine Range Filter) ----
+RF5_PERIOD = 100              # sampling period (Pine default)
+RF5_MULT = 3.0                # range multiplier (Pine default)
+RF5_SWING_LEN = 5             # swing = pivot with N candles on each side; SL = most recent swing beyond entry
+REVERSE_EXIT_STRATEGIES = {"rf_flip"}   # no TP: closed by the opposite signal (or SL)
+
 # ---- Exit rule & reporting ----
 TREND_EMA_LEN = 70            # entry trend filter: above -> BUY only, below -> SELL only
 EMA_EXIT_LEN = 30             # for the last 25%: exit when price closes back across this EMA
@@ -81,6 +103,9 @@ CONTRACT_SIZE = {"XAU/USD": 100, "BTCUSDT": 1}  # units per 1.00 lot (gold 100 o
 BREAKEVEN_R = 1.0             # at 1:1 -> tell users to move SL to entry (risk free)
 TARGET_R = 2.0                # at 1:2 -> partial close
 PARTIAL_FRACTION = 0.75       # share of the position closed at TARGET_R
+# Strategies with a FIXED 1:2 target: the whole trade closes at 1:2 (+2R). Everything else
+# (Order Block) keeps the 1:1 breakeven -> 75% at 1:2 -> EMA exit management.
+FIXED_TARGET_STRATEGIES = {"rf_scalper", "consol", "po3"}
 
 # ===== Secrets (set as environment variables / GitHub Secrets) =====
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
@@ -661,9 +686,188 @@ def compute_po3_signal(df):
 
 
 # ---------------------------------------------------------------------------
+# Strategy 4: Order Block
+# ---------------------------------------------------------------------------
+def compute_order_block_signal(df):
+    """
+    Bullish order block: the last BEARISH candle right before a strong BULLISH
+    impulse candle. The impulse must (a) have a body >= OB_IMPULSE_ATR x ATR,
+    (b) close above the OB candle's high and (c) break structure, i.e. close above
+    the highest high of the OB_BOS_LOOKBACK candles before the OB candle.
+    Bearish order block = the mirror image.
+
+    The block is "created" when the impulse candle closes; that candle is the
+    entry candle.
+      BUY : entry = impulse close, SL = OB candle LOW,  TP = entry + 2 x risk
+      SELL: entry = impulse close, SL = OB candle HIGH, TP = entry - 2 x risk
+    Only the last closed candle can trigger (older ones are history), and a
+    cooldown stops back-to-back impulse candles from stacking signals.
+    """
+    n = len(df)
+    lb = OB_BOS_LOOKBACK
+    if n < lb + ATR_LEN + OB_COOLDOWN_BARS + 5:
+        return None, None, None, None, df.iloc[-1]["time"]
+
+    close = df["close"].to_numpy()
+    high = df["high"].to_numpy()
+    low = df["low"].to_numpy()
+    open_ = df["open"].to_numpy()
+    atr_vals = atr(df, ATR_LEN).to_numpy()
+
+    def ob_at(i):
+        """Order block created by the impulse candle i -> (action, entry, sl) or None."""
+        j = i - 1                     # candidate OB candle
+        if j - lb < 0:
+            return None
+        body = abs(close[i] - open_[i])
+        if body < OB_IMPULSE_ATR * atr_vals[j]:
+            return None
+        if close[j] < open_[j] and close[i] > open_[i] and close[i] > high[j] \
+                and close[i] > high[j - lb:j].max():
+            return "BUY", close[i], low[j]
+        if close[j] > open_[j] and close[i] < open_[i] and close[i] < low[j] \
+                and close[i] < low[j - lb:j].min():
+            return "SELL", close[i], high[j]
+        return None
+
+    candle_time = df.iloc[-1]["time"]
+    last = n - 1
+    # cooldown: an OB signal in the previous N candles blocks this one
+    for k in range(1, OB_COOLDOWN_BARS + 1):
+        if ob_at(last - k) is not None:
+            return None, None, None, None, candle_time
+
+    res = ob_at(last)
+    if res is None:
+        return None, None, None, None, candle_time
+    action, entry, sl = res
+    risk = abs(entry - sl)
+    if risk <= 0:
+        return None, None, None, None, candle_time
+    tp = entry + risk * OB_TARGET_MULT if action == "BUY" else entry - risk * OB_TARGET_MULT
+    return action, entry, sl, tp, candle_time
+
+
+# ---------------------------------------------------------------------------
+# Strategy 5: Range Filter Flip (Pine "Range Filter" Buy / Sell signals)
+# ---------------------------------------------------------------------------
+def rf_flip_signals(df):
+    """
+    Literal port of the Pine Range Filter: returns (long_sig, short_sig) boolean
+    arrays. A signal fires when the filter direction FLIPS (longCondition =
+    longCond and the previous state was short, and vice versa).
+    """
+    src = df["close"].to_numpy()
+    n = len(src)
+    diff = np.abs(np.diff(src, prepend=src[0]))
+    avrng = pd.Series(diff).ewm(span=RF5_PERIOD, adjust=False).mean().to_numpy()
+    smrng = pd.Series(avrng).ewm(span=RF5_PERIOD * 2 - 1, adjust=False).mean().to_numpy() * RF5_MULT
+
+    filt = np.zeros(n)
+    prev = 0.0                                   # Pine: nz(rngfilt[1]) = 0 on the first bar
+    for i in range(n):
+        x, r = src[i], smrng[i]
+        if x > prev:
+            cur = prev if (x - r) < prev else (x - r)
+        else:
+            cur = prev if (x + r) > prev else (x + r)
+        filt[i] = cur
+        prev = cur
+
+    upward = np.zeros(n)
+    downward = np.zeros(n)
+    for i in range(1, n):
+        if filt[i] > filt[i - 1]:
+            upward[i] = upward[i - 1] + 1
+            downward[i] = 0
+        elif filt[i] < filt[i - 1]:
+            downward[i] = downward[i - 1] + 1
+            upward[i] = 0
+        else:
+            upward[i] = upward[i - 1]
+            downward[i] = downward[i - 1]
+
+    long_sig = np.zeros(n, dtype=bool)
+    short_sig = np.zeros(n, dtype=bool)
+    cond_ini = 0
+    for i in range(1, n):
+        moved = src[i] != src[i - 1]
+        long_cond = src[i] > filt[i] and upward[i] > 0 and moved
+        short_cond = src[i] < filt[i] and downward[i] > 0 and moved
+        long_sig[i] = long_cond and cond_ini == -1
+        short_sig[i] = short_cond and cond_ini == 1
+        if long_cond:
+            cond_ini = 1
+        elif short_cond:
+            cond_ini = -1
+    return long_sig, short_sig
+
+
+def _previous_swing(df, last, side):
+    """Most recent CONFIRMED swing low (side=BUY) / swing high (side=SELL) that lies
+    beyond the entry price. Returns None if there is none."""
+    L = RF5_SWING_LEN
+    high = df["high"].to_numpy()
+    low = df["low"].to_numpy()
+    entry = df["close"].iloc[last]
+    for c in range(last - L, L - 1, -1):
+        if side == "BUY":
+            if low[c] == low[c - L:c + L + 1].min() and low[c] < entry:
+                return float(low[c])
+        else:
+            if high[c] == high[c - L:c + L + 1].max() and high[c] > entry:
+                return float(high[c])
+    return None
+
+
+def compute_rf_flip_signal(df):
+    """BUY/SELL on a Range Filter flip. SL = previous swing low (BUY) / high (SELL).
+    No take-profit -- the trade is closed by the opposite signal."""
+    n = len(df)
+    candle_time = df.iloc[-1]["time"]
+    if n < RF5_PERIOD * 2 + RF5_SWING_LEN * 2 + 10:
+        return None, None, None, None, candle_time
+    long_sig, short_sig = rf_flip_signals(df)
+    last = n - 1
+    action = "BUY" if long_sig[last] else "SELL" if short_sig[last] else None
+    if not action:
+        return None, None, None, None, candle_time
+    sl = _previous_swing(df, last, action)
+    entry = float(df["close"].iloc[last])
+    if sl is None or abs(entry - sl) <= 0:
+        return None, None, None, None, candle_time
+    return action, entry, sl, None, candle_time
+
+
+def _manage_reverse_trade(trade, df, last_time, long_sig, short_sig):
+    """Walks the new candles for a trade that has no target:
+       stop hit              -> LOSS at the stop (-1R)
+       opposite signal       -> closed at that candle's close (any R)
+    Returns (reason, outcome, r_total, exit_price, exit_time) or None."""
+    action, sl, entry = trade["action"], trade["sl"], trade["entry"]
+    risk = abs(entry - sl)
+    sign = 1 if action == "BUY" else -1
+    times = df["time"].tolist()
+    for i in range(1, len(df)):
+        if times[i] <= last_time:
+            continue
+        row = df.iloc[i]
+        stop_hit = row["low"] <= sl if action == "BUY" else row["high"] >= sl
+        if stop_hit:
+            return ("sl", "loss", -1.0, sl, times[i])
+        opposite = short_sig[i] if action == "BUY" else long_sig[i]
+        if opposite:
+            exit_price = float(row["close"])
+            r = sign * (exit_price - entry) / risk
+            outcome = "win" if r > 0 else "loss" if r < 0 else "breakeven"
+            return ("reverse", outcome, r, exit_price, times[i])
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Telegram
 # ---------------------------------------------------------------------------
-def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strategy_label):
+def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strategy_label, show_tp=False, note=""):
     """Sends the signal and returns {chat_id: message_id} so later messages
     (risk free / partial close / close) can reply to this exact message."""
     text = (
@@ -671,7 +875,9 @@ def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strat
         f"Symbol: {symbol}\n"
         f"Entry: {entry:.2f}\n"
         f"SL: {sl:.2f}\n"
-        f"Time: {candle_time}"
+        + (f"TP (1:{TARGET_R:g}): {tp:.2f}\n" if show_tp else "")
+        + f"Time: {candle_time}"
+        + (f"\n{note}" if note else "")
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     message_ids = {}
@@ -687,7 +893,7 @@ def send_telegram(symbol, action, entry, sl, tp, candle_time, subscribers, strat
 
 def send_outcome_telegram(symbol, strategy_label, action, entry, exit_price, sl, outcome, reason,
                           r, pips, pnl, pct, balance, subscribers, message_ids=None):
-    """Final message for a trade. reason: 'sl' | 'breakeven' | 'be_remainder' | 'ema'."""
+    """Final message for a trade. reason: 'sl' | 'breakeven' | 'be_remainder' | 'ema' | 'target' | 'reverse'."""
     keep = int(round((1 - PARTIAL_FRACTION) * 100))
     tail = (
         f"Result: {r:+.2f}R | {pips:+.1f} pips\n"
@@ -701,6 +907,21 @@ def send_outcome_telegram(symbol, strategy_label, action, entry, exit_price, sl,
             f"Symbol: {symbol} | {action}\n"
             f"Entry: {entry:.2f} -> Exit: {exit_price:.2f}\n"
             f"{tail}\n{tag}"
+        )
+    elif reason == "reverse":
+        tag = {"win": "✅ WIN", "loss": "❌ LOSS"}.get(outcome, "➖ BREAKEVEN")
+        text = (
+            f"🔄 OPPOSITE SIGNAL - close this trade now ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"Entry: {entry:.2f} -> Exit: {exit_price:.2f}\n"
+            f"{tail}\n{tag}"
+        )
+    elif reason == "target":
+        text = (
+            f"🎯 TARGET HIT 1:{TARGET_R:g} - close the whole trade ({strategy_label})\n"
+            f"Symbol: {symbol} | {action}\n"
+            f"Entry: {entry:.2f} -> Exit: {exit_price:.2f}\n"
+            f"{tail}\n✅ WIN"
         )
     elif reason == "be_remainder":
         text = (
@@ -731,9 +952,10 @@ def send_welcome(chat_id):
     text = (
         "✅ You're subscribed!\n"
         "You'll receive BUY/SELL signals (Entry + SL) for BTCUSDT and XAU/USD. "
-        "I'll reply to each signal: at 1:1 -> move SL to entry (risk free), "
+        "Most strategies close fully at the 1:2 target. Range Filter Flip trades close on the opposite signal. Order Block signals: "
+        "I'll reply to each one: at 1:1 -> move SL to entry (risk free), "
         f"at 1:2 -> close {int(PARTIAL_FRACTION * 100)}%, then when EMA {EMA_EXIT_LEN} "
-        f"crosses -> close the last {keep}%. Results are tracked on a ${INITIAL_BALANCE:.0f} demo "
+        f"crosses -> close the last {keep}%. Results are tracked on demo accounts - every strategy has its own ${INITIAL_BALANCE:.0f} "
         f"balance ({LOT_SIZE} lot per trade). You'll also get daily, weekly, monthly & yearly reports."
     )
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -824,7 +1046,8 @@ def _events_in_candle(action, half_level, sl, row):
 
 def check_pending_trades(name, df, state):
     """
-    Trade management, walking forward through candles that are new since the
+    Trade management (fixed-target strategies skip stage 2: the whole trade closes at 1:2),
+    walking forward through candles that are new since the
     last check (progress is stored on each trade so messages are never repeated):
 
       stage 0: SL at the original stop.
@@ -851,6 +1074,7 @@ def check_pending_trades(name, df, state):
     subscribers = state.get("subscribers", [])
 
     still_pending = []
+    rf_sig = None   # Range Filter flip signals, computed lazily for reverse-exit trades
     for trade in pending:
         if trade["symbol"] != name:
             still_pending.append(trade)
@@ -864,12 +1088,19 @@ def check_pending_trades(name, df, state):
         r1_level = entry + sign * risk * BREAKEVEN_R
         r2_level = entry + sign * risk * TARGET_R
         message_ids = trade.get("message_ids", {})
+        fixed = trade.get("fixed_target", False)   # True -> close everything at 1:2
 
         stage = trade.get("stage", 0)
         last_time = pd.to_datetime(trade.get("last_time") or trade["entry_time"], utc=True)
         result = None  # (reason, outcome, r_total, exit_price, exit_time)
 
-        for i in range(1, len(df)):
+        reverse = trade.get("mgmt") == "reverse"   # no target: closed by the opposite signal
+        if reverse:
+            if rf_sig is None:
+                rf_sig = rf_flip_signals(df)
+            result = _manage_reverse_trade(trade, df, last_time, rf_sig[0], rf_sig[1])
+
+        for i in (() if reverse else range(1, len(df))):
             if times[i] <= last_time:
                 continue
             row = df.iloc[i]
@@ -891,15 +1122,21 @@ def check_pending_trades(name, df, state):
             # order by distance from the candle's open (best guess at what came first)
             events.sort(key=lambda e: abs(e[1] - op))
 
+            has_r2 = any(k == "r2" for k, _ in events)
             for kind, _level in events:
+                if fixed and kind == "r2":
+                    result = ("target", "win", TARGET_R, r2_level, times[i])
+                    break
+                if fixed and kind == "r1" and has_r2:
+                    continue   # target is hit on this very candle - skip the breakeven message
                 if kind in ("r1", "r2") and stage < 1:
                     stage = 1
                     send_stage_telegram("r1", name, trade["strategy_label"], action, entry, risk,
-                                        state.get("balance", INITIAL_BALANCE), subscribers, message_ids)
+                                        state.setdefault("balances", {}).get(trade["strategy_label"], INITIAL_BALANCE), subscribers, message_ids)
                 if kind == "r2" and stage < 2:
                     stage = 2
                     send_stage_telegram("r2", name, trade["strategy_label"], action, entry, risk,
-                                        state.get("balance", INITIAL_BALANCE), subscribers, message_ids)
+                                        state.setdefault("balances", {}).get(trade["strategy_label"], INITIAL_BALANCE), subscribers, message_ids)
                 if kind == "stop":
                     if stage == 0:
                         result = ("sl", "loss", -1.0, sl, times[i])
@@ -932,9 +1169,11 @@ def check_pending_trades(name, df, state):
 
         reason, outcome, r_total, exit_price, exit_time = result
         pnl = r_total * risk * CONTRACT_SIZE.get(name, 1.0) * LOT_SIZE
-        balance_before = state.get("balance", INITIAL_BALANCE)
+        # every strategy has its own demo account (starts at INITIAL_BALANCE)
+        balances = state.setdefault("balances", {})
+        balance_before = balances.get(trade["strategy_label"], INITIAL_BALANCE)
         balance_after = balance_before + pnl
-        state["balance"] = balance_after
+        balances[trade["strategy_label"]] = balance_after
         pct = (pnl / balance_before * 100) if balance_before else 0.0
         pips = r_total * risk / _pip_size(name)
 
@@ -966,39 +1205,58 @@ def check_pending_trades(name, df, state):
 # ---------------------------------------------------------------------------
 # Periodic performance reports (daily / weekly / monthly / yearly)
 # ---------------------------------------------------------------------------
-def build_report_text(title, trades, start_balance=None):
-    if start_balance is None:
-        start_balance = INITIAL_BALANCE
-    if not trades:
-        return f"📊 {title}\nNo trades in this period.\nDemo balance: ${start_balance:.2f}"
+def build_report_text(title, trades, start_balances=None):
+    """start_balances: {strategy_label: balance at the start of the period}.
+    Every strategy trades its own $INITIAL_BALANCE demo account."""
+    if not start_balances:
+        start_balances = {label: INITIAL_BALANCE for _, label, _, _ in STRATEGIES}
+    total_start = sum(start_balances.values())
 
     sep = "━━━━━━━━━━━━━━━━"
+    bal_lines = []
+    total_end = 0.0
+    for label, st in start_balances.items():
+        pnl = sum(t["pnl_usd"] for t in trades
+                  if t["strategy_label"] == label and t.get("pnl_usd") is not None)
+        end = st + pnl
+        total_end += end
+        pct = (pnl / st * 100) if st else 0.0
+        bal_lines.append(f"• {label}: ${st:.2f} -> ${end:.2f} ({pct:+.2f}%)")
+    total_pct = ((total_end - total_start) / total_start * 100) if total_start else 0.0
+
+    if not trades:
+        return "\n".join([
+            f"📊 {title}", "No trades in this period.", "",
+            "Demo balances (separate account per strategy):", *bal_lines,
+        ])
+
     symbols = sorted({t["symbol"] for t in trades})
     strategies = sorted({t["strategy_label"] for t in trades})
     count_line = " | ".join(
         f"{sym}: {sum(1 for t in trades if t['symbol'] == sym)}" for sym in symbols
     )
-    period_pnl = sum(t["pnl_usd"] for t in trades if t.get("pnl_usd") is not None)
-    end_balance = start_balance + period_pnl
-    balance_pct = (period_pnl / start_balance * 100) if start_balance else 0.0
 
     parts = [
         f"📊 {title}",
         sep,
-        f"Demo balance: ${start_balance:.2f} -> ${end_balance:.2f} ({balance_pct:+.2f}%)",
+        "Demo balances (separate account per strategy):",
+        *bal_lines,
+        f"Combined: ${total_start:.2f} -> ${total_end:.2f} ({total_pct:+.2f}%)",
         f"Trades by symbol: {count_line} | Total: {len(trades)}",
         "",
-        _format_block("📌 Overall", trades, start_balance),
+        _format_block("📌 Overall (all strategies)", trades, total_start),
     ]
     for sym in symbols:
         icon = "🥇" if "XAU" in sym else "🪙"
-        parts += ["", sep, _format_block(f"{icon} {sym}", [t for t in trades if t["symbol"] == sym], start_balance)]
+        parts += ["", sep, _format_block(f"{icon} {sym} (all strategies)", [t for t in trades if t["symbol"] == sym], total_start)]
     for label in strategies:
-        parts += ["", sep, _format_block(f"🎯 {label}", [t for t in trades if t["strategy_label"] == label], start_balance)]
+        parts += ["", sep, _format_block(f"🎯 {label}", [t for t in trades if t["strategy_label"] == label],
+                                         start_balances.get(label, INITIAL_BALANCE))]
     parts += [
         "",
-        f"ℹ️ Demo account: ${INITIAL_BALANCE:.0f} start, {LOT_SIZE} lot per trade. "
-        "% = of the balance at the start of this period.",
+        f"ℹ️ Demo: each strategy has its own ${INITIAL_BALANCE:.0f} account, {LOT_SIZE} lot per trade. "
+        "Strategy blocks: % of that strategy's balance at the start of this period. "
+        "Overall / symbol blocks: % of the combined balance.",
     ]
     return "\n".join(parts)
 
@@ -1139,9 +1397,12 @@ def _pair_text(r, usd):
     return f"{r:+.2f}R ({_money(usd)})"
 
 
-def _balance_before(history, moment):
+def _balance_before(history, moment, label=None):
+    """Balance of one strategy's account (label given) at `moment`."""
     total = INITIAL_BALANCE
     for t in history:
+        if label is not None and t.get("strategy_label") != label:
+            continue
         if t.get("pnl_usd") is not None and pd.to_datetime(t["resolved_time"], utc=True) < moment:
             total += t["pnl_usd"]
     return total
@@ -1149,11 +1410,12 @@ def _balance_before(history, moment):
 
 def _send_period_report(title, history, start, end, subscribers):
     trades = _trades_in_range(history, start, end)
-    send_report_telegram(title, trades, subscribers, _balance_before(history, start))
+    starts = {label: _balance_before(history, start, label) for _, label, _, _ in STRATEGIES}
+    send_report_telegram(title, trades, subscribers, starts)
 
 
-def send_report_telegram(title, trades, subscribers, start_balance=None):
-    text = build_report_text(title, trades, start_balance)
+def send_report_telegram(title, trades, subscribers, start_balances=None):
+    text = build_report_text(title, trades, start_balances)
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     for chat_id in subscribers:
         try:
@@ -1228,6 +1490,20 @@ def load_state():
     return {}
 
 
+def _ensure_balances(state):
+    """One-time migration: split the old single balance into one account per strategy,
+    rebuilt from the trade history (each strategy starts at INITIAL_BALANCE)."""
+    if "balances" in state:
+        return
+    bal = {label: INITIAL_BALANCE for _, label, _, _ in STRATEGIES}
+    for t in state.get("trade_history", []):
+        if t.get("pnl_usd") is not None:
+            lab = t.get("strategy_label")
+            bal[lab] = bal.get(lab, INITIAL_BALANCE) + t["pnl_usd"]
+    state["balances"] = bal
+    state.pop("balance", None)
+
+
 def save_state(state):
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=2, default=str)
@@ -1241,6 +1517,8 @@ STRATEGIES = [
     ("rf_scalper", "Range Filter + Scalper Pro", compute_black_shadow_signal, True),
     ("consol", "Consolidation Breakout", compute_consolidation_break_signal, True),
     ("po3", "AMD Po3", compute_po3_signal, PO3_USE_TREND_FILTER),
+    ("order_block", "Order Block", compute_order_block_signal, OB_USE_TREND_FILTER),
+    ("rf_flip", "Range Filter Flip", compute_rf_flip_signal, False),
 ]
 
 
@@ -1285,8 +1563,17 @@ def process_symbol(name, fetch_fn, state):
             state_key = f"{name}_{key_suffix}"
             candle_key = str(candle_time)
 
+            fixed_target = key_suffix in FIXED_TARGET_STRATEGIES
+            if action and fixed_target:
+                # fixed 1:2 target for this strategy (overrides any strategy-specific target)
+                risk_px = abs(entry - sl)
+                tp = entry + risk_px * TARGET_R if action == "BUY" else entry - risk_px * TARGET_R
+
+            reverse_exit = key_suffix in REVERSE_EXIT_STRATEGIES
             if action and state.get(state_key) != candle_key:
-                message_ids = send_telegram(name, action, entry, sl, tp, candle_time, state.get("subscribers", []), label)
+                message_ids = send_telegram(name, action, entry, sl, tp, candle_time, state.get("subscribers", []), label,
+                                            show_tp=fixed_target,
+                                            note="Exit: when the opposite signal appears (or SL)" if reverse_exit else "")
                 state[state_key] = candle_key
                 state.setdefault("pending_trades", []).append({
                     "symbol": name,
@@ -1296,6 +1583,8 @@ def process_symbol(name, fetch_fn, state):
                     "sl": sl,
                     "entry_time": str(candle_time),
                     "message_ids": message_ids,
+                    "fixed_target": fixed_target,
+                    "mgmt": "reverse" if reverse_exit else None,
                 })
                 print(f"[{name}][{label}] Sent {action} signal at {candle_time} "
                       f"to {len(state.get('subscribers', []))} subscriber(s)")
@@ -1307,6 +1596,7 @@ def process_symbol(name, fetch_fn, state):
 
 def main():
     state = load_state()
+    _ensure_balances(state)
 
     subscribers = state.setdefault("subscribers", [])
     if TELEGRAM_CHAT_ID not in subscribers:
