@@ -19,7 +19,7 @@
         "7100834953": 2375
       },
       "stage": 0,
-      "last_time": "2026-10-11 18:18:00+00:00"
+      "last_time": "2026-10-11 18:21:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -33,7 +33,7 @@
         "7100834953": 2387
       },
       "stage": 0,
-      "last_time": "2026-10-11 18:18:00+00:00"
+      "last_time": "2026-10-11 18:21:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -47,7 +47,7 @@
         "7100834953": 2397
       },
       "stage": 0,
-      "last_time": "2026-10-11 18:18:00+00:00"
+      "last_time": "2026-10-11 18:21:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -63,7 +63,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-11 18:18:00+00:00"
+      "last_time": "2026-10-11 18:21:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -79,7 +79,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-11 18:18:00+00:00"
+      "last_time": "2026-10-11 18:21:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -95,23 +95,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-11 18:18:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "SELL",
-      "entry": 4195.37162,
-      "sl": 4195.99435,
-      "entry_time": "2026-10-11 18:03:00+00:00",
-      "message_ids": {
-        "6338570227": 2682,
-        "7100834953": 2683
-      },
-      "fixed_target": false,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-11 18:18:00+00:00"
+      "last_time": "2026-10-11 18:21:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-11 18:03:00+00:00",
@@ -5766,6 +5750,21 @@
       "balance_after": 97.8609,
       "entry_time": "2026-10-11 18:09:00+00:00",
       "resolved_time": "2026-10-11 18:12:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4195.37162,
+      "exit": 4195.99435,
+      "r": -1.0,
+      "pips": -6.23,
+      "pnl_usd": -0.6227,
+      "balance_after": 94.8683,
+      "entry_time": "2026-10-11 18:03:00+00:00",
+      "resolved_time": "2026-10-11 18:21:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-09 17:24:00+00:00",
@@ -5774,7 +5773,7 @@
     "Range Filter + Scalper Pro": -46.311700000000286,
     "Consolidation Breakout": 119.18170000000002,
     "AMD Po3": 91.9576299752736,
-    "Order Block": 95.49100000000011,
+    "Order Block": 94.86827000000007,
     "Range Filter Flip": 97.86091000000015
   },
   "BTCUSDT_order_block": "2026-10-11 17:33:00+00:00",
