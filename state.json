@@ -19,7 +19,7 @@
         "7100834953": 2375
       },
       "stage": 0,
-      "last_time": "2026-10-11 22:48:00+00:00"
+      "last_time": "2026-10-11 22:51:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -35,7 +35,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-11 22:48:00+00:00"
+      "last_time": "2026-10-11 22:51:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -51,7 +51,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-11 22:48:00+00:00"
+      "last_time": "2026-10-11 22:51:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -67,10 +67,38 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-11 22:48:00+00:00"
+      "last_time": "2026-10-11 22:51:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 4185.21274,
+      "sl": 4189.35903,
+      "entry_time": "2026-10-11 22:51:00+00:00",
+      "message_ids": {
+        "6338570227": 2790,
+        "7100834953": 2791
+      },
+      "fixed_target": true,
+      "mgmt": null
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "entry": 4185.21274,
+      "sl": 4187.42934,
+      "entry_time": "2026-10-11 22:51:00+00:00",
+      "message_ids": {
+        "6338570227": 2792,
+        "7100834953": 2793
+      },
+      "fixed_target": false,
+      "mgmt": null
     }
   ],
-  "XAU/USD_rf_scalper": "2026-10-11 18:03:00+00:00",
+  "XAU/USD_rf_scalper": "2026-10-11 22:51:00+00:00",
   "BTCUSDT_rf_scalper": "2026-10-11 21:03:00+00:00",
   "XAU/USD_consol": "2026-10-11 21:12:00+00:00",
   "BTCUSDT_consol": "2026-10-11 22:33:00+00:00",
@@ -6096,5 +6124,5 @@
   "BTCUSDT_order_block": "2026-10-11 21:12:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-11 21:39:00+00:00",
   "XAU/USD_rf_flip": "2026-10-11 22:45:00+00:00",
-  "XAU/USD_order_block": "2026-10-11 22:00:00+00:00"
+  "XAU/USD_order_block": "2026-10-11 22:51:00+00:00"
 }
