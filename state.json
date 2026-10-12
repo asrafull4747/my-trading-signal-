@@ -19,55 +19,7 @@
         "7100834953": 2375
       },
       "stage": 0,
-      "last_time": "2026-10-12 01:27:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 83639.3,
-      "sl": 83368.0,
-      "entry_time": "2026-10-11 23:00:00+00:00",
-      "message_ids": {
-        "6338570227": 2800,
-        "7100834953": 2801
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-12 01:27:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 4208.39191,
-      "sl": 4188.12104,
-      "entry_time": "2026-10-12 01:12:00+00:00",
-      "message_ids": {
-        "6338570227": 2864,
-        "7100834953": 2865
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-10-12 01:27:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 4209.80825,
-      "sl": 4188.12104,
-      "entry_time": "2026-10-12 01:18:00+00:00",
-      "message_ids": {
-        "6338570227": 2868,
-        "7100834953": 2869
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-10-12 01:27:00+00:00"
+      "last_time": "2026-10-12 01:30:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -83,7 +35,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-12 01:27:00+00:00"
+      "last_time": "2026-10-12 01:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "entry": 4206.63549,
+      "sl": 4216.2071,
+      "entry_time": "2026-10-12 01:30:00+00:00",
+      "message_ids": {
+        "6338570227": 2884,
+        "7100834953": 2885
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-12 01:00:00+00:00",
@@ -6368,6 +6334,51 @@
       "balance_after": 73.6282,
       "entry_time": "2026-10-12 00:21:00+00:00",
       "resolved_time": "2026-10-12 01:24:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 83639.3,
+      "exit": 83639.3,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": -76.1202,
+      "entry_time": "2026-10-11 23:00:00+00:00",
+      "resolved_time": "2026-10-12 01:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 4208.39191,
+      "exit": 4206.63549,
+      "r": -0.0866,
+      "pips": -17.56,
+      "pnl_usd": -1.7564,
+      "balance_after": 92.7732,
+      "entry_time": "2026-10-12 01:12:00+00:00",
+      "resolved_time": "2026-10-12 01:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 4209.80825,
+      "exit": 4206.63549,
+      "r": -0.1463,
+      "pips": -31.73,
+      "pnl_usd": -3.1728,
+      "balance_after": 89.6005,
+      "entry_time": "2026-10-12 01:18:00+00:00",
+      "resolved_time": "2026-10-12 01:30:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-09 17:24:00+00:00",
@@ -6377,10 +6388,10 @@
     "Consolidation Breakout": 120.47143000000023,
     "AMD Po3": 91.9576299752736,
     "Order Block": 73.62819999999866,
-    "Range Filter Flip": 94.52967000000015
+    "Range Filter Flip": 89.60048999999916
   },
   "BTCUSDT_order_block": "2026-10-12 00:21:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-12 01:24:00+00:00",
-  "XAU/USD_rf_flip": "2026-10-12 01:18:00+00:00",
+  "XAU/USD_rf_flip": "2026-10-12 01:30:00+00:00",
   "XAU/USD_order_block": "2026-10-12 01:00:00+00:00"
 }
