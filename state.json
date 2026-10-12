@@ -19,23 +19,7 @@
         "7100834953": 2375
       },
       "stage": 0,
-      "last_time": "2026-10-12 06:57:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "SELL",
-      "entry": 4183.36441,
-      "sl": 4186.90337,
-      "entry_time": "2026-10-12 06:15:00+00:00",
-      "message_ids": {
-        "6338570227": 2974,
-        "7100834953": 2975
-      },
-      "fixed_target": false,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-12 06:57:00+00:00"
+      "last_time": "2026-10-12 07:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -51,7 +35,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-12 06:57:00+00:00"
+      "last_time": "2026-10-12 07:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -67,7 +51,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-12 06:57:00+00:00"
+      "last_time": "2026-10-12 07:00:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-12 04:03:00+00:00",
@@ -6742,6 +6726,21 @@
       "balance_after": 74.953,
       "entry_time": "2026-10-12 06:06:00+00:00",
       "resolved_time": "2026-10-12 06:33:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4183.36441,
+      "exit": 4186.90337,
+      "r": -1.0,
+      "pips": -35.39,
+      "pnl_usd": -3.539,
+      "balance_after": 65.5754,
+      "entry_time": "2026-10-12 06:15:00+00:00",
+      "resolved_time": "2026-10-12 07:00:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-09 17:24:00+00:00",
@@ -6750,7 +6749,7 @@
     "Range Filter + Scalper Pro": -63.33952000000065,
     "Consolidation Breakout": 112.10573999999968,
     "AMD Po3": 91.9576299752736,
-    "Order Block": 69.1143499999982,
+    "Order Block": 65.57538999999834,
     "Range Filter Flip": 74.9530399999999
   },
   "BTCUSDT_order_block": "2026-10-12 06:15:00+00:00",
