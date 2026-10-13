@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-13 11:48:00+00:00"
+      "last_time": "2026-10-13 11:51:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,23 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-13 11:48:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "BUY",
-      "entry": 4185.84597,
-      "sl": 4182.69511,
-      "entry_time": "2026-10-13 11:09:00+00:00",
-      "message_ids": {
-        "6338570227": 3378,
-        "7100834953": 3379
-      },
-      "fixed_target": false,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-13 11:48:00+00:00"
+      "last_time": "2026-10-13 11:51:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-13 11:48:00+00:00"
+      "last_time": "2026-10-13 11:51:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -85,7 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-13 11:48:00+00:00"
+      "last_time": "2026-10-13 11:51:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -101,7 +85,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-13 11:48:00+00:00"
+      "last_time": "2026-10-13 11:51:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-13 11:45:00+00:00",
@@ -8096,6 +8080,21 @@
       "balance_after": 92.2799,
       "entry_time": "2026-10-13 11:21:00+00:00",
       "resolved_time": "2026-10-13 11:48:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 4185.84597,
+      "exit": 4185.84597,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": 46.5105,
+      "entry_time": "2026-10-13 11:09:00+00:00",
+      "resolved_time": "2026-10-13 11:51:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-13 08:36:00+00:00",
