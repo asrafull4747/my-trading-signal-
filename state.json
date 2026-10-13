@@ -21,23 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-13 12:06:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "AMD Po3",
-      "action": "SELL",
-      "entry": 4189.35695,
-      "sl": 4195.057749539572,
-      "entry_time": "2026-10-13 08:36:00+00:00",
-      "message_ids": {
-        "6338570227": 3346,
-        "7100834953": 3347
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-13 12:06:00+00:00"
+      "last_time": "2026-10-13 12:09:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-13 12:06:00+00:00"
+      "last_time": "2026-10-13 12:09:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-13 12:06:00+00:00"
+      "last_time": "2026-10-13 12:09:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -85,7 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-13 12:06:00+00:00"
+      "last_time": "2026-10-13 12:09:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -101,7 +85,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-13 12:06:00+00:00"
+      "last_time": "2026-10-13 12:09:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-13 11:45:00+00:00",
@@ -8111,6 +8095,21 @@
       "balance_after": 46.5105,
       "entry_time": "2026-10-13 11:09:00+00:00",
       "resolved_time": "2026-10-13 11:51:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 4189.35695,
+      "exit": 4189.35695,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": 94.492,
+      "entry_time": "2026-10-13 08:36:00+00:00",
+      "resolved_time": "2026-10-13 12:09:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-13 08:36:00+00:00",
