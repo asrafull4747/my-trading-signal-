@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-13 17:57:00+00:00"
+      "last_time": "2026-10-13 18:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-13 17:57:00+00:00"
+      "last_time": "2026-10-13 18:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-13 17:57:00+00:00"
+      "last_time": "2026-10-13 18:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-13 17:57:00+00:00"
+      "last_time": "2026-10-13 18:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +85,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-13 17:57:00+00:00"
+      "last_time": "2026-10-13 18:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -101,7 +101,21 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-13 17:57:00+00:00"
+      "last_time": "2026-10-13 18:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "BUY",
+      "entry": 83054.0,
+      "sl": 82841.90117994233,
+      "entry_time": "2026-10-13 18:00:00+00:00",
+      "message_ids": {
+        "6338570227": 3484,
+        "7100834953": 3485
+      },
+      "fixed_target": true,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-13 16:51:00+00:00",
@@ -8399,7 +8413,7 @@
     }
   ],
   "XAU/USD_po3": "2026-10-13 08:36:00+00:00",
-  "BTCUSDT_po3": "2026-10-13 13:30:00+00:00",
+  "BTCUSDT_po3": "2026-10-13 18:00:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -120.11041000000071,
     "Consolidation Breakout": 109.67273999999965,
