@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-13 00:00:00+00:00"
+      "last_time": "2026-10-13 00:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-13 00:00:00+00:00"
+      "last_time": "2026-10-13 00:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-13 00:00:00+00:00"
+      "last_time": "2026-10-13 00:03:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -65,6 +65,36 @@
       "message_ids": {
         "6338570227": 3208,
         "7100834953": 3209
+      },
+      "fixed_target": false,
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-13 00:03:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "entry": 81545.5,
+      "sl": 81845.6,
+      "entry_time": "2026-10-13 00:03:00+00:00",
+      "message_ids": {
+        "6338570227": 3210,
+        "7100834953": 3211
+      },
+      "fixed_target": false,
+      "mgmt": null
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "entry": 4169.04515,
+      "sl": 4175.05274,
+      "entry_time": "2026-10-13 00:03:00+00:00",
+      "message_ids": {
+        "6338570227": 3212,
+        "7100834953": 3213
       },
       "fixed_target": false,
       "mgmt": "reverse"
@@ -7503,8 +7533,8 @@
     "Order Block": 41.86204999999838,
     "Range Filter Flip": 89.45018999999914
   },
-  "BTCUSDT_order_block": "2026-10-12 20:48:00+00:00",
+  "BTCUSDT_order_block": "2026-10-13 00:03:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-12 22:33:00+00:00",
-  "XAU/USD_rf_flip": "2026-10-13 00:00:00+00:00",
+  "XAU/USD_rf_flip": "2026-10-13 00:03:00+00:00",
   "XAU/USD_order_block": "2026-10-12 23:30:00+00:00"
 }
