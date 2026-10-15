@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-15 10:18:00+00:00"
+      "last_time": "2026-10-15 10:21:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-15 10:18:00+00:00"
+      "last_time": "2026-10-15 10:21:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,23 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-15 10:18:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "AMD Po3",
-      "action": "BUY",
-      "entry": 81112.6,
-      "sl": 80910.77527212918,
-      "entry_time": "2026-10-15 10:15:00+00:00",
-      "message_ids": {
-        "6338570227": 4072,
-        "7100834953": 4073
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-15 10:18:00+00:00"
+      "last_time": "2026-10-15 10:21:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-15 08:00:00+00:00",
@@ -10314,6 +10298,21 @@
       "balance_after": 104.739,
       "entry_time": "2026-10-15 08:48:00+00:00",
       "resolved_time": "2026-10-15 10:06:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 81112.6,
+      "exit": 80910.77527212918,
+      "r": -1.0,
+      "pips": -201.82,
+      "pnl_usd": -2.0182,
+      "balance_after": 102.7208,
+      "entry_time": "2026-10-15 10:15:00+00:00",
+      "resolved_time": "2026-10-15 10:21:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-15 09:36:00+00:00",
@@ -10321,7 +10320,7 @@
   "balances": {
     "Range Filter + Scalper Pro": -63.87448999999961,
     "Consolidation Breakout": 85.41709999999988,
-    "AMD Po3": 104.73903104367855,
+    "AMD Po3": 102.72078376497025,
     "Order Block": 36.823905000001446,
     "Range Filter Flip": 56.642610000000424
   },
