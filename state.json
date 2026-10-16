@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-16 15:54:00+00:00"
+      "last_time": "2026-10-16 15:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-16 15:54:00+00:00"
+      "last_time": "2026-10-16 15:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -52,8 +52,8 @@
       },
       "fixed_target": false,
       "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-16 15:54:00+00:00"
+      "stage": 1,
+      "last_time": "2026-10-16 15:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-16 15:54:00+00:00"
+      "last_time": "2026-10-16 15:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +85,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-16 15:54:00+00:00"
+      "last_time": "2026-10-16 15:57:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-16 15:15:00+00:00",
@@ -93,7 +93,7 @@
   "XAU/USD_consol": "2026-10-15 21:51:00+00:00",
   "BTCUSDT_consol": "2026-10-15 15:33:00+00:00",
   "last_daily_report": "2026-10-16",
-  "last_weekly_report": "2026-W41",
+  "last_weekly_report": "2026-W42",
   "last_monthly_report": "2026-09",
   "last_yearly_report": "2026",
   "trade_history": [
