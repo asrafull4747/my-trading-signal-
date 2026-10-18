@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-18 19:51:00+00:00"
+      "last_time": "2026-10-18 19:54:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-18 19:51:00+00:00"
+      "last_time": "2026-10-18 19:54:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-18 19:51:00+00:00"
+      "last_time": "2026-10-18 19:54:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,7 +69,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-18 19:51:00+00:00"
+      "last_time": "2026-10-18 19:54:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +85,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-18 19:51:00+00:00"
+      "last_time": "2026-10-18 19:54:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "entry": 80733.3,
+      "sl": 81096.1,
+      "entry_time": "2026-10-18 19:54:00+00:00",
+      "message_ids": {
+        "6338570227": 4914,
+        "7100834953": 4915
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-16 18:30:00+00:00",
@@ -13072,7 +13086,7 @@
     "Range Filter Flip": 32.188299999994754
   },
   "BTCUSDT_order_block": "2026-10-18 19:39:00+00:00",
-  "BTCUSDT_rf_flip": "2026-10-18 19:24:00+00:00",
+  "BTCUSDT_rf_flip": "2026-10-18 19:54:00+00:00",
   "XAU/USD_rf_flip": "2026-10-16 14:39:00+00:00",
   "XAU/USD_order_block": "2026-10-18 18:24:00+00:00"
 }
