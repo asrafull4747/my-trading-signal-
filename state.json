@@ -21,23 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-19 03:36:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 82426.3,
-      "sl": 82169.9,
-      "entry_time": "2026-10-19 01:42:00+00:00",
-      "message_ids": {
-        "6338570227": 5026,
-        "7100834953": 5027
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-19 03:36:00+00:00"
+      "last_time": "2026-10-19 03:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-19 03:36:00+00:00"
+      "last_time": "2026-10-19 03:39:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-19 03:36:00+00:00"
+      "last_time": "2026-10-19 03:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -85,7 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-19 03:36:00+00:00"
+      "last_time": "2026-10-19 03:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -101,7 +85,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-19 03:36:00+00:00"
+      "last_time": "2026-10-19 03:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -115,7 +99,9 @@
         "7100834953": 5077
       },
       "fixed_target": false,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-10-19 03:39:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-19 03:06:00+00:00",
@@ -13630,6 +13616,21 @@
       "balance_after": 14.548,
       "entry_time": "2026-10-18 22:39:00+00:00",
       "resolved_time": "2026-10-19 02:21:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 82426.3,
+      "exit": 82426.3,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": -115.094,
+      "entry_time": "2026-10-19 01:42:00+00:00",
+      "resolved_time": "2026-10-19 03:39:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-16 17:42:00+00:00",
