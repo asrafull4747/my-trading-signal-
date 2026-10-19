@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 2,
-      "last_time": "2026-10-19 10:54:00+00:00"
+      "last_time": "2026-10-19 10:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -35,7 +35,9 @@
         "7100834953": 5221
       },
       "fixed_target": true,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-10-19 10:57:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-19 09:27:00+00:00",
