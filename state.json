@@ -21,7 +21,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-19 13:15:00+00:00"
+      "last_time": "2026-10-19 13:18:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "entry": 4159.87602,
+      "sl": 4170.31729,
+      "entry_time": "2026-10-19 13:18:00+00:00",
+      "message_ids": {
+        "6338570227": 5254,
+        "7100834953": 5255
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-19 12:00:00+00:00",
@@ -14179,6 +14193,6 @@
   },
   "BTCUSDT_order_block": "2026-10-19 10:21:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-19 11:51:00+00:00",
-  "XAU/USD_rf_flip": "2026-10-19 12:09:00+00:00",
+  "XAU/USD_rf_flip": "2026-10-19 13:18:00+00:00",
   "XAU/USD_order_block": "2026-10-19 10:45:00+00:00"
 }
