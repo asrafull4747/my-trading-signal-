@@ -8,22 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 82841.9,
-      "sl": 82643.9,
-      "entry_time": "2026-10-19 09:21:00+00:00",
-      "message_ids": {
-        "6338570227": 5192,
-        "7100834953": 5193
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-19 09:57:00+00:00"
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter + Scalper Pro",
       "action": "SELL",
@@ -37,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-19 09:57:00+00:00"
+      "last_time": "2026-10-19 10:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -51,7 +35,9 @@
         "7100834953": 5197
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-19 10:00:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-19 09:27:00+00:00",
@@ -14001,12 +13987,27 @@
       "balance_after": -1.8858,
       "entry_time": "2026-10-19 08:15:00+00:00",
       "resolved_time": "2026-10-19 08:21:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 82841.9,
+      "exit": 82643.9,
+      "r": -1.0,
+      "pips": -198.0,
+      "pnl_usd": -1.98,
+      "balance_after": -130.0781,
+      "entry_time": "2026-10-19 09:21:00+00:00",
+      "resolved_time": "2026-10-19 10:00:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-16 17:42:00+00:00",
   "BTCUSDT_po3": "2026-10-19 06:03:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -128.09807000000058,
+    "Range Filter + Scalper Pro": -130.07807000000057,
     "Consolidation Breakout": 76.67206999999952,
     "AMD Po3": 112.23642428113035,
     "Order Block": 2.0998850000023035,
