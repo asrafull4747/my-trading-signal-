@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-19 07:03:00+00:00"
+      "last_time": "2026-10-19 07:06:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-19 07:03:00+00:00"
+      "last_time": "2026-10-19 07:06:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,21 +53,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-19 07:03:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 4181.61115,
-      "sl": 4186.55279,
-      "entry_time": "2026-10-19 07:03:00+00:00",
-      "message_ids": {
-        "6338570227": 5150,
-        "7100834953": 5151
-      },
-      "fixed_target": false,
-      "mgmt": "reverse"
+      "last_time": "2026-10-19 07:06:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-19 05:18:00+00:00",
@@ -13867,6 +13853,21 @@
       "balance_after": 4.8699,
       "entry_time": "2026-10-19 06:51:00+00:00",
       "resolved_time": "2026-10-19 07:03:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4181.61115,
+      "exit": 4186.55279,
+      "r": -1.0,
+      "pips": -49.42,
+      "pnl_usd": -4.9416,
+      "balance_after": -0.0718,
+      "entry_time": "2026-10-19 07:03:00+00:00",
+      "resolved_time": "2026-10-19 07:06:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-16 17:42:00+00:00",
@@ -13876,7 +13877,7 @@
     "Consolidation Breakout": 78.09606999999946,
     "AMD Po3": 112.23642428113035,
     "Order Block": 3.55188500000242,
-    "Range Filter Flip": 4.869879999992019
+    "Range Filter Flip": -0.07176000000798766
   },
   "BTCUSDT_order_block": "2026-10-19 06:36:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-19 05:30:00+00:00",
