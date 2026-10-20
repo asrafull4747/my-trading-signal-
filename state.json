@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-20 07:09:00+00:00"
+      "last_time": "2026-10-20 07:12:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-20 07:09:00+00:00"
+      "last_time": "2026-10-20 07:12:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,23 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-20 07:09:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 4134.57138,
-      "sl": 4129.50116,
-      "entry_time": "2026-10-20 06:51:00+00:00",
-      "message_ids": {
-        "6338570227": 5512,
-        "7100834953": 5513
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-20 07:09:00+00:00"
+      "last_time": "2026-10-20 07:12:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-20 06:51:00+00:00",
@@ -14994,13 +14978,28 @@
       "balance_after": -20.6933,
       "entry_time": "2026-10-20 05:18:00+00:00",
       "resolved_time": "2026-10-20 06:39:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4134.57138,
+      "exit": 4129.50116,
+      "r": -1.0,
+      "pips": -50.7,
+      "pnl_usd": -5.0702,
+      "balance_after": 71.2778,
+      "entry_time": "2026-10-20 06:51:00+00:00",
+      "resolved_time": "2026-10-20 07:12:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-19 22:48:00+00:00",
   "BTCUSDT_po3": "2026-10-20 05:09:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -144.47763999999947,
-    "Consolidation Breakout": 76.34805999999925,
+    "Consolidation Breakout": 71.27783999999873,
     "AMD Po3": 91.54409451276165,
     "Order Block": 16.510470000002066,
     "Range Filter Flip": -20.693270000010045
