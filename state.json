@@ -6,9 +6,52 @@
     "7100834953"
   ],
   "last_update_id": 216745239,
-  "pending_trades": [],
+  "pending_trades": [
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "entry": 81700.0,
+      "sl": 81458.0,
+      "entry_time": "2026-10-20 02:45:00+00:00",
+      "message_ids": {
+        "6338570227": 5458,
+        "7100834953": 5459
+      },
+      "fixed_target": true,
+      "mgmt": null
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "entry": 81700.0,
+      "sl": 81501.3,
+      "entry_time": "2026-10-20 02:45:00+00:00",
+      "message_ids": {
+        "6338570227": 5460,
+        "7100834953": 5461
+      },
+      "fixed_target": false,
+      "mgmt": null
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "entry": 81700.0,
+      "sl": 81438.7,
+      "entry_time": "2026-10-20 02:45:00+00:00",
+      "message_ids": {
+        "6338570227": 5462,
+        "7100834953": 5463
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
+    }
+  ],
   "XAU/USD_rf_scalper": "2026-10-20 01:00:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-10-19 19:48:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-10-20 02:45:00+00:00",
   "XAU/USD_consol": "2026-10-19 21:21:00+00:00",
   "BTCUSDT_consol": "2026-10-19 15:45:00+00:00",
   "last_daily_report": "2026-10-20",
@@ -14805,8 +14848,8 @@
     "Order Block": 6.499790000002056,
     "Range Filter Flip": -32.14496000001057
   },
-  "BTCUSDT_order_block": "2026-10-19 23:06:00+00:00",
-  "BTCUSDT_rf_flip": "2026-10-20 02:06:00+00:00",
+  "BTCUSDT_order_block": "2026-10-20 02:45:00+00:00",
+  "BTCUSDT_rf_flip": "2026-10-20 02:45:00+00:00",
   "XAU/USD_rf_flip": "2026-10-20 00:18:00+00:00",
   "XAU/USD_order_block": "2026-10-20 01:00:00+00:00"
 }
