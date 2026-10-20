@@ -21,23 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-20 05:27:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "AMD Po3",
-      "action": "BUY",
-      "entry": 81961.5,
-      "sl": 81851.79157559217,
-      "entry_time": "2026-10-20 05:09:00+00:00",
-      "message_ids": {
-        "6338570227": 5480,
-        "7100834953": 5481
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-20 05:27:00+00:00"
+      "last_time": "2026-10-20 05:30:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-20 05:27:00+00:00"
+      "last_time": "2026-10-20 05:30:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-20 05:27:00+00:00"
+      "last_time": "2026-10-20 05:30:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-20 03:00:00+00:00",
@@ -14919,6 +14903,21 @@
       "balance_after": -30.325,
       "entry_time": "2026-10-20 02:45:00+00:00",
       "resolved_time": "2026-10-20 05:18:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 81961.5,
+      "exit": 81851.79157559217,
+      "r": -1.0,
+      "pips": -109.71,
+      "pnl_usd": -1.0971,
+      "balance_after": 91.5441,
+      "entry_time": "2026-10-20 05:09:00+00:00",
+      "resolved_time": "2026-10-20 05:30:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-19 22:48:00+00:00",
@@ -14926,7 +14925,7 @@
   "balances": {
     "Range Filter + Scalper Pro": -144.47763999999947,
     "Consolidation Breakout": 76.34805999999925,
-    "AMD Po3": 92.64117875683993,
+    "AMD Po3": 91.54409451276165,
     "Order Block": 10.10604000000202,
     "Range Filter Flip": -30.32496000001057
   },
