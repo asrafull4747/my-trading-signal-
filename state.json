@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-21 18:21:00+00:00"
+      "last_time": "2026-10-21 18:24:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,23 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-21 18:21:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 84475.4,
-      "sl": 84325.0,
-      "entry_time": "2026-10-21 17:18:00+00:00",
-      "message_ids": {
-        "6338570227": 6008,
-        "7100834953": 6009
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-21 18:21:00+00:00"
+      "last_time": "2026-10-21 18:24:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-21 18:21:00+00:00"
+      "last_time": "2026-10-21 18:24:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-21 18:21:00+00:00"
+      "last_time": "2026-10-21 18:24:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -101,7 +85,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-21 18:21:00+00:00"
+      "last_time": "2026-10-21 18:24:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -115,7 +99,9 @@
         "7100834953": 6025
       },
       "fixed_target": false,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-10-21 18:24:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-21 11:12:00+00:00",
@@ -16795,13 +16781,28 @@
       "balance_after": -201.7607,
       "entry_time": "2026-10-21 16:06:00+00:00",
       "resolved_time": "2026-10-21 18:03:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 84475.4,
+      "exit": 84776.19999999998,
+      "r": 2.0,
+      "pips": 300.8,
+      "pnl_usd": 3.008,
+      "balance_after": 67.6747,
+      "entry_time": "2026-10-21 17:18:00+00:00",
+      "resolved_time": "2026-10-21 18:24:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-21 15:42:00+00:00",
   "BTCUSDT_po3": "2026-10-21 11:51:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -184.26458999999974,
-    "Consolidation Breakout": 64.66666999999904,
+    "Consolidation Breakout": 67.67466999999893,
     "AMD Po3": 85.7184072100627,
     "Order Block": -5.390624999997028,
     "Range Filter Flip": -201.7607200000029
