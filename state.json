@@ -9,22 +9,6 @@
   "pending_trades": [
     {
       "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 4056.89163,
-      "sl": 4064.98277,
-      "entry_time": "2026-10-22 15:06:00+00:00",
-      "message_ids": {
-        "6338570227": 6398,
-        "7100834953": 6399
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-22 16:42:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "SELL",
       "entry": 4050.24512,
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-22 16:42:00+00:00"
+      "last_time": "2026-10-22 16:45:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-22 16:42:00+00:00"
+      "last_time": "2026-10-22 16:45:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-22 11:57:00+00:00",
@@ -17993,13 +17977,28 @@
       "balance_after": -176.7441,
       "entry_time": "2026-10-22 15:54:00+00:00",
       "resolved_time": "2026-10-22 16:39:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 4056.89163,
+      "exit": 4040.70935,
+      "r": 2.0,
+      "pips": 161.82,
+      "pnl_usd": 16.1823,
+      "balance_after": 88.9749,
+      "entry_time": "2026-10-22 15:06:00+00:00",
+      "resolved_time": "2026-10-22 16:45:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-22 16:18:00+00:00",
   "BTCUSDT_po3": "2026-10-22 12:54:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -177.65944000000152,
-    "Consolidation Breakout": 72.7926699999991,
+    "Consolidation Breakout": 88.9749499999991,
     "AMD Po3": 111.63259655148768,
     "Order Block": -30.179887499997232,
     "Range Filter Flip": -176.74408000000423
