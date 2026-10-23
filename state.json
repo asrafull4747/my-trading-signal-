@@ -19,7 +19,9 @@
         "7100834953": 6571
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-23 05:09:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -33,7 +35,9 @@
         "7100834953": 6575
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-23 05:09:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-23 03:15:00+00:00",
