@@ -9,22 +9,6 @@
   "pending_trades": [
     {
       "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 4019.47962,
-      "sl": 4030.57351,
-      "entry_time": "2026-10-23 13:45:00+00:00",
-      "message_ids": {
-        "6338570227": 6688,
-        "7100834953": 6689
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-23 14:15:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "SELL",
       "entry": 4019.47962,
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 14:15:00+00:00"
+      "last_time": "2026-10-23 14:18:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 14:15:00+00:00"
+      "last_time": "2026-10-23 14:18:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-23 13:15:00+00:00",
@@ -18983,13 +18967,28 @@
       "balance_after": -193.9245,
       "entry_time": "2026-10-23 13:21:00+00:00",
       "resolved_time": "2026-10-23 14:15:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 4019.47962,
+      "exit": 3997.29184,
+      "r": 2.0,
+      "pips": 221.88,
+      "pnl_usd": 22.1878,
+      "balance_after": 125.4426,
+      "entry_time": "2026-10-23 13:45:00+00:00",
+      "resolved_time": "2026-10-23 14:18:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 12:48:00+00:00",
   "BTCUSDT_po3": "2026-10-23 13:27:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -193.9244700000025,
-    "Consolidation Breakout": 103.25480999999965,
+    "Consolidation Breakout": 125.44258999999985,
     "AMD Po3": 100.13580064616765,
     "Order Block": -70.05723749999734,
     "Range Filter Flip": -199.5257500000031
