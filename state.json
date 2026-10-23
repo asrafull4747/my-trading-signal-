@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 00:57:00+00:00"
+      "last_time": "2026-10-23 01:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-23 00:57:00+00:00"
+      "last_time": "2026-10-23 01:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,21 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 00:57:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "BUY",
-      "entry": 4031.60438,
-      "sl": 4027.11582,
-      "entry_time": "2026-10-23 00:57:00+00:00",
-      "message_ids": {
-        "6338570227": 6500,
-        "7100834953": 6501
-      },
-      "fixed_target": false,
-      "mgmt": null
+      "last_time": "2026-10-23 01:00:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-22 23:48:00+00:00",
@@ -18292,6 +18278,21 @@
       "balance_after": -187.7153,
       "entry_time": "2026-10-22 23:48:00+00:00",
       "resolved_time": "2026-10-23 00:54:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4031.60438,
+      "exit": 4027.11582,
+      "r": -1.0,
+      "pips": -44.89,
+      "pnl_usd": -4.4886,
+      "balance_after": -44.8552,
+      "entry_time": "2026-10-23 00:57:00+00:00",
+      "resolved_time": "2026-10-23 01:00:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 00:45:00+00:00",
@@ -18300,7 +18301,7 @@
     "Range Filter + Scalper Pro": -187.71530000000163,
     "Consolidation Breakout": 88.9749499999991,
     "AMD Po3": 113.37185339147634,
-    "Order Block": -40.36667749999698,
+    "Order Block": -44.855237499997216,
     "Range Filter Flip": -179.7003200000035
   },
   "BTCUSDT_order_block": "2026-10-22 21:06:00+00:00",
