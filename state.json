@@ -21,23 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 01:57:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 4011.26396,
-      "sl": 4022.61668,
-      "entry_time": "2026-10-23 01:36:00+00:00",
-      "message_ids": {
-        "6338570227": 6518,
-        "7100834953": 6519
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-23 01:57:00+00:00"
+      "last_time": "2026-10-23 02:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 01:57:00+00:00"
+      "last_time": "2026-10-23 02:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 01:57:00+00:00"
+      "last_time": "2026-10-23 02:00:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-23 01:36:00+00:00",
@@ -18399,12 +18383,27 @@
       "balance_after": -193.4773,
       "entry_time": "2026-10-23 01:42:00+00:00",
       "resolved_time": "2026-10-23 01:54:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 4011.26396,
+      "exit": 3988.5585200000005,
+      "r": 2.0,
+      "pips": 227.05,
+      "pnl_usd": 22.7054,
+      "balance_after": -165.0099,
+      "entry_time": "2026-10-23 01:36:00+00:00",
+      "resolved_time": "2026-10-23 02:00:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 00:45:00+00:00",
   "BTCUSDT_po3": "2026-10-22 20:57:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -187.71530000000163,
+    "Range Filter + Scalper Pro": -165.0098600000019,
     "Consolidation Breakout": 88.9749499999991,
     "AMD Po3": 105.04666131902393,
     "Order Block": -46.715237499997215,
