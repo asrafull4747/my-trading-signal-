@@ -21,23 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-23 14:09:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 4023.43358,
-      "sl": 4030.57351,
-      "entry_time": "2026-10-23 13:39:00+00:00",
-      "message_ids": {
-        "6338570227": 6684,
-        "7100834953": 6685
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-23 14:09:00+00:00"
+      "last_time": "2026-10-23 14:12:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-23 14:09:00+00:00"
+      "last_time": "2026-10-23 14:12:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-23 14:09:00+00:00"
+      "last_time": "2026-10-23 14:12:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -83,7 +67,9 @@
         "7100834953": 6697
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-23 14:12:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-23 13:15:00+00:00",
@@ -18983,13 +18969,28 @@
       "balance_after": -199.5258,
       "entry_time": "2026-10-23 12:27:00+00:00",
       "resolved_time": "2026-10-23 14:09:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 4023.43358,
+      "exit": 4009.1537199999993,
+      "r": 2.0,
+      "pips": 142.8,
+      "pnl_usd": 14.2799,
+      "balance_after": 103.2548,
+      "entry_time": "2026-10-23 13:39:00+00:00",
+      "resolved_time": "2026-10-23 14:12:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 12:48:00+00:00",
   "BTCUSDT_po3": "2026-10-23 13:27:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -189.7894700000025,
-    "Consolidation Breakout": 88.9749499999991,
+    "Consolidation Breakout": 103.25480999999965,
     "AMD Po3": 100.13580064616765,
     "Order Block": -70.05723749999734,
     "Range Filter Flip": -199.5257500000031
