@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-24 12:12:00+00:00"
+      "last_time": "2026-10-24 12:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-24 12:12:00+00:00"
+      "last_time": "2026-10-24 12:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,23 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-24 12:12:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "AMD Po3",
-      "action": "BUY",
-      "entry": 80470.8,
-      "sl": 80431.97262846267,
-      "entry_time": "2026-10-24 12:00:00+00:00",
-      "message_ids": {
-        "6338570227": 6868,
-        "7100834953": 6869
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-24 12:12:00+00:00"
+      "last_time": "2026-10-24 12:15:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-23 13:15:00+00:00",
@@ -19524,6 +19508,21 @@
       "balance_after": 125.4426,
       "entry_time": "2026-10-24 11:48:00+00:00",
       "resolved_time": "2026-10-24 12:03:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 80470.8,
+      "exit": 80548.45474307468,
+      "r": 2.0,
+      "pips": 77.65,
+      "pnl_usd": 0.7765,
+      "balance_after": 107.3173,
+      "entry_time": "2026-10-24 12:00:00+00:00",
+      "resolved_time": "2026-10-24 12:15:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 18:27:00+00:00",
@@ -19531,7 +19530,7 @@
   "balances": {
     "Range Filter + Scalper Pro": -189.28147000000246,
     "Consolidation Breakout": 125.44258999999985,
-    "AMD Po3": 106.54073300196006,
+    "AMD Po3": 107.31728043270678,
     "Order Block": -69.68373749999736,
     "Range Filter Flip": -165.5534900000035
   },
