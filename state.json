@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-24 12:00:00+00:00"
+      "last_time": "2026-10-24 12:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-24 12:00:00+00:00"
+      "last_time": "2026-10-24 12:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,23 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-24 12:00:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 80504.3,
-      "sl": 80532.7,
-      "entry_time": "2026-10-24 11:48:00+00:00",
-      "message_ids": {
-        "6338570227": 6864,
-        "7100834953": 6865
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-24 12:00:00+00:00"
+      "last_time": "2026-10-24 12:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -83,7 +67,9 @@
         "7100834953": 6869
       },
       "fixed_target": true,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 1,
+      "last_time": "2026-10-24 12:03:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-23 13:15:00+00:00",
@@ -19523,6 +19509,21 @@
       "balance_after": -189.2815,
       "entry_time": "2026-10-24 08:36:00+00:00",
       "resolved_time": "2026-10-24 10:03:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 80504.3,
+      "exit": 80504.3,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": 125.4426,
+      "entry_time": "2026-10-24 11:48:00+00:00",
+      "resolved_time": "2026-10-24 12:03:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 18:27:00+00:00",
