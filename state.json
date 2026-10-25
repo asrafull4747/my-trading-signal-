@@ -9,54 +9,6 @@
   "pending_trades": [
     {
       "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 80366.1,
-      "sl": 80543.5,
-      "entry_time": "2026-10-25 12:12:00+00:00",
-      "message_ids": {
-        "6338570227": 7080,
-        "7100834953": 7081
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-10-25 13:36:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Order Block",
-      "action": "SELL",
-      "entry": 80273.9,
-      "sl": 80329.0,
-      "entry_time": "2026-10-25 13:18:00+00:00",
-      "message_ids": {
-        "6338570227": 7088,
-        "7100834953": 7089
-      },
-      "fixed_target": false,
-      "mgmt": null,
-      "stage": 2,
-      "last_time": "2026-10-25 13:36:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 80175.7,
-      "sl": 80365.1,
-      "entry_time": "2026-10-25 13:27:00+00:00",
-      "message_ids": {
-        "6338570227": 7094,
-        "7100834953": 7095
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-10-25 13:36:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
       "strategy_label": "AMD Po3",
       "action": "BUY",
       "entry": 80237.3,
@@ -67,7 +19,23 @@
         "7100834953": 7097
       },
       "fixed_target": true,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-10-25 13:39:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "entry": 80336.6,
+      "sl": 80217.3,
+      "entry_time": "2026-10-25 13:39:00+00:00",
+      "message_ids": {
+        "6338570227": 7104,
+        "7100834953": 7105
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-23 13:15:00+00:00",
@@ -20212,6 +20180,51 @@
       "balance_after": -69.4932,
       "entry_time": "2026-10-25 12:24:00+00:00",
       "resolved_time": "2026-10-25 12:48:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "reverse",
+      "entry": 80366.1,
+      "exit": 80336.6,
+      "r": 0.1663,
+      "pips": 29.5,
+      "pnl_usd": 0.295,
+      "balance_after": -157.5885,
+      "entry_time": "2026-10-25 12:12:00+00:00",
+      "resolved_time": "2026-10-25 13:39:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "be_remainder",
+      "entry": 80273.9,
+      "exit": 80273.9,
+      "r": 1.5,
+      "pips": 82.65,
+      "pnl_usd": 0.8265,
+      "balance_after": -68.6667,
+      "entry_time": "2026-10-25 13:18:00+00:00",
+      "resolved_time": "2026-10-25 13:39:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 80175.7,
+      "exit": 80336.6,
+      "r": -0.8495,
+      "pips": -160.9,
+      "pnl_usd": -1.609,
+      "balance_after": -159.1975,
+      "entry_time": "2026-10-25 13:27:00+00:00",
+      "resolved_time": "2026-10-25 13:39:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 18:27:00+00:00",
@@ -20220,11 +20233,11 @@
     "Range Filter + Scalper Pro": -191.7664700000023,
     "Consolidation Breakout": 125.44258999999985,
     "AMD Po3": 104.12841301133422,
-    "Order Block": -69.49323749999692,
-    "Range Filter Flip": -157.88349000000443
+    "Order Block": -68.66673749999684,
+    "Range Filter Flip": -159.19749000000454
   },
   "BTCUSDT_order_block": "2026-10-25 13:18:00+00:00",
-  "BTCUSDT_rf_flip": "2026-10-25 13:27:00+00:00",
+  "BTCUSDT_rf_flip": "2026-10-25 13:39:00+00:00",
   "XAU/USD_rf_flip": "2026-10-23 14:36:00+00:00",
   "XAU/USD_order_block": "2026-10-23 12:45:00+00:00"
 }
