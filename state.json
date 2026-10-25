@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 2,
-      "last_time": "2026-10-25 23:48:00+00:00"
+      "last_time": "2026-10-25 23:51:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-25 23:48:00+00:00"
+      "last_time": "2026-10-25 23:51:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,21 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-25 23:48:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 3995.58962,
-      "sl": 3994.67834,
-      "entry_time": "2026-10-25 23:48:00+00:00",
-      "message_ids": {
-        "6338570227": 7306,
-        "7100834953": 7307
-      },
-      "fixed_target": false,
-      "mgmt": "reverse"
+      "last_time": "2026-10-25 23:51:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-25 23:45:00+00:00",
@@ -20917,6 +20903,21 @@
       "balance_after": -185.1704,
       "entry_time": "2026-10-25 23:42:00+00:00",
       "resolved_time": "2026-10-25 23:48:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 3995.58962,
+      "exit": 3994.67834,
+      "r": -1.0,
+      "pips": -9.11,
+      "pnl_usd": -0.9113,
+      "balance_after": -186.0817,
+      "entry_time": "2026-10-25 23:48:00+00:00",
+      "resolved_time": "2026-10-25 23:51:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-23 18:27:00+00:00",
@@ -20926,7 +20927,7 @@
     "Consolidation Breakout": 127.5129199999995,
     "AMD Po3": 103.37983037308646,
     "Order Block": -71.62958749999656,
-    "Range Filter Flip": -185.17040000000517
+    "Range Filter Flip": -186.08168000000543
   },
   "BTCUSDT_order_block": "2026-10-25 23:15:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-25 23:42:00+00:00",
