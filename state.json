@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-27 10:12:00+00:00"
+      "last_time": "2026-10-27 10:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-27 10:12:00+00:00"
+      "last_time": "2026-10-27 10:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-27 10:12:00+00:00"
+      "last_time": "2026-10-27 10:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,23 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-27 10:12:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 4001.25292,
-      "sl": 3995.52501,
-      "entry_time": "2026-10-27 09:57:00+00:00",
-      "message_ids": {
-        "6338570227": 7896,
-        "7100834953": 7897
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-27 10:12:00+00:00"
+      "last_time": "2026-10-27 10:15:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-27 09:57:00+00:00",
@@ -22840,12 +22824,27 @@
       "balance_after": -209.3633,
       "entry_time": "2026-10-27 07:48:00+00:00",
       "resolved_time": "2026-10-27 10:06:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4001.25292,
+      "exit": 3995.52501,
+      "r": -1.0,
+      "pips": -57.28,
+      "pnl_usd": -5.7279,
+      "balance_after": -215.0912,
+      "entry_time": "2026-10-27 09:57:00+00:00",
+      "resolved_time": "2026-10-27 10:15:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-27 09:57:00+00:00",
   "BTCUSDT_po3": "2026-10-27 09:15:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -209.36327000000244,
+    "Range Filter + Scalper Pro": -215.0911800000025,
     "Consolidation Breakout": 118.88876999999985,
     "AMD Po3": 108.40239603019678,
     "Order Block": -75.56839499999705,
