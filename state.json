@@ -8,22 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 79604.2,
-      "sl": 79711.0,
-      "entry_time": "2026-10-27 04:24:00+00:00",
-      "message_ids": {
-        "6338570227": 7820,
-        "7100834953": 7821
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-27 05:00:00+00:00"
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "SELL",
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-27 05:00:00+00:00"
+      "last_time": "2026-10-27 05:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -51,7 +35,9 @@
         "7100834953": 7839
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-27 05:03:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-27 04:06:00+00:00",
@@ -22596,12 +22582,27 @@
       "balance_after": -347.3976,
       "entry_time": "2026-10-27 04:24:00+00:00",
       "resolved_time": "2026-10-27 05:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 79604.2,
+      "exit": 79711.0,
+      "r": -1.0,
+      "pips": -106.8,
+      "pnl_usd": -1.068,
+      "balance_after": -205.8413,
+      "entry_time": "2026-10-27 04:24:00+00:00",
+      "resolved_time": "2026-10-27 05:03:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-26 10:54:00+00:00",
   "BTCUSDT_po3": "2026-10-27 00:39:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -204.77327000000244,
+    "Range Filter + Scalper Pro": -205.84127000000248,
     "Consolidation Breakout": 118.88876999999985,
     "AMD Po3": 111.74037186334887,
     "Order Block": -70.2355649999971,
