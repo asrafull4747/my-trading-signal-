@@ -9,22 +9,6 @@
   "pending_trades": [
     {
       "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 4064.28659,
-      "sl": 4053.96677,
-      "entry_time": "2026-10-27 22:42:00+00:00",
-      "message_ids": {
-        "6338570227": 8066,
-        "7100834953": 8067
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-28 01:30:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "SELL",
       "entry": 4061.23026,
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-28 01:30:00+00:00"
+      "last_time": "2026-10-28 01:33:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-28 01:30:00+00:00"
+      "last_time": "2026-10-28 01:33:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-28 01:30:00+00:00"
+      "last_time": "2026-10-28 01:33:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-28 01:00:00+00:00",
@@ -23409,12 +23393,27 @@
       "balance_after": -178.0759,
       "entry_time": "2026-10-28 01:00:00+00:00",
       "resolved_time": "2026-10-28 01:24:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4064.28659,
+      "exit": 4053.96677,
+      "r": -1.0,
+      "pips": -103.2,
+      "pnl_usd": -10.3198,
+      "balance_after": -188.3958,
+      "entry_time": "2026-10-27 22:42:00+00:00",
+      "resolved_time": "2026-10-28 01:33:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-27 17:36:00+00:00",
   "BTCUSDT_po3": "2026-10-27 23:24:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -178.07594000000324,
+    "Range Filter + Scalper Pro": -188.3957600000034,
     "Consolidation Breakout": 117.06176999999988,
     "AMD Po3": 107.90719491785276,
     "Order Block": -14.62058499999658,
