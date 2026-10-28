@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-28 07:00:00+00:00"
+      "last_time": "2026-10-28 07:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-28 07:00:00+00:00"
+      "last_time": "2026-10-28 07:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,21 +53,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-28 07:00:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "SELL",
-      "entry": 4028.2825,
-      "sl": 4030.67309,
-      "entry_time": "2026-10-28 07:00:00+00:00",
-      "message_ids": {
-        "6338570227": 8184,
-        "7100834953": 8185
-      },
-      "fixed_target": false,
-      "mgmt": null
+      "last_time": "2026-10-28 07:03:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-28 05:24:00+00:00",
@@ -23647,6 +23633,21 @@
       "balance_after": -161.6407,
       "entry_time": "2026-10-28 05:24:00+00:00",
       "resolved_time": "2026-10-28 07:00:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4028.2825,
+      "exit": 4030.67309,
+      "r": -1.0,
+      "pips": -23.91,
+      "pnl_usd": -2.3906,
+      "balance_after": -4.5709,
+      "entry_time": "2026-10-28 07:00:00+00:00",
+      "resolved_time": "2026-10-28 07:03:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-27 17:36:00+00:00",
@@ -23655,7 +23656,7 @@
     "Range Filter + Scalper Pro": -161.64070000000243,
     "Consolidation Breakout": 116.36776999999994,
     "AMD Po3": 107.90719491785276,
-    "Order Block": -2.180322499995931,
+    "Order Block": -4.570912499995906,
     "Range Filter Flip": -308.60481000000556
   },
   "BTCUSDT_order_block": "2026-10-28 06:45:00+00:00",
