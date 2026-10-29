@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-29 12:30:00+00:00"
+      "last_time": "2026-10-29 12:33:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-29 12:30:00+00:00"
+      "last_time": "2026-10-29 12:33:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "entry": 79926.7,
+      "sl": 80143.6,
+      "entry_time": "2026-10-29 12:33:00+00:00",
+      "message_ids": {
+        "6338570227": 8606,
+        "7100834953": 8607
+      },
+      "fixed_target": false,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-29 11:00:00+00:00",
@@ -25023,7 +25037,7 @@
     "Order Block": -17.147004999996035,
     "Range Filter Flip": -397.9247000000066
   },
-  "BTCUSDT_order_block": "2026-10-29 08:51:00+00:00",
+  "BTCUSDT_order_block": "2026-10-29 12:33:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-29 11:27:00+00:00",
   "XAU/USD_rf_flip": "2026-10-29 12:15:00+00:00",
   "XAU/USD_order_block": "2026-10-29 08:51:00+00:00"
