@@ -8,22 +8,6 @@
   "last_update_id": 216745239,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 81005.8,
-      "sl": 81377.0,
-      "entry_time": "2026-10-29 17:03:00+00:00",
-      "message_ids": {
-        "6338570227": 8696,
-        "7100834953": 8697
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-10-29 20:00:00+00:00"
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "BUY",
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-29 20:00:00+00:00"
+      "last_time": "2026-10-29 20:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -51,7 +35,9 @@
         "7100834953": 8743
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-29 20:03:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-29 18:30:00+00:00",
@@ -25476,12 +25462,27 @@
       "balance_after": -422.7898,
       "entry_time": "2026-10-29 19:30:00+00:00",
       "resolved_time": "2026-10-29 20:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 81005.8,
+      "exit": 80263.40000000001,
+      "r": 2.0,
+      "pips": 742.4,
+      "pnl_usd": 7.424,
+      "balance_after": -229.7323,
+      "entry_time": "2026-10-29 17:03:00+00:00",
+      "resolved_time": "2026-10-29 20:03:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-29 19:09:00+00:00",
   "BTCUSDT_po3": "2026-10-29 13:15:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -237.15630000000178,
+    "Range Filter + Scalper Pro": -229.73230000000183,
     "Consolidation Breakout": 125.1726299999993,
     "AMD Po3": 114.47206762327527,
     "Order Block": -32.41100499999584,
