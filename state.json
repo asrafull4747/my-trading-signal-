@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-29 04:42:00+00:00"
+      "last_time": "2026-10-29 04:45:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-29 04:42:00+00:00"
+      "last_time": "2026-10-29 04:45:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,23 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-29 04:42:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "AMD Po3",
-      "action": "SELL",
-      "entry": 79920.5,
-      "sl": 79998.11884590817,
-      "entry_time": "2026-10-29 04:39:00+00:00",
-      "message_ids": {
-        "6338570227": 8480,
-        "7100834953": 8481
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-29 04:42:00+00:00"
+      "last_time": "2026-10-29 04:45:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-29 04:36:00+00:00",
@@ -24624,6 +24608,21 @@
       "balance_after": -359.3429,
       "entry_time": "2026-10-29 00:36:00+00:00",
       "resolved_time": "2026-10-29 02:57:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 79920.5,
+      "exit": 79998.11884590817,
+      "r": -1.0,
+      "pips": -77.62,
+      "pnl_usd": -0.7762,
+      "balance_after": 107.7148,
+      "entry_time": "2026-10-29 04:39:00+00:00",
+      "resolved_time": "2026-10-29 04:45:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-28 16:15:00+00:00",
@@ -24631,7 +24630,7 @@
   "balances": {
     "Range Filter + Scalper Pro": -179.68884000000247,
     "Consolidation Breakout": 125.1726299999993,
-    "AMD Po3": 108.49094386062643,
+    "AMD Po3": 107.71475540154468,
     "Order Block": -18.334879999996236,
     "Range Filter Flip": -359.34289000000683
   },
