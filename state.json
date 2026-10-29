@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-29 19:24:00+00:00"
+      "last_time": "2026-10-29 19:27:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-29 19:24:00+00:00"
+      "last_time": "2026-10-29 19:27:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,23 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-10-29 19:24:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "AMD Po3",
-      "action": "SELL",
-      "entry": 4011.48767,
-      "sl": 4015.464276912221,
-      "entry_time": "2026-10-29 19:09:00+00:00",
-      "message_ids": {
-        "6338570227": 8720,
-        "7100834953": 8721
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-10-29 19:24:00+00:00"
+      "last_time": "2026-10-29 19:27:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-29 18:30:00+00:00",
@@ -25404,6 +25388,21 @@
       "balance_after": -31.226,
       "entry_time": "2026-10-29 17:51:00+00:00",
       "resolved_time": "2026-10-29 19:06:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4011.48767,
+      "exit": 4015.464276912221,
+      "r": -1.0,
+      "pips": -39.77,
+      "pnl_usd": -3.9766,
+      "balance_after": 114.4721,
+      "entry_time": "2026-10-29 19:09:00+00:00",
+      "resolved_time": "2026-10-29 19:27:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-29 19:09:00+00:00",
@@ -25411,7 +25410,7 @@
   "balances": {
     "Range Filter + Scalper Pro": -235.40930000000182,
     "Consolidation Breakout": 125.1726299999993,
-    "AMD Po3": 118.44867453549635,
+    "AMD Po3": 114.47206762327527,
     "Order Block": -31.226004999995837,
     "Range Filter Flip": -432.3917000000067
   },
