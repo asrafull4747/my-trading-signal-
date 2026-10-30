@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-30 03:57:00+00:00"
+      "last_time": "2026-10-30 04:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-30 03:57:00+00:00"
+      "last_time": "2026-10-30 04:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-10-30 03:57:00+00:00"
+      "last_time": "2026-10-30 04:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,21 +69,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 2,
-      "last_time": "2026-10-30 03:57:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 78052.1,
-      "sl": 77851.2,
-      "entry_time": "2026-10-30 03:57:00+00:00",
-      "message_ids": {
-        "6338570227": 8868,
-        "7100834953": 8869
-      },
-      "fixed_target": true,
-      "mgmt": null
+      "last_time": "2026-10-30 04:00:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-30 03:09:00+00:00",
@@ -25868,13 +25854,28 @@
       "balance_after": -434.2222,
       "entry_time": "2026-10-30 01:57:00+00:00",
       "resolved_time": "2026-10-30 02:33:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 78052.1,
+      "exit": 77851.2,
+      "r": -1.0,
+      "pips": -200.9,
+      "pnl_usd": -2.009,
+      "balance_after": 123.1636,
+      "entry_time": "2026-10-30 03:57:00+00:00",
+      "resolved_time": "2026-10-30 04:00:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-29 22:30:00+00:00",
   "BTCUSDT_po3": "2026-10-29 13:15:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -221.5446800000016,
-    "Consolidation Breakout": 125.1726299999993,
+    "Consolidation Breakout": 123.16362999999922,
     "AMD Po3": 118.68190543733884,
     "Order Block": -21.026274999995966,
     "Range Filter Flip": -434.22223000000565
