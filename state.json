@@ -21,23 +21,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-30 20:39:00+00:00"
+      "last_time": "2026-10-30 20:42:00+00:00"
     },
     {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 3886.90131,
-      "sl": 3871.18522,
-      "entry_time": "2026-10-30 20:09:00+00:00",
+      "action": "SELL",
+      "entry": 3873.09235,
+      "sl": 3887.26919,
+      "entry_time": "2026-10-30 20:42:00+00:00",
       "message_ids": {
-        "6338570227": 9082,
-        "7100834953": 9083
+        "6338570227": 9086,
+        "7100834953": 9087
       },
       "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-10-30 20:39:00+00:00"
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-30 18:21:00+00:00",
@@ -26512,6 +26510,21 @@
       "balance_after": -234.9136,
       "entry_time": "2026-10-30 15:18:00+00:00",
       "resolved_time": "2026-10-30 20:09:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 3886.90131,
+      "exit": 3873.09235,
+      "r": -0.8787,
+      "pips": -138.09,
+      "pnl_usd": -13.809,
+      "balance_after": -248.7225,
+      "entry_time": "2026-10-30 20:09:00+00:00",
+      "resolved_time": "2026-10-30 20:42:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-30 18:51:00+00:00",
@@ -26521,10 +26534,10 @@
     "Consolidation Breakout": 119.93762999999916,
     "AMD Po3": 71.93669848618403,
     "Order Block": -15.662929999996523,
-    "Range Filter Flip": -234.91357000000556
+    "Range Filter Flip": -248.72253000000586
   },
   "BTCUSDT_order_block": "2026-10-30 20:00:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-30 19:48:00+00:00",
-  "XAU/USD_rf_flip": "2026-10-30 20:09:00+00:00",
+  "XAU/USD_rf_flip": "2026-10-30 20:42:00+00:00",
   "XAU/USD_order_block": "2026-10-30 18:21:00+00:00"
 }
