@@ -21,23 +21,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-30 15:15:00+00:00"
+      "last_time": "2026-10-30 15:18:00+00:00"
     },
     {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 3914.83727,
-      "sl": 3893.32295,
-      "entry_time": "2026-10-30 14:39:00+00:00",
+      "action": "SELL",
+      "entry": 3909.0837,
+      "sl": 3923.41494,
+      "entry_time": "2026-10-30 15:18:00+00:00",
       "message_ids": {
-        "6338570227": 9010,
-        "7100834953": 9011
+        "6338570227": 9014,
+        "7100834953": 9015
       },
       "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-10-30 15:15:00+00:00"
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-30 12:42:00+00:00",
@@ -26272,6 +26270,21 @@
       "balance_after": -257.8444,
       "entry_time": "2026-10-30 10:09:00+00:00",
       "resolved_time": "2026-10-30 14:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 3914.83727,
+      "exit": 3909.0837,
+      "r": -0.2674,
+      "pips": -57.54,
+      "pnl_usd": -5.7536,
+      "balance_after": -263.598,
+      "entry_time": "2026-10-30 14:39:00+00:00",
+      "resolved_time": "2026-10-30 15:18:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-30 11:33:00+00:00",
@@ -26281,10 +26294,10 @@
     "Consolidation Breakout": 123.16362999999922,
     "AMD Po3": 80.7652883646167,
     "Order Block": -10.42809999999643,
-    "Range Filter Flip": -257.8443900000055
+    "Range Filter Flip": -263.59796000000534
   },
   "BTCUSDT_order_block": "2026-10-30 09:30:00+00:00",
   "BTCUSDT_rf_flip": "2026-10-30 14:36:00+00:00",
-  "XAU/USD_rf_flip": "2026-10-30 14:39:00+00:00",
+  "XAU/USD_rf_flip": "2026-10-30 15:18:00+00:00",
   "XAU/USD_order_block": "2026-10-30 12:12:00+00:00"
 }
