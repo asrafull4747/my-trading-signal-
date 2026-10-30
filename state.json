@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-30 15:54:00+00:00"
+      "last_time": "2026-10-30 15:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-10-30 15:54:00+00:00"
+      "last_time": "2026-10-30 15:57:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-30 12:42:00+00:00",
@@ -45,7 +45,7 @@
   "XAU/USD_consol": "2026-10-29 08:39:00+00:00",
   "BTCUSDT_consol": "2026-10-30 15:45:00+00:00",
   "last_daily_report": "2026-10-30",
-  "last_weekly_report": "2026-W43",
+  "last_weekly_report": "2026-W44",
   "last_monthly_report": "2026-09",
   "last_yearly_report": "2026",
   "trade_history": [
