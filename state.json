@@ -115,7 +115,9 @@
         "7100834953": 8917
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-10-30 07:42:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-30 07:33:00+00:00",
