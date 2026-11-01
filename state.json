@@ -21,11 +21,25 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-01 05:27:00+00:00"
+      "last_time": "2026-11-01 05:30:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "entry": 77755.8,
+      "sl": 77694.3,
+      "entry_time": "2026-11-01 05:30:00+00:00",
+      "message_ids": {
+        "6338570227": 9308,
+        "7100834953": 9309
+      },
+      "fixed_target": true,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-10-30 18:21:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-11-01 03:39:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-11-01 05:30:00+00:00",
   "XAU/USD_consol": "2026-10-30 21:24:00+00:00",
   "BTCUSDT_consol": "2026-10-30 15:45:00+00:00",
   "last_daily_report": "2026-11-01",
