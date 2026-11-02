@@ -21,23 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-02 19:54:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 76850.1,
-      "sl": 77251.7,
-      "entry_time": "2026-11-02 18:27:00+00:00",
-      "message_ids": {
-        "6338570227": 9886,
-        "7100834953": 9887
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-02 19:54:00+00:00"
+      "last_time": "2026-11-02 19:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 2,
-      "last_time": "2026-11-02 19:54:00+00:00"
+      "last_time": "2026-11-02 19:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-02 19:54:00+00:00"
+      "last_time": "2026-11-02 19:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -85,23 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-02 19:54:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 76661.8,
-      "sl": 76920.9,
-      "entry_time": "2026-11-02 19:36:00+00:00",
-      "message_ids": {
-        "6338570227": 9900,
-        "7100834953": 9901
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-02 19:54:00+00:00"
+      "last_time": "2026-11-02 19:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -117,7 +85,21 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-02 19:54:00+00:00"
+      "last_time": "2026-11-02 19:57:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "entry": 76957.8,
+      "sl": 76780.7,
+      "entry_time": "2026-11-02 19:57:00+00:00",
+      "message_ids": {
+        "6338570227": 9908,
+        "7100834953": 9909
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-02 19:18:00+00:00",
@@ -29322,19 +29304,49 @@
       "balance_after": -330.2949,
       "entry_time": "2026-11-02 18:09:00+00:00",
       "resolved_time": "2026-11-02 18:42:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 76850.1,
+      "exit": 76957.8,
+      "r": -0.2682,
+      "pips": -107.7,
+      "pnl_usd": -1.077,
+      "balance_after": -331.3719,
+      "entry_time": "2026-11-02 18:27:00+00:00",
+      "resolved_time": "2026-11-02 19:57:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 76661.8,
+      "exit": 76920.9,
+      "r": -1.0,
+      "pips": -259.1,
+      "pnl_usd": -2.591,
+      "balance_after": -188.7025,
+      "entry_time": "2026-11-02 19:36:00+00:00",
+      "resolved_time": "2026-11-02 19:57:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-02 10:30:00+00:00",
   "BTCUSDT_po3": "2026-11-02 19:51:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -186.1115300000006,
+    "Range Filter + Scalper Pro": -188.70253000000054,
     "Consolidation Breakout": 120.16745999999863,
     "AMD Po3": 76.75411380374689,
     "Order Block": -54.70922999999545,
-    "Range Filter Flip": -330.2949400000033
+    "Range Filter Flip": -331.3719400000033
   },
   "BTCUSDT_order_block": "2026-11-02 14:48:00+00:00",
-  "BTCUSDT_rf_flip": "2026-11-02 18:27:00+00:00",
+  "BTCUSDT_rf_flip": "2026-11-02 19:57:00+00:00",
   "XAU/USD_rf_flip": "2026-11-02 18:42:00+00:00",
   "XAU/USD_order_block": "2026-11-02 18:39:00+00:00"
 }
