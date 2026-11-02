@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-02 05:51:00+00:00"
+      "last_time": "2026-11-02 05:54:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-02 05:51:00+00:00"
+      "last_time": "2026-11-02 05:54:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,23 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-02 05:51:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "BUY",
-      "entry": 3918.25986,
-      "sl": 3913.28168,
-      "entry_time": "2026-11-02 05:42:00+00:00",
-      "message_ids": {
-        "6338570227": 9680,
-        "7100834953": 9681
-      },
-      "fixed_target": false,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-02 05:51:00+00:00"
+      "last_time": "2026-11-02 05:54:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-02 02:21:00+00:00",
@@ -28554,6 +28538,21 @@
       "balance_after": -32.662,
       "entry_time": "2026-11-02 05:09:00+00:00",
       "resolved_time": "2026-11-02 05:42:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 3918.25986,
+      "exit": 3913.28168,
+      "r": -1.0,
+      "pips": -49.78,
+      "pnl_usd": -4.9782,
+      "balance_after": -37.6402,
+      "entry_time": "2026-11-02 05:42:00+00:00",
+      "resolved_time": "2026-11-02 05:54:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-10-30 18:51:00+00:00",
@@ -28562,7 +28561,7 @@
     "Range Filter + Scalper Pro": -188.43553000000085,
     "Consolidation Breakout": 119.3657999999993,
     "AMD Po3": 77.61902661746078,
-    "Order Block": -32.661979999995886,
+    "Order Block": -37.64015999999595,
     "Range Filter Flip": -326.3927800000047
   },
   "BTCUSDT_order_block": "2026-11-02 05:09:00+00:00",
