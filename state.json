@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,7 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -85,7 +85,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -101,7 +101,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -117,7 +117,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -133,7 +133,21 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-03 23:18:00+00:00"
+      "last_time": "2026-11-03 23:21:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "entry": 77819.7,
+      "sl": 77742.1,
+      "entry_time": "2026-11-03 23:21:00+00:00",
+      "message_ids": {
+        "6338570227": 10326,
+        "7100834953": 10327
+      },
+      "fixed_target": false,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-03 13:27:00+00:00",
@@ -30654,7 +30668,7 @@
     "Order Block": -42.98865749999456,
     "Range Filter Flip": -261.89347000000316
   },
-  "BTCUSDT_order_block": "2026-11-03 21:42:00+00:00",
+  "BTCUSDT_order_block": "2026-11-03 23:21:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-03 22:12:00+00:00",
   "XAU/USD_rf_flip": "2026-11-03 21:42:00+00:00",
   "XAU/USD_order_block": "2026-11-03 21:30:00+00:00"
