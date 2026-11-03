@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-03 13:21:00+00:00"
+      "last_time": "2026-11-03 13:24:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-03 13:21:00+00:00"
+      "last_time": "2026-11-03 13:24:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,11 +53,39 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-03 13:21:00+00:00"
+      "last_time": "2026-11-03 13:24:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "entry": 77392.8,
+      "sl": 77178.0,
+      "entry_time": "2026-11-03 13:24:00+00:00",
+      "message_ids": {
+        "6338570227": 10138,
+        "7100834953": 10139
+      },
+      "fixed_target": true,
+      "mgmt": null
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "entry": 77392.8,
+      "sl": 77218.2,
+      "entry_time": "2026-11-03 13:24:00+00:00",
+      "message_ids": {
+        "6338570227": 10140,
+        "7100834953": 10141
+      },
+      "fixed_target": false,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-03 08:42:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-11-03 10:54:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-11-03 13:24:00+00:00",
   "XAU/USD_consol": "2026-11-03 12:39:00+00:00",
   "BTCUSDT_consol": "2026-11-03 03:27:00+00:00",
   "last_daily_report": "2026-11-03",
@@ -30019,7 +30047,7 @@
     "Order Block": -47.09741749999456,
     "Range Filter Flip": -321.45430000000255
   },
-  "BTCUSDT_order_block": "2026-11-03 12:21:00+00:00",
+  "BTCUSDT_order_block": "2026-11-03 13:24:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-03 12:15:00+00:00",
   "XAU/USD_rf_flip": "2026-11-03 12:18:00+00:00",
   "XAU/USD_order_block": "2026-11-03 01:09:00+00:00"
