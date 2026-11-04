@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-04 17:30:00+00:00"
+      "last_time": "2026-11-04 17:33:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-04 17:30:00+00:00"
+      "last_time": "2026-11-04 17:33:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-04 17:30:00+00:00"
+      "last_time": "2026-11-04 17:33:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,10 +69,24 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-04 17:30:00+00:00"
+      "last_time": "2026-11-04 17:33:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "entry": 4069.05085,
+      "sl": 4063.55398,
+      "entry_time": "2026-11-04 17:33:00+00:00",
+      "message_ids": {
+        "6338570227": 10584,
+        "7100834953": 10585
+      },
+      "fixed_target": true,
+      "mgmt": null
     }
   ],
-  "XAU/USD_rf_scalper": "2026-11-04 15:24:00+00:00",
+  "XAU/USD_rf_scalper": "2026-11-04 17:33:00+00:00",
   "BTCUSDT_rf_scalper": "2026-11-04 14:30:00+00:00",
   "XAU/USD_consol": "2026-11-03 20:33:00+00:00",
   "BTCUSDT_consol": "2026-11-03 20:36:00+00:00",
