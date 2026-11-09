@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-09 21:21:00+00:00"
+      "last_time": "2026-11-09 21:24:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-09 21:21:00+00:00"
+      "last_time": "2026-11-09 21:24:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-09 21:21:00+00:00"
+      "last_time": "2026-11-09 21:24:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,23 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-09 21:21:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "BUY",
-      "entry": 4147.17526,
-      "sl": 4137.38704,
-      "entry_time": "2026-11-09 20:21:00+00:00",
-      "message_ids": {
-        "6338570227": 11997,
-        "7100834953": 11998
-      },
-      "fixed_target": false,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-09 21:21:00+00:00"
+      "last_time": "2026-11-09 21:24:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -36087,6 +36071,21 @@
       "balance_after": -305.1901,
       "entry_time": "2026-11-09 19:36:00+00:00",
       "resolved_time": "2026-11-09 20:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 4147.17526,
+      "exit": 4137.38704,
+      "r": -1.0,
+      "pips": -97.88,
+      "pnl_usd": -9.7882,
+      "balance_after": -99.9511,
+      "entry_time": "2026-11-09 20:21:00+00:00",
+      "resolved_time": "2026-11-09 21:24:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-09 18:45:00+00:00",
@@ -36095,7 +36094,7 @@
     "Range Filter + Scalper Pro": -254.1327200000017,
     "Consolidation Breakout": 113.57692999999837,
     "AMD Po3": 54.44992356283927,
-    "Order Block": -90.16285749999572,
+    "Order Block": -99.95107749999609,
     "Range Filter Flip": -305.190140000008
   },
   "BTCUSDT_order_block": "2026-11-09 20:30:00+00:00",
