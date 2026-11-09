@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-09 03:54:00+00:00"
+      "last_time": "2026-11-09 03:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-09 03:54:00+00:00"
+      "last_time": "2026-11-09 03:57:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-09 03:54:00+00:00"
+      "last_time": "2026-11-09 03:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-09 03:54:00+00:00"
+      "last_time": "2026-11-09 03:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +85,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-09 03:54:00+00:00"
+      "last_time": "2026-11-09 03:57:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -101,23 +101,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-09 03:54:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Consolidation Breakout",
-      "action": "BUY",
-      "entry": 4118.71439,
-      "sl": 4115.43609,
-      "entry_time": "2026-11-09 03:18:00+00:00",
-      "message_ids": {
-        "6338570227": 11741,
-        "7100834953": 11742
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-11-09 03:54:00+00:00"
+      "last_time": "2026-11-09 03:57:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-09 01:24:00+00:00",
@@ -35232,6 +35216,21 @@
       "balance_after": -95.3322,
       "entry_time": "2026-11-09 01:48:00+00:00",
       "resolved_time": "2026-11-09 03:06:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Consolidation Breakout",
+      "action": "BUY",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 4118.71439,
+      "exit": 4118.71439,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": 111.9632,
+      "entry_time": "2026-11-09 03:18:00+00:00",
+      "resolved_time": "2026-11-09 03:57:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-06 21:57:00+00:00",
