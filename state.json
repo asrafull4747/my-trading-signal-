@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-10 07:36:00+00:00"
+      "last_time": "2026-11-10 07:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-10 07:36:00+00:00"
+      "last_time": "2026-11-10 07:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-10 07:36:00+00:00"
+      "last_time": "2026-11-10 07:39:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-10 07:36:00+00:00"
+      "last_time": "2026-11-10 07:39:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +85,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-10 07:36:00+00:00"
+      "last_time": "2026-11-10 07:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -101,7 +101,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-10 07:36:00+00:00"
+      "last_time": "2026-11-10 07:39:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -117,7 +117,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-10 07:36:00+00:00"
+      "last_time": "2026-11-10 07:39:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "entry": 74793.4,
+      "sl": 74697.2,
+      "entry_time": "2026-11-10 07:39:00+00:00",
+      "message_ids": {
+        "6338570227": 12157,
+        "7100834953": 12158
+      },
+      "fixed_target": false,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-10 06:33:00+00:00",
@@ -36563,7 +36577,7 @@
     "Order Block": -97.8895974999965,
     "Range Filter Flip": -298.39439000000766
   },
-  "BTCUSDT_order_block": "2026-11-10 06:12:00+00:00",
+  "BTCUSDT_order_block": "2026-11-10 07:39:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-10 07:30:00+00:00",
   "XAU/USD_rf_flip": "2026-11-10 07:18:00+00:00",
   "XAU/USD_order_block": "2026-11-10 06:33:00+00:00"
