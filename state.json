@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-10 17:33:00+00:00"
+      "last_time": "2026-11-10 17:36:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-10 17:33:00+00:00"
+      "last_time": "2026-11-10 17:36:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-10 17:33:00+00:00"
+      "last_time": "2026-11-10 17:36:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,13 +69,27 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-10 17:33:00+00:00"
+      "last_time": "2026-11-10 17:36:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "entry": 72725.8,
+      "sl": 73062.3,
+      "entry_time": "2026-11-10 17:36:00+00:00",
+      "message_ids": {
+        "6338570227": 12349,
+        "7100834953": 12350
+      },
+      "fixed_target": true,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-10 16:18:00+00:00",
   "BTCUSDT_rf_scalper": "2026-11-10 14:33:00+00:00",
   "XAU/USD_consol": "2026-11-09 22:27:00+00:00",
-  "BTCUSDT_consol": "2026-11-09 15:18:00+00:00",
+  "BTCUSDT_consol": "2026-11-10 17:36:00+00:00",
   "last_daily_report": "2026-11-10",
   "last_weekly_report": "2026-W45",
   "last_monthly_report": "2026-10",
