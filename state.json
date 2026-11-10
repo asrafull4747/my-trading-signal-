@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-10 14:33:00+00:00"
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-10 14:33:00+00:00"
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-10 14:33:00+00:00"
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +69,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-10 14:33:00+00:00"
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -83,7 +83,9 @@
         "7100834953": 12286
       },
       "fixed_target": true,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -97,7 +99,9 @@
         "7100834953": 12288
       },
       "fixed_target": false,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -111,7 +115,9 @@
         "7100834953": 12290
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -125,7 +131,9 @@
         "7100834953": 12292
       },
       "fixed_target": false,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-11-10 14:36:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -139,7 +147,9 @@
         "7100834953": 12294
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-11-10 14:36:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-10 13:21:00+00:00",
