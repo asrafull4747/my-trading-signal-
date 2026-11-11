@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-11 15:36:00+00:00"
+      "last_time": "2026-11-11 15:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-11 15:36:00+00:00"
+      "last_time": "2026-11-11 15:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,21 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-11 15:36:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 74050.9,
-      "sl": 74057.7,
-      "entry_time": "2026-11-11 15:36:00+00:00",
-      "message_ids": {
-        "6338570227": 12717,
-        "7100834953": 12718
-      },
-      "fixed_target": false,
-      "mgmt": "reverse"
+      "last_time": "2026-11-11 15:39:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-11 15:24:00+00:00",
@@ -38332,6 +38318,21 @@
       "balance_after": -277.6049,
       "entry_time": "2026-11-11 15:30:00+00:00",
       "resolved_time": "2026-11-11 15:36:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 74050.9,
+      "exit": 74057.7,
+      "r": -1.0,
+      "pips": -6.8,
+      "pnl_usd": -0.068,
+      "balance_after": -277.6729,
+      "entry_time": "2026-11-11 15:36:00+00:00",
+      "resolved_time": "2026-11-11 15:39:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-11 13:30:00+00:00",
@@ -38341,7 +38342,7 @@
     "Consolidation Breakout": 104.5724699999986,
     "AMD Po3": 59.79915401804594,
     "Order Block": -103.84207249999595,
-    "Range Filter Flip": -277.6049100000076
+    "Range Filter Flip": -277.6729100000076
   },
   "BTCUSDT_order_block": "2026-11-11 14:33:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-11 15:36:00+00:00",
