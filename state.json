@@ -21,23 +21,21 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-12 06:39:00+00:00"
+      "last_time": "2026-11-12 06:42:00+00:00"
     },
     {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 3981.49993,
-      "sl": 3970.2461,
-      "entry_time": "2026-11-12 05:51:00+00:00",
+      "action": "SELL",
+      "entry": 3971.9797,
+      "sl": 3982.13853,
+      "entry_time": "2026-11-12 06:42:00+00:00",
       "message_ids": {
-        "6338570227": 12895,
-        "7100834953": 12896
+        "6338570227": 12901,
+        "7100834953": 12902
       },
       "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-12 06:39:00+00:00"
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-12 05:12:00+00:00",
@@ -38887,6 +38885,21 @@
       "balance_after": -183.0389,
       "entry_time": "2026-11-12 05:39:00+00:00",
       "resolved_time": "2026-11-12 06:00:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 3981.49993,
+      "exit": 3971.9797,
+      "r": -0.846,
+      "pips": -95.2,
+      "pnl_usd": -9.5202,
+      "balance_after": -272.8954,
+      "entry_time": "2026-11-12 05:51:00+00:00",
+      "resolved_time": "2026-11-12 06:42:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-11 23:06:00+00:00",
@@ -38896,10 +38909,10 @@
     "Consolidation Breakout": 101.26646999999855,
     "AMD Po3": 59.573294746038144,
     "Order Block": -121.53321249999618,
-    "Range Filter Flip": -263.3752100000077
+    "Range Filter Flip": -272.8954400000078
   },
   "BTCUSDT_order_block": "2026-11-12 03:09:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-12 02:18:00+00:00",
-  "XAU/USD_rf_flip": "2026-11-12 05:51:00+00:00",
+  "XAU/USD_rf_flip": "2026-11-12 06:42:00+00:00",
   "XAU/USD_order_block": "2026-11-12 05:12:00+00:00"
 }
