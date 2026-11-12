@@ -9,22 +9,6 @@
   "pending_trades": [
     {
       "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 3956.12498,
-      "sl": 3972.51023,
-      "entry_time": "2026-11-12 07:42:00+00:00",
-      "message_ids": {
-        "6338570227": 12911,
-        "7100834953": 12912
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-11-12 13:12:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "SELL",
       "entry": 3943.88939,
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-12 13:12:00+00:00"
+      "last_time": "2026-11-12 13:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-12 13:12:00+00:00"
+      "last_time": "2026-11-12 13:15:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-12 11:54:00+00:00",
@@ -39158,12 +39142,27 @@
       "balance_after": -157.8235,
       "entry_time": "2026-11-12 11:54:00+00:00",
       "resolved_time": "2026-11-12 13:09:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 3956.12498,
+      "exit": 3923.3544800000004,
+      "r": 2.0,
+      "pips": 327.7,
+      "pnl_usd": 32.7705,
+      "balance_after": -125.053,
+      "entry_time": "2026-11-12 07:42:00+00:00",
+      "resolved_time": "2026-11-12 13:15:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-12 12:00:00+00:00",
   "BTCUSDT_po3": "2026-11-12 08:39:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -157.82353000000145,
+    "Range Filter + Scalper Pro": -125.05303000000183,
     "Consolidation Breakout": 101.26646999999855,
     "AMD Po3": 54.81553619688388,
     "Order Block": -130.40045249999605,
