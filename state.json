@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 2,
-      "last_time": "2026-11-13 05:39:00+00:00"
+      "last_time": "2026-11-13 05:42:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,23 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-13 05:39:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 3918.83112,
-      "sl": 3907.57117,
-      "entry_time": "2026-11-13 03:00:00+00:00",
-      "message_ids": {
-        "6338570227": 13139,
-        "7100834953": 13140
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-13 05:39:00+00:00"
+      "last_time": "2026-11-13 05:42:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-13 05:39:00+00:00"
+      "last_time": "2026-11-13 05:42:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -85,23 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-13 05:39:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Order Block",
-      "action": "BUY",
-      "entry": 3915.97567,
-      "sl": 3911.18753,
-      "entry_time": "2026-11-13 05:09:00+00:00",
-      "message_ids": {
-        "6338570227": 13165,
-        "7100834953": 13166
-      },
-      "fixed_target": false,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-13 05:39:00+00:00"
+      "last_time": "2026-11-13 05:42:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -117,10 +85,24 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-13 05:39:00+00:00"
+      "last_time": "2026-11-13 05:42:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 3904.75498,
+      "sl": 3919.26318,
+      "entry_time": "2026-11-13 05:42:00+00:00",
+      "message_ids": {
+        "6338570227": 13179,
+        "7100834953": 13180
+      },
+      "fixed_target": true,
+      "mgmt": null
     }
   ],
-  "XAU/USD_rf_scalper": "2026-11-13 03:00:00+00:00",
+  "XAU/USD_rf_scalper": "2026-11-13 05:42:00+00:00",
   "BTCUSDT_rf_scalper": "2026-11-13 03:51:00+00:00",
   "XAU/USD_consol": "2026-11-10 23:00:00+00:00",
   "BTCUSDT_consol": "2026-11-13 03:42:00+00:00",
@@ -39792,15 +39774,45 @@
       "balance_after": -168.9066,
       "entry_time": "2026-11-13 05:12:00+00:00",
       "resolved_time": "2026-11-13 05:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 3918.83112,
+      "exit": 3907.57117,
+      "r": -1.0,
+      "pips": -112.6,
+      "pnl_usd": -11.2599,
+      "balance_after": -105.7063,
+      "entry_time": "2026-11-13 03:00:00+00:00",
+      "resolved_time": "2026-11-13 05:42:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 3915.97567,
+      "exit": 3911.18753,
+      "r": -1.0,
+      "pips": -47.88,
+      "pnl_usd": -4.7881,
+      "balance_after": -120.9431,
+      "entry_time": "2026-11-13 05:09:00+00:00",
+      "resolved_time": "2026-11-13 05:42:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-12 17:00:00+00:00",
   "BTCUSDT_po3": "2026-11-12 22:15:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -94.44639000000141,
+    "Range Filter + Scalper Pro": -105.70634000000108,
     "Consolidation Breakout": 101.26646999999855,
     "AMD Po3": 45.0526915174833,
-    "Order Block": -116.1549824999959,
+    "Order Block": -120.94312249999555,
     "Range Filter Flip": -168.90656000000737
   },
   "BTCUSDT_order_block": "2026-11-12 19:30:00+00:00",
