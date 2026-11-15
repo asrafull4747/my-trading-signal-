@@ -21,23 +21,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-15 19:12:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 3876.08665,
-      "sl": 3874.37625,
-      "entry_time": "2026-11-15 14:15:00+00:00",
-      "message_ids": {
-        "6338570227": 13721,
-        "7100834953": 13722
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-15 19:12:00+00:00"
+      "last_time": "2026-11-15 19:15:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-15 19:12:00+00:00"
+      "last_time": "2026-11-15 19:15:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-15 19:12:00+00:00"
+      "last_time": "2026-11-15 19:15:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -85,7 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-15 19:12:00+00:00"
+      "last_time": "2026-11-15 19:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -101,7 +85,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-15 19:12:00+00:00"
+      "last_time": "2026-11-15 19:15:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "entry": 3880.82682,
+      "sl": 3880.87349,
+      "entry_time": "2026-11-15 19:15:00+00:00",
+      "message_ids": {
+        "6338570227": 13779,
+        "7100834953": 13780
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-15 17:06:00+00:00",
@@ -41786,6 +41784,21 @@
       "balance_after": -197.5146,
       "entry_time": "2026-11-15 17:36:00+00:00",
       "resolved_time": "2026-11-15 19:06:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "reverse",
+      "entry": 3876.08665,
+      "exit": 3880.82682,
+      "r": 2.7714,
+      "pips": 47.4,
+      "pnl_usd": 4.7402,
+      "balance_after": -192.7745,
+      "entry_time": "2026-11-15 14:15:00+00:00",
+      "resolved_time": "2026-11-15 19:15:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-13 21:12:00+00:00",
@@ -41795,10 +41808,10 @@
     "Consolidation Breakout": 110.15614999999887,
     "AMD Po3": 37.50778254160611,
     "Order Block": -143.82534999999544,
-    "Range Filter Flip": -197.5146400000095
+    "Range Filter Flip": -192.77447000000947
   },
   "BTCUSDT_order_block": "2026-11-15 13:18:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-15 19:06:00+00:00",
-  "XAU/USD_rf_flip": "2026-11-15 14:15:00+00:00",
+  "XAU/USD_rf_flip": "2026-11-15 19:15:00+00:00",
   "XAU/USD_order_block": "2026-11-13 21:45:00+00:00"
 }
