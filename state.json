@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-17 08:57:00+00:00"
+      "last_time": "2026-11-17 09:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-17 08:57:00+00:00"
+      "last_time": "2026-11-17 09:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,11 +53,39 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-17 08:57:00+00:00"
+      "last_time": "2026-11-17 09:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 64190.6,
+      "sl": 64379.1,
+      "entry_time": "2026-11-17 09:00:00+00:00",
+      "message_ids": {
+        "6338570227": 14531,
+        "7100834953": 14532
+      },
+      "fixed_target": true,
+      "mgmt": null
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Order Block",
+      "action": "SELL",
+      "entry": 64190.6,
+      "sl": 64281.3,
+      "entry_time": "2026-11-17 09:00:00+00:00",
+      "message_ids": {
+        "6338570227": 14533,
+        "7100834953": 14534
+      },
+      "fixed_target": false,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-17 08:00:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-11-16 22:42:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-11-17 09:00:00+00:00",
   "XAU/USD_consol": "2026-11-17 02:12:00+00:00",
   "BTCUSDT_consol": "2026-11-15 19:48:00+00:00",
   "last_daily_report": "2026-11-17",
@@ -43984,7 +44012,7 @@
     "Order Block": -128.41044249999555,
     "Range Filter Flip": -299.77641000001074
   },
-  "BTCUSDT_order_block": "2026-11-17 06:15:00+00:00",
+  "BTCUSDT_order_block": "2026-11-17 09:00:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-17 08:27:00+00:00",
   "XAU/USD_rf_flip": "2026-11-17 08:51:00+00:00",
   "XAU/USD_order_block": "2026-11-17 07:00:00+00:00"
