@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-17 14:42:00+00:00"
+      "last_time": "2026-11-17 14:45:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,23 +37,21 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-17 14:42:00+00:00"
+      "last_time": "2026-11-17 14:45:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter Flip",
-      "action": "BUY",
-      "entry": 65212.6,
-      "sl": 64809.8,
-      "entry_time": "2026-11-17 14:33:00+00:00",
+      "action": "SELL",
+      "entry": 64933.1,
+      "sl": 65091.5,
+      "entry_time": "2026-11-17 14:45:00+00:00",
       "message_ids": {
-        "6338570227": 14632,
-        "7100834953": 14633
+        "6338570227": 14636,
+        "7100834953": 14637
       },
       "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-17 14:42:00+00:00"
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-17 13:30:00+00:00",
@@ -44318,6 +44316,21 @@
       "balance_after": -302.6893,
       "entry_time": "2026-11-17 14:06:00+00:00",
       "resolved_time": "2026-11-17 14:33:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 65212.6,
+      "exit": 64933.1,
+      "r": -0.6939,
+      "pips": -279.5,
+      "pnl_usd": -2.795,
+      "balance_after": -305.4843,
+      "entry_time": "2026-11-17 14:33:00+00:00",
+      "resolved_time": "2026-11-17 14:45:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-17 07:15:00+00:00",
@@ -44327,10 +44340,10 @@
     "Consolidation Breakout": 98.20028999999867,
     "AMD Po3": 55.13709859968451,
     "Order Block": -126.40235249999519,
-    "Range Filter Flip": -302.6892700000117
+    "Range Filter Flip": -305.4842700000117
   },
   "BTCUSDT_order_block": "2026-11-17 14:33:00+00:00",
-  "BTCUSDT_rf_flip": "2026-11-17 14:33:00+00:00",
+  "BTCUSDT_rf_flip": "2026-11-17 14:45:00+00:00",
   "XAU/USD_rf_flip": "2026-11-17 13:42:00+00:00",
   "XAU/USD_order_block": "2026-11-17 11:42:00+00:00"
 }
