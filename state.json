@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-18 15:03:00+00:00"
+      "last_time": "2026-11-18 15:06:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-18 15:03:00+00:00"
+      "last_time": "2026-11-18 15:06:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -51,7 +51,9 @@
         "7100834953": 15050
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-11-18 15:06:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -65,7 +67,9 @@
         "7100834953": 15052
       },
       "fixed_target": true,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-11-18 15:06:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -79,7 +83,9 @@
         "7100834953": 15054
       },
       "fixed_target": true,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-11-18 15:06:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -93,7 +99,9 @@
         "7100834953": 15056
       },
       "fixed_target": false,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-11-18 15:06:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-18 15:03:00+00:00",
