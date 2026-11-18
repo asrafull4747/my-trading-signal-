@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-18 12:21:00+00:00"
+      "last_time": "2026-11-18 12:24:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -35,7 +35,9 @@
         "7100834953": 14981
       },
       "fixed_target": false,
-      "mgmt": "reverse"
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-11-18 12:24:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-18 07:00:00+00:00",
