@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-18 22:57:00+00:00"
+      "last_time": "2026-11-18 23:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-18 22:57:00+00:00"
+      "last_time": "2026-11-18 23:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-18 22:57:00+00:00"
+      "last_time": "2026-11-18 23:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,23 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-18 22:57:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "AMD Po3",
-      "action": "SELL",
-      "entry": 3729.43171,
-      "sl": 3733.9555138610813,
-      "entry_time": "2026-11-18 20:54:00+00:00",
-      "message_ids": {
-        "6338570227": 15129,
-        "7100834953": 15130
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-11-18 22:57:00+00:00"
+      "last_time": "2026-11-18 23:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -101,7 +85,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-18 22:57:00+00:00"
+      "last_time": "2026-11-18 23:00:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-18 21:48:00+00:00",
@@ -45926,6 +45910,21 @@
       "balance_after": -53.8285,
       "entry_time": "2026-11-18 21:48:00+00:00",
       "resolved_time": "2026-11-18 22:51:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "outcome": "breakeven",
+      "reason": "breakeven",
+      "entry": 3729.43171,
+      "exit": 3729.43171,
+      "r": 0.0,
+      "pips": 0.0,
+      "pnl_usd": 0.0,
+      "balance_after": 65.119,
+      "entry_time": "2026-11-18 20:54:00+00:00",
+      "resolved_time": "2026-11-18 23:00:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-18 20:54:00+00:00",
