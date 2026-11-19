@@ -21,23 +21,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-19 00:30:00+00:00"
+      "last_time": "2026-11-19 00:33:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 62830.4,
-      "sl": 63215.5,
-      "entry_time": "2026-11-19 00:00:00+00:00",
+      "action": "BUY",
+      "entry": 62983.6,
+      "sl": 62553.0,
+      "entry_time": "2026-11-19 00:33:00+00:00",
       "message_ids": {
-        "6338570227": 15181,
-        "7100834953": 15182
+        "6338570227": 15185,
+        "7100834953": 15186
       },
       "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-19 00:30:00+00:00"
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-18 21:48:00+00:00",
@@ -45982,6 +45980,21 @@
       "balance_after": -249.9607,
       "entry_time": "2026-11-18 23:03:00+00:00",
       "resolved_time": "2026-11-19 00:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 62830.4,
+      "exit": 62983.6,
+      "r": -0.3978,
+      "pips": -153.2,
+      "pnl_usd": -1.532,
+      "balance_after": -251.4927,
+      "entry_time": "2026-11-19 00:00:00+00:00",
+      "resolved_time": "2026-11-19 00:33:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-18 20:54:00+00:00",
@@ -45991,10 +46004,10 @@
     "Consolidation Breakout": 123.93748999999869,
     "AMD Po3": 64.50651557819316,
     "Order Block": -61.531932499994916,
-    "Range Filter Flip": -249.9607300000123
+    "Range Filter Flip": -251.49273000001227
   },
   "BTCUSDT_order_block": "2026-11-18 21:36:00+00:00",
-  "BTCUSDT_rf_flip": "2026-11-19 00:00:00+00:00",
+  "BTCUSDT_rf_flip": "2026-11-19 00:33:00+00:00",
   "XAU/USD_rf_flip": "2026-11-18 23:06:00+00:00",
   "XAU/USD_order_block": "2026-11-18 19:06:00+00:00"
 }
