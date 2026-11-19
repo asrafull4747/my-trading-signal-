@@ -21,7 +21,21 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-19 07:24:00+00:00"
+      "last_time": "2026-11-19 07:27:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "entry": 3735.0514,
+      "sl": 3742.9866729731925,
+      "entry_time": "2026-11-19 07:27:00+00:00",
+      "message_ids": {
+        "6338570227": 15269,
+        "7100834953": 15270
+      },
+      "fixed_target": true,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-19 01:06:00+00:00",
@@ -46283,7 +46297,7 @@
       "resolved_time": "2026-11-19 07:00:00+00:00"
     }
   ],
-  "XAU/USD_po3": "2026-11-19 05:12:00+00:00",
+  "XAU/USD_po3": "2026-11-19 07:27:00+00:00",
   "BTCUSDT_po3": "2026-11-19 06:36:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -75.56951999999961,
