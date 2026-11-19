@@ -8,22 +8,6 @@
   "last_update_id": 216745240,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 62845.3,
-      "sl": 63301.4,
-      "entry_time": "2026-11-19 17:42:00+00:00",
-      "message_ids": {
-        "6338570227": 15412,
-        "7100834953": 15413
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-19 18:15:00+00:00"
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Order Block",
       "action": "SELL",
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-19 18:15:00+00:00"
+      "last_time": "2026-11-19 18:18:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,21 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-19 18:15:00+00:00"
+      "last_time": "2026-11-19 18:18:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "entry": 62922.5,
+      "sl": 62169.9,
+      "entry_time": "2026-11-19 18:18:00+00:00",
+      "message_ids": {
+        "6338570227": 15420,
+        "7100834953": 15421
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-19 14:54:00+00:00",
@@ -46793,6 +46791,21 @@
       "balance_after": -216.1458,
       "entry_time": "2026-11-19 17:21:00+00:00",
       "resolved_time": "2026-11-19 17:42:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 62845.3,
+      "exit": 62922.5,
+      "r": -0.1693,
+      "pips": -77.2,
+      "pnl_usd": -0.772,
+      "balance_after": -216.9178,
+      "entry_time": "2026-11-19 17:42:00+00:00",
+      "resolved_time": "2026-11-19 18:18:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-19 15:00:00+00:00",
@@ -46802,10 +46815,10 @@
     "Consolidation Breakout": 121.80348999999867,
     "AMD Po3": 39.98692410398084,
     "Order Block": -76.88718999999477,
-    "Range Filter Flip": -216.14580000001098
+    "Range Filter Flip": -216.91780000001094
   },
   "BTCUSDT_order_block": "2026-11-19 14:51:00+00:00",
-  "BTCUSDT_rf_flip": "2026-11-19 17:42:00+00:00",
+  "BTCUSDT_rf_flip": "2026-11-19 18:18:00+00:00",
   "XAU/USD_rf_flip": "2026-11-19 18:06:00+00:00",
   "XAU/USD_order_block": "2026-11-19 18:06:00+00:00"
 }
