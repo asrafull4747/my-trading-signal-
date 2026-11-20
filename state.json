@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-20 10:36:00+00:00"
+      "last_time": "2026-11-20 10:39:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,23 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-20 10:36:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "AMD Po3",
-      "action": "BUY",
-      "entry": 3574.49868,
-      "sl": 3564.0370156246236,
-      "entry_time": "2026-11-20 10:03:00+00:00",
-      "message_ids": {
-        "6338570227": 15642,
-        "7100834953": 15643
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-11-20 10:36:00+00:00"
+      "last_time": "2026-11-20 10:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -68,8 +52,8 @@
       },
       "fixed_target": true,
       "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-20 10:36:00+00:00"
+      "stage": 1,
+      "last_time": "2026-11-20 10:39:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +69,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-20 10:36:00+00:00"
+      "last_time": "2026-11-20 10:39:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -99,7 +83,9 @@
         "7100834953": 15651
       },
       "fixed_target": false,
-      "mgmt": null
+      "mgmt": null,
+      "stage": 0,
+      "last_time": "2026-11-20 10:39:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-20 10:18:00+00:00",
@@ -47619,6 +47605,21 @@
       "balance_after": 57.025,
       "entry_time": "2026-11-20 09:09:00+00:00",
       "resolved_time": "2026-11-20 09:30:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "AMD Po3",
+      "action": "BUY",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 3574.49868,
+      "exit": 3595.4220087507533,
+      "r": 2.0,
+      "pips": 209.23,
+      "pnl_usd": 20.9233,
+      "balance_after": 77.9484,
+      "entry_time": "2026-11-20 10:03:00+00:00",
+      "resolved_time": "2026-11-20 10:39:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-20 10:03:00+00:00",
@@ -47626,7 +47627,7 @@
   "balances": {
     "Range Filter + Scalper Pro": -46.3963100000002,
     "Consolidation Breakout": 123.74948999999873,
-    "AMD Po3": 57.025038192954696,
+    "AMD Po3": 77.94836694370787,
     "Order Block": -137.11357999999447,
     "Range Filter Flip": -240.7164500000102
   },
