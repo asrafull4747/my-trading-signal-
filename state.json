@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-20 19:12:00+00:00"
+      "last_time": "2026-11-20 19:15:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,23 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-20 19:12:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 58940.2,
-      "sl": 59506.8,
-      "entry_time": "2026-11-20 17:33:00+00:00",
-      "message_ids": {
-        "6338570227": 15752,
-        "7100834953": 15753
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 1,
-      "last_time": "2026-11-20 19:12:00+00:00"
+      "last_time": "2026-11-20 19:15:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-20 19:12:00+00:00"
+      "last_time": "2026-11-20 19:15:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-20 17:45:00+00:00",
@@ -48009,12 +47993,27 @@
       "balance_after": -49.5173,
       "entry_time": "2026-11-20 17:45:00+00:00",
       "resolved_time": "2026-11-20 18:57:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "target",
+      "entry": 58940.2,
+      "exit": 57806.999999999985,
+      "r": 2.0,
+      "pips": 1133.2,
+      "pnl_usd": 11.332,
+      "balance_after": -38.1853,
+      "entry_time": "2026-11-20 17:33:00+00:00",
+      "resolved_time": "2026-11-20 19:15:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-20 10:03:00+00:00",
   "BTCUSDT_po3": "2026-11-20 09:09:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -49.51731000000019,
+    "Range Filter + Scalper Pro": -38.18531000000007,
     "Consolidation Breakout": 109.1945699999985,
     "AMD Po3": 77.94836694370787,
     "Order Block": -167.03506999999465,
