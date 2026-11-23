@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-23 20:27:00+00:00"
+      "last_time": "2026-11-23 20:30:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-23 20:27:00+00:00"
+      "last_time": "2026-11-23 20:30:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,23 +53,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-23 20:27:00+00:00"
-    },
-    {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 3637.20782,
-      "sl": 3645.8353,
-      "entry_time": "2026-11-23 20:18:00+00:00",
-      "message_ids": {
-        "6338570227": 16622,
-        "7100834953": 16623
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-23 20:27:00+00:00"
+      "last_time": "2026-11-23 20:30:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-23 20:18:00+00:00",
@@ -50769,12 +50753,27 @@
       "balance_after": -152.9004,
       "entry_time": "2026-11-23 19:36:00+00:00",
       "resolved_time": "2026-11-23 20:15:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 3637.20782,
+      "exit": 3645.8353,
+      "r": -1.0,
+      "pips": -86.27,
+      "pnl_usd": -8.6275,
+      "balance_after": -73.2139,
+      "entry_time": "2026-11-23 20:18:00+00:00",
+      "resolved_time": "2026-11-23 20:30:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-23 09:30:00+00:00",
   "BTCUSDT_po3": "2026-11-23 11:39:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -64.58645999999905,
+    "Range Filter + Scalper Pro": -73.21393999999916,
     "Consolidation Breakout": 111.05802999999902,
     "AMD Po3": 30.110189705069665,
     "Order Block": -152.900364999994,
