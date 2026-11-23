@@ -8,22 +8,6 @@
   "last_update_id": 216745240,
   "pending_trades": [
     {
-      "symbol": "XAU/USD",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "BUY",
-      "entry": 3678.66216,
-      "sl": 3657.91301,
-      "entry_time": "2026-11-23 15:24:00+00:00",
-      "message_ids": {
-        "6338570227": 16576,
-        "7100834953": 16577
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-23 16:45:00+00:00"
-    },
-    {
       "symbol": "BTCUSDT",
       "strategy_label": "Range Filter Flip",
       "action": "SELL",
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-23 16:45:00+00:00"
+      "last_time": "2026-11-23 16:48:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-23 16:45:00+00:00"
+      "last_time": "2026-11-23 16:48:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-23 15:24:00+00:00",
@@ -50663,12 +50647,27 @@
       "balance_after": -184.3368,
       "entry_time": "2026-11-23 15:24:00+00:00",
       "resolved_time": "2026-11-23 16:42:00+00:00"
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 3678.66216,
+      "exit": 3657.91301,
+      "r": -1.0,
+      "pips": -207.49,
+      "pnl_usd": -20.7491,
+      "balance_after": -64.5865,
+      "entry_time": "2026-11-23 15:24:00+00:00",
+      "resolved_time": "2026-11-23 16:48:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-23 09:30:00+00:00",
   "BTCUSDT_po3": "2026-11-23 11:39:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -43.837309999999405,
+    "Range Filter + Scalper Pro": -64.58645999999905,
     "Consolidation Breakout": 111.05802999999902,
     "AMD Po3": 30.110189705069665,
     "Order Block": -151.43961499999395,
