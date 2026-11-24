@@ -21,23 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-24 00:39:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter + Scalper Pro",
-      "action": "SELL",
-      "entry": 61003.3,
-      "sl": 61265.3,
-      "entry_time": "2026-11-24 00:33:00+00:00",
-      "message_ids": {
-        "6338570227": 16668,
-        "7100834953": 16669
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-24 00:39:00+00:00"
+      "last_time": "2026-11-24 00:42:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-24 00:39:00+00:00"
+      "last_time": "2026-11-24 00:42:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -68,8 +52,8 @@
       },
       "fixed_target": true,
       "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-24 00:39:00+00:00"
+      "stage": 1,
+      "last_time": "2026-11-24 00:42:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-23 23:42:00+00:00",
@@ -50934,12 +50918,27 @@
       "balance_after": -177.159,
       "entry_time": "2026-11-23 20:15:00+00:00",
       "resolved_time": "2026-11-24 00:33:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 61003.3,
+      "exit": 61265.3,
+      "r": -1.0,
+      "pips": -262.0,
+      "pnl_usd": -2.62,
+      "balance_after": -84.5935,
+      "entry_time": "2026-11-24 00:33:00+00:00",
+      "resolved_time": "2026-11-24 00:42:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-23 21:57:00+00:00",
   "BTCUSDT_po3": "2026-11-24 00:36:00+00:00",
   "balances": {
-    "Range Filter + Scalper Pro": -81.97350999999932,
+    "Range Filter + Scalper Pro": -84.59350999999933,
     "Consolidation Breakout": 109.52136999999912,
     "AMD Po3": 20.285098753199495,
     "Order Block": -152.900364999994,
