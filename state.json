@@ -21,7 +21,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-24 08:00:00+00:00"
+      "last_time": "2026-11-24 08:03:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -37,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-24 08:00:00+00:00"
+      "last_time": "2026-11-24 08:03:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +53,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-24 08:00:00+00:00"
+      "last_time": "2026-11-24 08:03:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,11 +69,39 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-24 08:00:00+00:00"
+      "last_time": "2026-11-24 08:03:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "SELL",
+      "entry": 60271.8,
+      "sl": 60435.5,
+      "entry_time": "2026-11-24 08:03:00+00:00",
+      "message_ids": {
+        "6338570227": 16762,
+        "7100834953": 16763
+      },
+      "fixed_target": true,
+      "mgmt": null
+    },
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "AMD Po3",
+      "action": "SELL",
+      "entry": 3623.43122,
+      "sl": 3631.7351111396647,
+      "entry_time": "2026-11-24 08:03:00+00:00",
+      "message_ids": {
+        "6338570227": 16764,
+        "7100834953": 16765
+      },
+      "fixed_target": true,
+      "mgmt": null
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-24 06:27:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-11-24 00:33:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-11-24 08:03:00+00:00",
   "XAU/USD_consol": "2026-11-23 22:30:00+00:00",
   "BTCUSDT_consol": "2026-11-23 22:15:00+00:00",
   "last_daily_report": "2026-11-24",
@@ -51221,7 +51249,7 @@
       "resolved_time": "2026-11-24 07:42:00+00:00"
     }
   ],
-  "XAU/USD_po3": "2026-11-24 04:39:00+00:00",
+  "XAU/USD_po3": "2026-11-24 08:03:00+00:00",
   "BTCUSDT_po3": "2026-11-24 07:21:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -70.18750999999926,
