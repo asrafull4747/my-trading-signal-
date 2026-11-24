@@ -8,22 +8,6 @@
   "last_update_id": 216745240,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 60131.6,
-      "sl": 60570.1,
-      "entry_time": "2026-11-24 13:06:00+00:00",
-      "message_ids": {
-        "6338570227": 16852,
-        "7100834953": 16853
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-24 13:57:00+00:00"
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "SELL",
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-24 13:57:00+00:00"
+      "last_time": "2026-11-24 14:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-24 13:57:00+00:00"
+      "last_time": "2026-11-24 14:00:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -69,23 +53,34 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-24 13:57:00+00:00"
+      "last_time": "2026-11-24 14:00:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 59965.1,
-      "sl": 60166.8,
-      "entry_time": "2026-11-24 13:54:00+00:00",
+      "strategy_label": "Order Block",
+      "action": "BUY",
+      "entry": 60347.9,
+      "sl": 59889.3,
+      "entry_time": "2026-11-24 14:00:00+00:00",
       "message_ids": {
-        "6338570227": 16864,
-        "7100834953": 16865
+        "7100834953": 16870
       },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-24 13:57:00+00:00"
+      "fixed_target": false,
+      "mgmt": null
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "entry": 60347.9,
+      "sl": 59686.0,
+      "entry_time": "2026-11-24 14:00:00+00:00",
+      "message_ids": {
+        "6338570227": 16871,
+        "7100834953": 16872
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-24 10:33:00+00:00",
@@ -51550,19 +51545,49 @@
       "balance_after": -182.6263,
       "entry_time": "2026-11-24 12:42:00+00:00",
       "resolved_time": "2026-11-24 13:09:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "reverse",
+      "entry": 60131.6,
+      "exit": 60347.9,
+      "r": -0.4933,
+      "pips": -216.3,
+      "pnl_usd": -2.163,
+      "balance_after": -208.6794,
+      "entry_time": "2026-11-24 13:06:00+00:00",
+      "resolved_time": "2026-11-24 14:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 59965.1,
+      "exit": 60166.8,
+      "r": -1.0,
+      "pips": -201.7,
+      "pnl_usd": -2.017,
+      "balance_after": 107.5044,
+      "entry_time": "2026-11-24 13:54:00+00:00",
+      "resolved_time": "2026-11-24 14:00:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-24 08:03:00+00:00",
   "BTCUSDT_po3": "2026-11-24 08:15:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -85.13269999999905,
-    "Consolidation Breakout": 109.52136999999912,
+    "Consolidation Breakout": 107.50436999999908,
     "AMD Po3": 16.60999541938102,
     "Order Block": -182.62633499999396,
-    "Range Filter Flip": -206.51643000001167
+    "Range Filter Flip": -208.6794300000117
   },
-  "BTCUSDT_order_block": "2026-11-24 11:42:00+00:00",
-  "BTCUSDT_rf_flip": "2026-11-24 13:06:00+00:00",
+  "BTCUSDT_order_block": "2026-11-24 14:00:00+00:00",
+  "BTCUSDT_rf_flip": "2026-11-24 14:00:00+00:00",
   "XAU/USD_rf_flip": "2026-11-24 13:12:00+00:00",
   "XAU/USD_order_block": "2026-11-24 13:33:00+00:00"
 }
