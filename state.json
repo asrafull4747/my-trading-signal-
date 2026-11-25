@@ -21,7 +21,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -37,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -53,7 +53,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 2,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -69,7 +69,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 1,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -85,7 +85,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -101,7 +101,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -117,7 +117,7 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -133,23 +133,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-25 22:15:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "AMD Po3",
-      "action": "BUY",
-      "entry": 60181.2,
-      "sl": 60004.63320990854,
-      "entry_time": "2026-11-25 22:06:00+00:00",
-      "message_ids": {
-        "6338570227": 17342,
-        "7100834953": 17343
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-25 22:15:00+00:00"
+      "last_time": "2026-11-25 22:18:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-25 21:24:00+00:00",
@@ -53129,6 +53113,21 @@
       "balance_after": -139.6508,
       "entry_time": "2026-11-25 20:54:00+00:00",
       "resolved_time": "2026-11-25 22:00:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "AMD Po3",
+      "action": "BUY",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 60181.2,
+      "exit": 60004.63320990854,
+      "r": -1.0,
+      "pips": -176.57,
+      "pnl_usd": -1.7657,
+      "balance_after": 28.8835,
+      "entry_time": "2026-11-25 22:06:00+00:00",
+      "resolved_time": "2026-11-25 22:18:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-25 21:30:00+00:00",
@@ -53136,7 +53135,7 @@
   "balances": {
     "Range Filter + Scalper Pro": 78.08863000000017,
     "Consolidation Breakout": 100.64572999999928,
-    "AMD Po3": 30.649217632700108,
+    "AMD Po3": 28.88354973178555,
     "Order Block": -139.65081249999324,
     "Range Filter Flip": -220.26298000001165
   },
