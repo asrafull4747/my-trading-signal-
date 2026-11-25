@@ -21,22 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-25 06:06:00+00:00"
-    },
-    {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Range Filter Flip",
-      "action": "SELL",
-      "entry": 59215.8,
-      "sl": 59577.9,
-      "entry_time": "2026-11-25 04:00:00+00:00",
-      "message_ids": {
-        "7100834953": 17059
-      },
-      "fixed_target": false,
-      "mgmt": "reverse",
-      "stage": 0,
-      "last_time": "2026-11-25 06:06:00+00:00"
+      "last_time": "2026-11-25 06:09:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -52,7 +37,7 @@
       "fixed_target": true,
       "mgmt": null,
       "stage": 0,
-      "last_time": "2026-11-25 06:06:00+00:00"
+      "last_time": "2026-11-25 06:09:00+00:00"
     },
     {
       "symbol": "XAU/USD",
@@ -68,11 +53,39 @@
       "fixed_target": false,
       "mgmt": null,
       "stage": 2,
-      "last_time": "2026-11-25 06:06:00+00:00"
+      "last_time": "2026-11-25 06:09:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter + Scalper Pro",
+      "action": "BUY",
+      "entry": 59194.2,
+      "sl": 58987.2,
+      "entry_time": "2026-11-25 06:09:00+00:00",
+      "message_ids": {
+        "6338570227": 17082,
+        "7100834953": 17083
+      },
+      "fixed_target": true,
+      "mgmt": null
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "entry": 59194.2,
+      "sl": 58925.0,
+      "entry_time": "2026-11-25 06:09:00+00:00",
+      "message_ids": {
+        "6338570227": 17084,
+        "7100834953": 17085
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-25 05:27:00+00:00",
-  "BTCUSDT_rf_scalper": "2026-11-25 04:39:00+00:00",
+  "BTCUSDT_rf_scalper": "2026-11-25 06:09:00+00:00",
   "XAU/USD_consol": "2026-11-24 22:24:00+00:00",
   "BTCUSDT_consol": "2026-11-24 21:15:00+00:00",
   "last_daily_report": "2026-11-25",
@@ -52208,6 +52221,21 @@
       "balance_after": -48.5686,
       "entry_time": "2026-11-25 05:27:00+00:00",
       "resolved_time": "2026-11-25 05:57:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "outcome": "win",
+      "reason": "reverse",
+      "entry": 59215.8,
+      "exit": 59194.2,
+      "r": 0.0597,
+      "pips": 21.6,
+      "pnl_usd": 0.216,
+      "balance_after": -250.0504,
+      "entry_time": "2026-11-25 04:00:00+00:00",
+      "resolved_time": "2026-11-25 06:09:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-24 23:09:00+00:00",
@@ -52217,10 +52245,10 @@
     "Consolidation Breakout": 106.15565999999933,
     "AMD Po3": 32.22586581436951,
     "Order Block": -162.52197249999358,
-    "Range Filter Flip": -250.26642000001138
+    "Range Filter Flip": -250.05042000001131
   },
   "BTCUSDT_order_block": "2026-11-25 04:00:00+00:00",
-  "BTCUSDT_rf_flip": "2026-11-25 04:00:00+00:00",
+  "BTCUSDT_rf_flip": "2026-11-25 06:09:00+00:00",
   "XAU/USD_rf_flip": "2026-11-25 02:39:00+00:00",
   "XAU/USD_order_block": "2026-11-25 05:27:00+00:00"
 }
