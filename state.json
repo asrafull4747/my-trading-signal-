@@ -8,22 +8,6 @@
   "last_update_id": 216745240,
   "pending_trades": [
     {
-      "symbol": "BTCUSDT",
-      "strategy_label": "Consolidation Breakout",
-      "action": "SELL",
-      "entry": 58717.8,
-      "sl": 59040.5,
-      "entry_time": "2026-11-25 07:36:00+00:00",
-      "message_ids": {
-        "6338570227": 17118,
-        "7100834953": 17119
-      },
-      "fixed_target": true,
-      "mgmt": null,
-      "stage": 0,
-      "last_time": "2026-11-25 08:27:00+00:00"
-    },
-    {
       "symbol": "XAU/USD",
       "strategy_label": "Range Filter Flip",
       "action": "BUY",
@@ -37,7 +21,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-25 08:27:00+00:00"
+      "last_time": "2026-11-25 08:30:00+00:00"
     },
     {
       "symbol": "BTCUSDT",
@@ -53,7 +37,7 @@
       "fixed_target": false,
       "mgmt": "reverse",
       "stage": 0,
-      "last_time": "2026-11-25 08:27:00+00:00"
+      "last_time": "2026-11-25 08:30:00+00:00"
     }
   ],
   "XAU/USD_rf_scalper": "2026-11-25 05:27:00+00:00",
@@ -52388,13 +52372,28 @@
       "balance_after": -225.0268,
       "entry_time": "2026-11-25 07:18:00+00:00",
       "resolved_time": "2026-11-25 08:18:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Consolidation Breakout",
+      "action": "SELL",
+      "outcome": "loss",
+      "reason": "sl",
+      "entry": 58717.8,
+      "exit": 59040.5,
+      "r": -1.0,
+      "pips": -322.7,
+      "pnl_usd": -3.227,
+      "balance_after": 97.6087,
+      "entry_time": "2026-11-25 07:36:00+00:00",
+      "resolved_time": "2026-11-25 08:30:00+00:00"
     }
   ],
   "XAU/USD_po3": "2026-11-25 07:42:00+00:00",
   "BTCUSDT_po3": "2026-11-25 06:15:00+00:00",
   "balances": {
     "Range Filter + Scalper Pro": -53.87356000000022,
-    "Consolidation Breakout": 100.83572999999922,
+    "Consolidation Breakout": 97.60872999999924,
     "AMD Po3": 29.487207137137098,
     "Order Block": -151.66659749999388,
     "Range Filter Flip": -225.02683000001156
