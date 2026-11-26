@@ -6,7 +6,22 @@
     "7100834953"
   ],
   "last_update_id": 216745240,
-  "pending_trades": [],
+  "pending_trades": [
+    {
+      "symbol": "XAU/USD",
+      "strategy_label": "Range Filter Flip",
+      "action": "SELL",
+      "entry": 3557.50079,
+      "sl": 3585.77166,
+      "entry_time": "2026-11-26 01:33:00+00:00",
+      "message_ids": {
+        "6338570227": 17392,
+        "7100834953": 17393
+      },
+      "fixed_target": false,
+      "mgmt": "reverse"
+    }
+  ],
   "XAU/USD_rf_scalper": "2026-11-25 23:42:00+00:00",
   "BTCUSDT_rf_scalper": "2026-11-26 00:09:00+00:00",
   "XAU/USD_consol": "2026-11-25 07:21:00+00:00",
@@ -53207,6 +53222,6 @@
   },
   "BTCUSDT_order_block": "2026-11-25 23:48:00+00:00",
   "BTCUSDT_rf_flip": "2026-11-25 19:03:00+00:00",
-  "XAU/USD_rf_flip": "2026-11-26 01:12:00+00:00",
+  "XAU/USD_rf_flip": "2026-11-26 01:33:00+00:00",
   "XAU/USD_order_block": "2026-11-25 21:24:00+00:00"
 }
