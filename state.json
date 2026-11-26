@@ -19,6 +19,22 @@
         "7100834953": 17401
       },
       "fixed_target": false,
+      "mgmt": "reverse",
+      "stage": 0,
+      "last_time": "2026-11-26 02:09:00+00:00"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "strategy_label": "Range Filter Flip",
+      "action": "BUY",
+      "entry": 60834.3,
+      "sl": 60575.9,
+      "entry_time": "2026-11-26 02:09:00+00:00",
+      "message_ids": {
+        "6338570227": 17402,
+        "7100834953": 17403
+      },
+      "fixed_target": false,
       "mgmt": "reverse"
     }
   ],
@@ -53251,7 +53267,7 @@
     "Range Filter Flip": -237.0895200000117
   },
   "BTCUSDT_order_block": "2026-11-25 23:48:00+00:00",
-  "BTCUSDT_rf_flip": "2026-11-25 19:03:00+00:00",
+  "BTCUSDT_rf_flip": "2026-11-26 02:09:00+00:00",
   "XAU/USD_rf_flip": "2026-11-26 02:06:00+00:00",
   "XAU/USD_order_block": "2026-11-25 21:24:00+00:00"
 }
